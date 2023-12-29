@@ -1,7 +1,7 @@
 {
-  "name": "ts-mfe-console-vue-components",
+  "name": "ts-admin-components",
   "private": false,
-  "version": "0.1.141",
+  "version": "1.0.0",
   "type": "module",
   "files": [
     "dist"
@@ -42,12 +42,12 @@
     "vue-tsc": "^1.0.24"
   },
   "description": "Global reusable components for micro frontend",
-  "main": "./dist/ts-mfe-console-vue-components.umd.js",
-  "module": "./dist/ts-mfe-console-vue-components.es.js",
+  "main": "./dist/ts-admin-components.umd.js",
+  "module": "./dist/ts-admin-components.es.js",
   "exports": {
     ".": {
-      "import": "./dist/ts-mfe-console-vue-components.es.js",
-      "require": "./dist/ts-mfe-console-vue-components.umd.js"
+      "import": "./dist/ts-admin-components.es.js",
+      "require": "./dist/ts-admin-components.umd.js"
     },
     "./dist/style.css": {
       "import": "./dist/style.css",
@@ -57,12 +57,12 @@
   "types": "./dist/main.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rndts/ts-mfe-console-components.git"
+    "url": "git+https://github.com/rndts/ts-admin-components.git"
   },
   "author": "rndts",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rndts/ts-mfe-console-components/issues"
+    "url": "https://github.com/rndts/ts-admin-components/issues"
   },
-  "homepage": "https://github.com/rndts/ts-mfe-console-components#readme"
+  "homepage": "https://github.com/rndts/ts-admin-components#readme"
 }

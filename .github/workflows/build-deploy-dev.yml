@@ -67,4 +67,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd ${{ secrets.FOLDER }}
-            git pull https://${{ secrets.PAT }}@github.com/rndts/ts-mfe-console-components.git dev-build
+            git pull https://${{ secrets.PAT }}@github.com/rndts/ts-admin-components.git dev-build

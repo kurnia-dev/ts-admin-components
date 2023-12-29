@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import federation from '@originjs/vite-plugin-federation';
 import path from 'path';
 import typescript2 from 'rollup-plugin-typescript2';
 import dts from 'vite-plugin-dts';
@@ -25,27 +24,6 @@ export default defineConfig({
       },
       exclude: ['vite.config.ts'],
     }),
-    // federation({
-    //   name: 'mfe-components', // Change with frontend service name
-    //   filename: 'index.js',
-    //   exposes: {
-    //     // Change this with component want to expose
-    //     './App': './src/App.vue',
-    //     './DynamicDialog': './src/components/DynamicDialog.vue',
-    //     './DynamicTable': './src/components/DynamicTable.vue',
-    //     './GroupNameContainer': './src/components/GroupNameContainer.vue',
-    //     './MultiInputText': './src/components/MultiInputText.vue',
-    //     './NameContainer': './src/components/NameContainer.vue',
-    //     './SearchButton': './src/components/SearchButton.vue',
-    //     './VCalendar': './src/components/VCalendar.vue',
-    //     './VCheckbox': './src/components/VCheckbox.vue',
-    //     './VDropdown': './src/components/VDropdown.vue',
-    //     './VInput': './src/components/VInput.vue',
-    //     './VMultiSelect': './src/components/VMultiSelect.vue',
-    //     './VRadioButtons': './src/components/VRadioButtons.vue',
-    //   },
-    //   shared: ['vue', 'axios', 'vue-router', 'vuex'],
-    // }),
   ],
   build: {
     // target: 'esnext',
@@ -53,9 +31,9 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: 'src/components/main.ts',
-      name: 'tsMfeConsoleVueComponents',
+      name: 'tsAdminComponents',
       formats: ['es', 'cjs', 'umd'],
-      fileName: (format) => `ts-mfe-console-vue-components.${format}.js`,
+      fileName: (format) => `ts-admin-components.${format}.js`,
     },
     rollupOptions: {
       // make sure to externalize deps that should not be bundled
