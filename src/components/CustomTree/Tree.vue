@@ -413,38 +413,108 @@ export default {
   </div>
 </template>
 
-<style>
-.p-tree-container {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  overflow: auto;
-}
+<style lang="scss">
+@import '~rfs/scss';
 
+.p-tree-container,
 .p-treenode-children {
   margin: 0;
   padding: 0;
   list-style-type: none;
-}
-
-.p-tree-wrapper {
   overflow: auto;
 }
 
-.p-treenode-selectable {
-  cursor: pointer;
-  user-select: none;
+.tree-search-bar {
+  @include font-size(11.2px);
+  .p-inputtext {
+    padding-left: 32px;
+    @include padding-top(10px);
+    @include padding-bottom(10px);
+  }
+  .p-button {
+    height: 20px;
+    width: 20px;
+    @include padding(0 10px);
+    @include margin-left(5px);
+    &:hover {
+      box-shadow: none;
+    }
+  }
 }
 
+.label-container,
+.p-tree-filter {
+  width: 100%;
+}
+
+.ellipsis-container {
+  right: 0px;
+  position: sticky;
+  visibility: hidden;
+}
+
+.ellipsis-button,
+.p-tree-toggler {
+  width: 16px;
+  height: 16px;
+  padding: 12px;
+}
+
+.p-tree {
+  border: 0;
+  padding: 0 !important;
+  @include font-size(11.2px);
+  font-weight: 500;
+  .p-tree-container {
+    width: 100%;
+    display: table;
+    .p-treenode {
+      padding: 0;
+      .p-treenode-content {
+        padding: 0;
+        .p-tree-toggler {
+          @include margin-right(2px);
+        }
+        .p-treenode-label {
+          width: 100%;
+        }
+        .p-link:focus {
+          box-shadow: none;
+        }
+        .p-treenode-icon {
+          margin: 0;
+        }
+        .pi-fw,
+        .pi-ellipsis-h {
+          @include font-size(8.5px);
+        }
+      }
+    }
+  }
+  .p-treenode-children {
+    @include padding(0 0 0 10px);
+  }
+}
+
+.p-tree .p-tree-container .p-treenode .p-treenode-content:hover {
+  .ellipsis-container {
+    visibility: visible;
+  }
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.p-tree-wrapper,
+.p-tree-flex-scrollable {
+  overflow: auto;
+}
+
+.p-treenode-selectable,
 .p-tree-toggler {
   cursor: pointer;
   user-select: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-  flex-shrink: 0;
 }
 
 .p-treenode-leaf > .p-treenode-content .p-tree-toggler {
@@ -456,20 +526,18 @@ export default {
   align-items: center;
 }
 
-.p-tree-filter {
-  width: 100%;
-}
-
 .p-tree-filter-container {
   position: relative;
   display: block;
   width: 100%;
+  margin-bottom: 0.75rem !important;
 }
 
-.p-tree-filter-icon {
+.p-tree-filter-icon,
+.reset-filter {
   position: absolute;
   top: 50%;
-  margin-top: -0.5rem;
+  transform: translateY(-50%);
 }
 
 .p-tree-loading {
@@ -494,13 +562,6 @@ export default {
 
 .p-tree-flex-scrollable .p-tree-wrapper {
   flex: 1;
-}
-
-.reset-filter {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 12px;
 }
 
 .loader {
