@@ -44,21 +44,20 @@ const show = computed(() => props.show);
       @key-change="emit('keyChange', $event)"
     />
     <template #footer>
-      <div v-if="props.readonly" class="d-flex justify-content-end gap-2">
+      <template v-if="props.readonly">
         <Button
           label="Close"
           text
           severity="secondary"
           @click="emit('cancel')"
         />
-      </div>
-      <div v-else class="d-flex justify-content-end">
+      </template>
+      <template v-else>
         <Button
           label="Cancel"
           text
           severity="secondary"
           @click="emit('cancel')"
-          class="mx-1"
         />
         <Button
           label="Apply"
@@ -68,7 +67,7 @@ const show = computed(() => props.show);
           "
           @click="emit('apply', destinationTemp)"
         />
-      </div>
+      </template>
     </template>
   </Dialog>
 </template>

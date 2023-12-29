@@ -366,7 +366,7 @@ export default {
     </template>
     <div class="p-tree-filter-container" v-else>
       <div class="tree-search-bar">
-        <span class="w-full p-input-icon-left flex-fill">
+        <span class="w-100 p-input-icon-left flex-fill">
           <Icon width="14" height="14" icon="ri-search-2-line" />
           <InputText
             v-model="filterValue"

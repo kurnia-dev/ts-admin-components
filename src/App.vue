@@ -19,7 +19,6 @@ import HelloWorld from './components/HelloWorld.vue'
 </template>
 <style>
 @import '~primevue/resources/themes/lara-light-blue/theme.css';
-@import '~remixicon/fonts/remixicon.css';
 </style>
 <style lang="scss">
 @import 'scss/index';
@@ -34,5 +33,34 @@ import HelloWorld from './components/HelloWorld.vue'
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+
+*:focus {
+  box-shadow: none !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d9d9d9;
+  border-radius: 20px;
+}
+
+.p-dialog .p-dialog-header,
+.p-dialog .p-dialog-content {
+  padding-bottom: 0.75rem !important;
+}
+
+.p-dialog .p-dialog-footer {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+
+  button {
+    margin: 0 !important;
+  }
 }
 </style>
