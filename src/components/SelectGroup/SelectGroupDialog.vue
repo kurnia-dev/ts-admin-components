@@ -17,7 +17,6 @@ const emit = defineEmits<{
 }>();
 
 const destinationTemp = ref<any>({});
-const filter = ref(false);
 
 const show = computed(() => props.show);
 </script>
@@ -34,18 +33,7 @@ const show = computed(() => props.show);
     :closable="false"
     :base-z-index="99999999"
   >
-    <div class="d-flex justify-content-end" v-if="!filter">
-      <Button
-        icon="ri-search-2-line"
-        class="sidebar-header-item h-auto"
-        severity="secondary"
-        @click="() => (filter = !filter)"
-        text
-        rounded
-      />
-    </div>
     <GroupTree
-      :filter="filter"
       :params="props.params"
       filter-by="name"
       filterPlaceholder="Search"
@@ -53,7 +41,6 @@ const show = computed(() => props.show);
       :readonly="props.readonly"
       v-model:selected-keys="destinationTemp"
       @key-change="emit('keyChange', $event)"
-      @toggle-search-bar="() => (filter = !filter)"
     />
     <template #footer>
       <div v-if="props.readonly" class="d-flex justify-content-end gap-2">

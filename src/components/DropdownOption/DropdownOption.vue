@@ -2,12 +2,12 @@
 import { onMounted, ref, watch } from 'vue';
 import Dropdown from 'primevue/dropdown';
 import MultiSelect from 'primevue/multiselect';
-import { DropdownOption } from '@/types/dropdownOption';
+import { TDropdownOption } from '@/types/dropdownOption';
 import { useField } from 'vee-validate';
 
 const props = defineProps<{
   modelValue: string | string[];
-  options: DropdownOption[];
+  options: TDropdownOption[];
   mandatory?: boolean;
   message?: string;
   mode: 'single' | 'multi';
@@ -21,10 +21,9 @@ defineEmits<{
 
 onMounted(() => setOption(props.options));
 
-const dropdownOptions = ref<DropdownOption[]>()
+const dropdownOptions = ref<TDropdownOption[]>()
 
 const { value, errorMessage } = useField(props.label, (value: any) => {
-  console.log(value);
 
   if (!value) {
       return props.message ?? '';
@@ -35,7 +34,7 @@ const { value, errorMessage } = useField(props.label, (value: any) => {
 
 watch(() => props.options, (options) => setOption(options));
 
-const setOption = (options: DropdownOption[]) => {
+const setOption = (options: TDropdownOption[]) => {
   if (!dropdownOptions.value) (dropdownOptions.value = options);
 }
 </script>
