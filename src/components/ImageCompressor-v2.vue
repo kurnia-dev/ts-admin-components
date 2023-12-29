@@ -1,0 +1,427 @@
+<script lang="ts" setup>
+import 'vue-advanced-cropper/dist/style.css';
+import { ref, onUnmounted, onMounted } from 'vue';
+import { Cropper } from 'vue-advanced-cropper';
+import base64toblob from 'base64toblob';
+import Dialog from 'primevue/dialog';
+import ImagePreview from 'primevue/image';
+
+const props = defineProps({
+  showInput: {
+    type: Boolean,
+    default: true,
+  },
+  inputId: {
+    type: String,
+    default: 'compressor',
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  compressedBlob: {
+    type: String,
+    default: undefined,
+  },
+});
+const emit = defineEmits<{ final: [value: any] }>();
+
+onMounted(() => {
+  if (props.compressedBlob) {
+    previewUrl.value = props.compressedBlob;
+  }
+});
+
+onUnmounted(() => {
+  // Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
+  if (image.value.src) {
+    URL.revokeObjectURL(image.value.src);
+  }
+});
+
+type Image = {
+  src: any;
+  type: any;
+};
+const image = ref<Image>({
+  src: null,
+  type: null,
+});
+const cropper = ref<any>();
+const inputFile = ref<any>();
+const result = ref<any>();
+const canvas = ref<any>();
+const scale = ref(60);
+const quality = ref(60);
+const preview = ref<any>({});
+const previewUrl = ref<string>('');
+const isError = ref(false);
+const showAdjustPhoto = ref(false);
+const inputKey = ref(0);
+
+const crop = async () => {
+  const imgResult = cropper.value.getResult();
+  const base64 = imgResult.canvas.toDataURL('image/jpeg');
+
+  await drawImage(base64);
+};
+
+const resetCropper = () => {
+  image.value = {
+    src: null,
+    type: null,
+  };
+};
+
+const reset = () => {
+  preview.value = { message: 'File has been deleted' };
+  previewUrl.value = '';
+  sendData();
+};
+
+const loadImage = (event: any) => {
+  resetCropper();
+
+  // Reference to the DOM input element
+  const { files } = event.target;
+
+  // Ensure that you have a file before attempting to read it
+  if (files[0]) {
+    // Check file size
+    if (isExceededLimit(files[0].size)) {
+      isError.value = true;
+      preview.value = { message: 'File size has exceeded the limit' };
+      previewUrl.value = '';
+      sendData();
+      return;
+    }
+
+    // Check file type
+    if (!isImage(files[0].type)) {
+      isError.value = true;
+      preview.value = { message: 'File type is not image' };
+      previewUrl.value = '';
+      sendData();
+      return;
+    }
+
+    // 1. Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
+    if (image.value.src) {
+      URL.revokeObjectURL(image.value.src);
+    }
+
+    // 2. Create the blob link to the file to optimize performance:
+    const blob = URL.createObjectURL(files[0]);
+
+    // 3. The steps below are designated to determine a file mime type to use it during the
+    // getting of a cropped image from the canvas. You can replace it them by the following string,
+    // but the type will be derived from the extension and it can lead to an incorrect result:
+    //
+    // this.image = {
+    //    src: blob;
+    //    type: files[0].type
+    // }
+
+    // Create a new FileReader to read this image binary data
+    const reader = new FileReader();
+
+    // Define a callback function to run, when FileReader finishes its job
+    reader.onload = (e) => {
+      // Note: arrow function used here, so that "this.image" refers to the image of Vue component
+      image.value = {
+        // Set the image source (it will look like blob:http://example.com/2c5270a5-18b5-406e-a4fb-07427f5e7b94)
+        src: blob,
+        // Determine the image type to preserve it during the extracting the image from canvas:
+        type: getMimeType(e?.target?.result, files[0].type),
+      };
+    };
+
+    // Start the reader job - read file as a data url (base64 format)
+    reader.readAsArrayBuffer(files[0]);
+
+    // Adjust photo in dialog
+    showAdjustPhoto.value = true;
+
+    isError.value = false;
+  }
+  inputKey.value += 1;
+};
+
+const isExceededLimit = (size: number) => size > 1000000;
+
+const isImage = (type: string) => type.includes('image');
+
+// This function is used to detect the actual image type,
+const getMimeType = (file: any, fallback = null) => {
+  const byteArray = new Uint8Array(file).subarray(0, 4);
+  let header = '';
+  for (const element of byteArray) {
+    header += element.toString(16);
+  }
+  switch (header) {
+    case '89504e47':
+      return 'image/png';
+    case '47494638':
+      return 'image/gif';
+    case 'ffd8ffe0':
+    case 'ffd8ffe1':
+    case 'ffd8ffe2':
+    case 'ffd8ffe3':
+    case 'ffd8ffe8':
+      return 'image/jpeg';
+    default:
+      return fallback;
+  }
+};
+
+const drawImage = async (imgUrl: string) => {
+  try {
+    // Recreate Canvas Element
+    canvas.value = document.createElement('canvas');
+
+    // Set Canvas Context
+    let ctx = canvas.value.getContext('2d');
+
+    // Create New Image
+    let img = new Image();
+    img.src = imgUrl;
+    await img.decode();
+
+    // Image Size After Scaling
+    let formattedScale = scale.value / 100;
+    let width = img.width * formattedScale;
+    let height = img.height * formattedScale;
+
+    // Set Canvas Height And Width According to Image Size And Scale
+    canvas.value.setAttribute('width', width);
+    canvas.value.setAttribute('height', height);
+
+    ctx.drawImage(img, 0, 0, width, height);
+
+    // Quality Of Image
+    let formattedQuality = quality.value ? quality.value / 100 : 1;
+
+    // If all files have been proceed
+    let base64 = canvas.value.toDataURL('image/jpeg', formattedQuality);
+    let fileName = Date.now() + '.jpg';
+
+    let objToPass = {
+      canvas: canvas.value,
+      original: result.value,
+      compressed: {
+        blob: toBlob(base64),
+        base64: base64,
+        name: fileName,
+        file: buildFile(base64, fileName),
+        newFile: await blobToFile(toBlob(base64), fileName), // upload this field
+        size: '',
+        type: '',
+      },
+    };
+
+    objToPass.compressed.size =
+      Math.round(objToPass.compressed.file.size / 1000) + ' kB';
+    objToPass.compressed.type = 'image/jpeg';
+    preview.value = { ...objToPass, message: 'File has been compressed' };
+    previewUrl.value = objToPass.compressed.blob;
+    sendData();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Convert Base64 to Blob
+const toBlob = (imgUrl: string) => {
+  let blob = base64toblob(imgUrl.split(',')[1], 'image/jpeg');
+  let url = window.URL.createObjectURL(blob);
+  return url;
+};
+
+// Convert Blob To File
+const buildFile = (blob: any, name: string) => {
+  return new File([blob], name, { type: 'image/jpeg' });
+};
+
+const blobToFile = async (url: string, name: string) => {
+  const file = await fetch(url)
+    .then((f) => f.blob())
+    .then((blobFile) => new File([blobFile], name, { type: 'image/jpeg' }));
+  return file;
+};
+
+const applyImage = async () => {
+  await crop();
+  showAdjustPhoto.value = false;
+};
+
+const sendData = () => {
+  emit('final', preview.value);
+};
+
+const openCropper = () => {
+  if (props.disabled) {
+    return;
+  }
+  inputFile.value.click();
+};
+</script>
+
+<template>
+  <div>
+    <div v-if="props.showInput" class="d-flex col-12">
+      <div v-if="previewUrl.length" class="">
+        <ImagePreview
+          :src="previewUrl"
+          :preview="true"
+          imageStyle="height:125px;width:125px;object-fit:cover;border-radius:10px;"
+          class="image img-preview-md"
+          :pt="{
+            mask: { style: 'z-index: 99999999' },
+            rotateRightButton: { class: 'd-none' },
+            rotateLeftButton: { class: 'd-none' },
+            zoomOutButton: { class: 'd-none' },
+            zoomInButton: { class: 'd-none' },
+          }"
+        >
+        <template #refresh>
+          <div class="d-none"></div>
+        </template>
+        <template #undo>
+          <div class="d-none"></div>
+        </template>
+        <template #zoomout>
+          <div class="d-none"></div>
+        </template>
+        <template #zoomin>
+          <div class="d-none"></div>
+        </template>
+        </ImagePreview>
+        <div class="mt-1">
+          <Button
+            icon="ri-pencil-line"
+            label="Edit"
+            text
+            @click="openCropper"
+          />
+          <Button
+            icon="ri-delete-bin-6-line"
+            label="Delete"
+            text
+            severity="danger"
+            @click="reset"
+          />
+        </div>
+      </div>
+      <div
+        v-else
+        class="input-trigger d-flex align-items-center justify-content-center"
+        :class="{ 'input-trigger-disabled': props.disabled }"
+        @click="openCropper"
+      >
+        <i
+          class="ri-add-circle-line input-trigger-icon"
+          :class="{ 'input-trigger-icon-disabled': props.disabled }"
+        ></i>
+      </div>
+      <div
+        class="d-flex"
+        :class="{ 'text-danger': isError, 'disabled': props.disabled }"
+      >
+        <ul class="">
+          <li>Max. 1 MB</li>
+          <li>Must be image format.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-none" :key="inputKey">
+      <input
+        class="d-none"
+        type="file"
+        ref="inputFile"
+        @change="loadImage($event)"
+        accept="image/*"
+        :id="props.inputId"
+        :key="inputKey"
+      />
+    </div>
+    <Dialog
+      v-model:visible="showAdjustPhoto"
+      modal
+      :draggable="false"
+      header="Adjust Photo"
+      :style="{ width: '840px' }"
+      :auto-z-index="false"
+      @hide="resetCropper"
+      @show="resetCropper"
+      :pt="{
+        root: { style: 'z-index: 99999999; width: 840px' },
+        mask: { style: 'z-index: 99999999' },
+      }"
+    >
+      <Cropper
+        ref="cropper"
+        class="upload-example-cropper h-400"
+        imageClass="h-400"
+        backgroundClass="h-400"
+        foregroundClass="h-400"
+        :src="image.src"
+        :stencil-props="{
+          aspectRatio: 1 / 1,
+        }"
+      />
+      <div class="col-12 d-flex justify-content-end" style="margin-top: 12px">
+        <Button
+          label="Cancel"
+          class="mx-3"
+          @click="() => (showAdjustPhoto = false)"
+          text
+          plain
+        />
+        <Button
+          label="Apply"
+          severity="success"
+          type="button"
+          @click="applyImage"
+        />
+      </div>
+    </Dialog>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.h-400 {
+  height: 400px;
+}
+
+.input-trigger {
+  height: 125px;
+  width: 125px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  background: #fff;
+  cursor: pointer;
+}
+
+.input-trigger-icon {
+  color: #ced4da;
+  font-size: 24px;
+}
+
+.input-trigger-disabled {
+  border: 1px solid #e6e9ec !important;
+}
+
+.input-trigger-icon-disabled {
+  color: #e6e9ec !important;
+}
+
+.disabled {
+  color: #a0a3bd !important;
+}
+</style>
+
+<style lang="scss">
+.p-image-mask {
+  z-index: 999999999999999999 !important;
+}
+</style>
