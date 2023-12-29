@@ -1,0 +1,16 @@
+@import '~rfs/scss';
+
+.p-inputswitch{
+    width: 33.61px;
+    height: 18.33px;
+    .p-inputswitch-slider:before{
+        width: 12.22px;
+        height: 12.22px;
+        position: absolute;
+        top: 12px;
+    }
+}
+
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before{
+    transform: translateX(0.8rem);
+}

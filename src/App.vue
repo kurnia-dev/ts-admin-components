@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DropdownOptionUsageTest from './components/DropdownOption/DropdownOptionUsageTest.vue';
 import HelloWorld from './components/HelloWorld.vue'
 </script>
 
@@ -11,10 +12,14 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <HelloWorld msg="Component Testing and Preview" />
+  <DropdownOptionUsageTest />
 </template>
-
-<style scoped>
+<style>
+@import '~primevue/resources/themes/lara-light-blue/theme.css';
+</style>
+<style lang="scss">
+@import 'scss/index';
 .logo {
   height: 6em;
   padding: 1.5em;

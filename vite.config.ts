@@ -60,8 +60,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      'scss': path.resolve(__dirname, 'src/assets/scss'),
       '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
       '~primevue': path.resolve(__dirname, 'node_modules/primevue'),
+      '~remixicon': path.resolve(__dirname, 'node_modules/remixicon'),
       '~rfs': path.resolve(__dirname, 'node_modules/rfs'),
     },
   },

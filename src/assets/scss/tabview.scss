@@ -1,0 +1,25 @@
+@import 'var.scss';
+@import '~rfs/scss';
+
+.p-tabview {
+  @include margin(4px 0);
+  .p-tabview-nav {  
+    padding: 0;     
+  }                 
+
+  .p-tabview-nav li .p-tabview-nav-link {
+    @include padding(9.7px 8px);
+    border-width: 0 0 3px 0 !important;
+  }
+  .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+    box-shadow: none;
+  }
+  .p-tabview-panels {
+    @include padding(12px 0);
+  }
+}
+
+.p-tabview-title {
+  @include font-size(11.2px);
+  font-weight: 500;
+}

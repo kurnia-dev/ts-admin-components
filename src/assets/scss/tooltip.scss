@@ -1,0 +1,11 @@
+@import 'var.scss';
+@import '~rfs/scss';
+
+.p-tooltip-arrow {
+  display: none !important;
+}
+.p-tooltip-text {
+  background-color: $primary-weak !important;
+  color: #2d3436 !important;
+  @include font-size(11.2px);
+}

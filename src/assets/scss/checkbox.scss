@@ -1,0 +1,16 @@
+@import 'var.scss';
+@import '~rfs/scss';
+
+.p-checkbox {
+  align-items: center;
+  width: 12.8px;
+  height: 12.8px;
+  .p-checkbox-box {
+    width: 12.8px;
+    height: 12.8px;
+    border-radius: 4px;
+    .p-checkbox-icon {
+      @include font-size(6.5px);
+    }
+  }
+}

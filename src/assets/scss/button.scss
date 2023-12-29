@@ -1,0 +1,99 @@
+@import 'var.scss';
+@import '~rfs/scss';
+
+.p-button,
+.p-button.p-button-secondary,
+.p-button.p-button-success,
+.p-button.p-button-info,
+.p-button.p-button-danger,
+.p-button.p-button-warning,
+.p-button.p-button-text {
+  @include font-size(9px);
+  @include padding(5.7px 12px);
+  .pi {
+    @include font-size(11.2px);
+  }
+  [class^="ri-"], [class*=" ri-"] {
+    @include font-size(11.2px);
+    height: 12px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.p-button-label {
+  font-weight: 500;
+  @include font-size(9px);
+}
+
+.p-button {
+  background: $primary;
+  border: 1px solid $primary;
+  .p-button-icon-right {
+    @include font-size(9px);
+  }
+}
+.p-button:focus {
+  box-shadow: none !important;
+}
+.p-button:enabled:hover {
+  background: $primary-strong;
+}
+
+.p-button.p-button-success {
+  background: $success;
+  border: 1px solid $success;
+  .p-button-label {
+    @include font-size(11.2px);
+  }
+}
+
+.p-button.p-button-success:enabled:hover {
+  background: $success-strong;
+  border: 1px solid $success;
+}
+
+.p-button.p-button-info {
+  background: $info;
+  border: 1px solid $info;
+}
+.p-button.p-button-info:enabled:hover {
+  background: $info-strong;
+  border: 1px solid $info;
+}
+
+.p-button.p-button-danger {
+  background: $danger;
+  border: 1px solid $danger;
+  .p-button-label {
+    @include font-size(11.2px);
+  }
+}
+
+.p-button.p-button-danger:enabled:hover {
+  background: $danger-strong;
+  border: 1px solid $danger;
+}
+
+.p-button.p-button-warning {
+  background: $warning;
+  border: 1px solid $warning;
+}
+.p-button.p-button-warning:enabled:hover {
+  background: $warning-strong;
+  border: 1px solid $warning;
+}
+
+.p-button.p-button-icon-only {
+  width: 26px;
+  height: 26px;
+  @include padding(6px);
+  @include font-size(9px);
+}
+
+.p-button.p-button-text, 
+.p-button-outlined {
+  .p-button-label {
+    @include font-size(11.2px);
+  }
+}

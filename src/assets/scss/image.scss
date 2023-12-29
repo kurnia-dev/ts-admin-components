@@ -1,0 +1,20 @@
+.image {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.img-preview-base {
+  object-fit: cover;
+  border-radius: 50px;
+}
+
+.img-preview {
+  @extend .img-preview-base;
+  width: 36px;
+  height: 36px;
+}
+
+.img-preview-md {
+  @extend .img-preview-base;
+  width: 125px;
+  height: 125px;
+}
