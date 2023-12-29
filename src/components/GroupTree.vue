@@ -7,6 +7,7 @@ import CustomTree from './CustomTree/Tree.vue';
 const attrs: any = useAttrs();
 
 onBeforeMount(async () => {
+  console.log('mounted');
   await fetchTreeList();
 });
 
@@ -55,7 +56,7 @@ const fetchTreeList = async () => {
       disabledKeys.value = getAllGroupKeys();
     }
   } catch (error) {
-    console.error('failed to fetch group tree');
+    console.error('failed to fetch group tree', error);
   } finally {
     isLoading.value = false;
   }

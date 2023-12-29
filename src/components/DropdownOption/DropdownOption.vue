@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import Dropdown from 'primevue/dropdown';
-import MultiSelect from 'primevue/multiselect';
 import { TDropdownOption } from '@/types/dropdownOption';
 import { useField } from 'vee-validate';
 

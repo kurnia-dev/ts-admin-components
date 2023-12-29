@@ -39,6 +39,8 @@ import {
   ButtonCopy,
   ImagePreview,
 } from '@/components';
+
+import DropdownOption from './DropdownOption/DropdownOption.vue';
 import DateUtils from '@/utils/date.util';
 import StringUtils from '@/utils/string.util';
 
@@ -83,6 +85,7 @@ export default {
     app.component('StaticTable', StaticTable);
     app.component('ButtonCopy', ButtonCopy);
     app.component('ImagePreview', ImagePreview);
+    app.component('DropdownOption', DropdownOption);
   },
 };
 
@@ -126,4 +129,5 @@ export {
   ImagePreview,
   DateUtils,
   StringUtils,
+  DropdownOption,
 };

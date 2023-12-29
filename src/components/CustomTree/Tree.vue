@@ -1,15 +1,9 @@
 <script setup>
 /* eslint-disable vue/component-api-style */
 import { useAttrs } from 'vue';
-// import { useStore } from "vuex";
 
-// const store = useStore();
 const attrs = useAttrs();
-
-// const menu = ref();
-
 const toggleOptions = (event, node) => {
-  // menu.value.toggle(event);
   attrs['onToggleOptions'](event, node);
 };
 </script>
@@ -136,8 +130,6 @@ export default {
     onNodeClick(event) {
       if (this.selectionMode != null && event.node.selectable !== false) {
         const metaSelection = event.nodeTouched ? false : this.metaKeySelection;
-        // console.log('is meta', metaSelection);
-        // console.log('selected key', this.selectionKeys);
         const _selectionKeys = metaSelection
           ? this.handleSelectionWithMetaKey(event)
           : this.handleSelectionWithoutMetaKey(event);
@@ -152,7 +144,6 @@ export default {
       else this.$emit('node-unselect', event.node);
     },
     handleSelectionWithMetaKey(event) {
-      // console.log('event', event);
       const originalEvent = event.originalEvent;
       const node = event.node;
       const metaKey = originalEvent.metaKey || originalEvent.ctrlKey;
@@ -160,27 +151,51 @@ export default {
       let _selectionKeys;
 
       if (selected && metaKey) {
-        if (this.isSingleSelectionMode()) {
-          _selectionKeys = {};
-        } else {
-          _selectionKeys = { ...this.selectionKeys };
-          delete _selectionKeys[node.key];
-        }
-
-        this.$emit('node-unselect', node);
+        _selectionKeys = this.handleSelectedNodeWithMetaKey(node);
       } else {
-        if (this.isSingleSelectionMode()) {
-          _selectionKeys = {};
-        } else if (this.isMultipleSelectionMode()) {
-          _selectionKeys = !metaKey
-            ? {}
-            : this.selectionKeys
-            ? { ...this.selectionKeys }
-            : {};
-        }
+        _selectionKeys = this.handleUnselectedNodeWithMetaKey(node, metaKey);
+      }
 
-        _selectionKeys[node.key] = true;
-        this.$emit('node-select', node);
+      return _selectionKeys;
+    },
+
+    handleSelectedNodeWithMetaKey(node) {
+      let _selectionKeys;
+
+      if (this.isSingleSelectionMode()) {
+        _selectionKeys = {};
+      } else {
+        _selectionKeys = { ...this.selectionKeys };
+        delete _selectionKeys[node.key];
+      }
+
+      this.$emit('node-unselect', node);
+
+      return _selectionKeys;
+    },
+
+    handleUnselectedNodeWithMetaKey(node, metaKey) {
+      let _selectionKeys;
+
+      if (this.isSingleSelectionMode()) {
+        _selectionKeys = {};
+      } else if (this.isMultipleSelectionMode()) {
+        _selectionKeys = this.handleMultipleSelection(metaKey);
+      }
+
+      _selectionKeys[node.key] = true;
+      this.$emit('node-select', node);
+
+      return _selectionKeys;
+    },
+
+    handleMultipleSelection(metaKey) {
+      let _selectionKeys;
+
+      if (!metaKey) {
+        _selectionKeys = {};
+      } else {
+        _selectionKeys = this.selectionKeys ? { ...this.selectionKeys } : {};
       }
 
       return _selectionKeys;
@@ -193,27 +208,31 @@ export default {
       if (this.isSingleSelectionMode()) {
         if (selected) {
           _selectionKeys = {};
-          // _selectionKeys = { ...this.selectionKeys };
-          // delete _selectionKeys[node.key];
           this.$emit('node-unselect', node);
         } else {
           _selectionKeys = {};
-          // _selectionKeys = this.selectionKeys ? { ...this.selectionKeys } : {};
           _selectionKeys[node.key] = true;
           this.$emit('node-select', node);
         }
       } else {
-        if (selected) {
+        // This block has Refactored due to 
+        // ""'If' statement should not be the only statement in 'else' 
+        // blocksonarlint(javascript:S6660)"
+        const doIfSelected = () => {
           _selectionKeys = { ...this.selectionKeys };
           delete _selectionKeys[node.key];
 
           this.$emit('node-unselect', node);
-        } else {
+        }
+
+        const doOtherwise= () => {
           _selectionKeys = this.selectionKeys ? { ...this.selectionKeys } : {};
           _selectionKeys[node.key] = true;
 
           this.$emit('node-select', node);
         }
+
+        selected ? doIfSelected() : doOtherwise();
       }
 
       return _selectionKeys;
@@ -230,14 +249,10 @@ export default {
         : false;
     },
     isChecked(node) {
-      return this.selectionKeys
-        ? this.selectionKeys[node.key] && this.selectionKeys[node.key].checked
-        : false;
+      return this.selectionKeys?.[node.key]?.checked ?? false;
     },
     isNodeLeaf(node) {
-      return node.leaf === false
-        ? false
-        : !(node.children && node.children.length);
+      return node.leaf || !node.children?.length;
     },
     onFilterKeydown(event) {
       if (event.which === 13) {
@@ -345,23 +360,14 @@ export default {
 <template>
   <div :class="containerClass">
     <template v-if="loading">
-      <div class="p-tree-loading-overlay p-component-overlay">
-        <i :class="loadingIconClass" />
+      <div class="loader">
+        <Icon width="22" height="22" icon="line-md:loading-twotone-loop" />
       </div>
     </template>
-    <div v-if="filter" class="p-tree-filter-container">
-      <!-- <input
-        v-model="filterValue"
-        type="text"
-        autocomplete="off"
-        class="p-tree-filter p-inputtext p-component"
-        :placeholder="filterPlaceholder"
-        @keydown="onFilterKeydown"
-      />
-      <span class="p-tree-filter-icon pi pi-search"></span> -->
-      <div class="d-flex align-items-center justify-content-between tree-search-bar">
-        <span class="p-input-icon-left flex-fill">
-          <i class="ri-search-2-line" />
+    <div class="p-tree-filter-container" v-else>
+      <div class="tree-search-bar">
+        <span class="w-full p-input-icon-left flex-fill">
+          <Icon width="14" height="14" icon="ri-search-2-line" />
           <InputText
             v-model="filterValue"
             autocomplete="off"
@@ -370,14 +376,7 @@ export default {
             @keydown="onFilterKeydown"
           />
         </span>
-        <Button
-          icon="pi pi-times"
-          severity="secondary"
-          text
-          rounded
-          @click="$emit('toggle-search-bar')"
-          style="height: 30px; width: 30px;"
-        />
+        <Icon class="reset-filter" v-show="filterValue" icon="ri:close-line" @click="filterValue = ''" />
       </div>
     </div>
     <div class="p-tree-wrapper" :style="{ maxHeight: scrollHeight }">
@@ -495,5 +494,18 @@ export default {
 
 .p-tree-flex-scrollable .p-tree-wrapper {
   flex: 1;
+}
+
+.reset-filter {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 12px;
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

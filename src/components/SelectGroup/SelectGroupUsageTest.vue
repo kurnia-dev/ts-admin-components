@@ -8,6 +8,6 @@ const group = ref<number[]>([]);
   <SelectGroup
     v-model="group"
     selectionMode="checkbox"
-    :params="{ disposal: true, approval: true }"
+    :params="{ full: true }"
   />
 </template>

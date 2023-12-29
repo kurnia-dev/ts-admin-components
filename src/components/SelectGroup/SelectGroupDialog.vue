@@ -30,8 +30,9 @@ const show = computed(() => props.show);
     :header="props.readonly ? 'Selected Group' : 'Select Group'"
     @show="() => (destinationTemp = props.destination ? props.destination : {})"
     @hide="() => (destinationTemp = {})"
-    :closable="false"
     :base-z-index="99999999"
+    closable
+    @update:visible="!$event && emit('cancel')"
   >
     <GroupTree
       :params="props.params"

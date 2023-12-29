@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DropdownOptionUsageTest from './components/DropdownOption/DropdownOptionUsageTest.vue';
+import SelectGroupUsageTest from './components/SelectGroup/SelectGroupUsageTest.vue';
 import HelloWorld from './components/HelloWorld.vue'
 </script>
 
@@ -14,9 +15,11 @@ import HelloWorld from './components/HelloWorld.vue'
   </div>
   <HelloWorld msg="Component Testing and Preview" />
   <DropdownOptionUsageTest />
+  <SelectGroupUsageTest />
 </template>
 <style>
 @import '~primevue/resources/themes/lara-light-blue/theme.css';
+@import '~remixicon/fonts/remixicon.css';
 </style>
 <style lang="scss">
 @import 'scss/index';
