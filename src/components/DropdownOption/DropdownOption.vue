@@ -76,29 +76,3 @@ const setOption = (options: TDropdownOption[]) => {
     <small class="p-error" id="dd-error" v-if="field.errorMessage">{{ field.errorMessage }}</small>
   </div>
 </template>
-<style lang="scss">
-@import 'scss/var';
-.field_wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  align-items: start;
-  justify-content: start;
-
-  label {
-    color: $dark;
-    text-transform: capitalize;
-    margin-bottom: 4px;
-
-    font-size: 11.2px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16.8px;
-  }
-
-  .p-error {
-    width: 100%;
-    text-align: right;
-  }
-}
-</style>

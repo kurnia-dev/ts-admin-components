@@ -16,6 +16,7 @@ import { Icon } from '@iconify/vue';
 import NameContainer from './components/NameContainer.vue';
 import MultiSelect from 'primevue/multiselect';
 import Dropdown from 'primevue/dropdown';
+import Calendar from 'primevue/calendar';
 
 // Vue Router
 import router from './routers';
@@ -36,5 +37,6 @@ app.component('Icon', Icon);
 app.component('NameContainer', NameContainer);
 app.component('MultiSelect', MultiSelect);
 app.component('Dropdown', Dropdown);
+app.component('Calendar', Calendar);
 
 app.mount('#app');

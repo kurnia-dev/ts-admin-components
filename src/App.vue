@@ -4,6 +4,7 @@ import SelectGroupUsageTest from './components/SelectGroup/SelectGroupUsageTest.
 import NameContainerUsageTest from '@/components/NameContainer/NameContainerUsageTest.vue';
 import ImageCompressorUsageTest from '@/components/ImageCompressor/ImageCompressorUsageTest.vue';
 import HelloWorld from './components/HelloWorld.vue'
+import TSCalendar from '@/components/Calendar/TSCalendar.vue';
 </script>
 
 <template>
@@ -17,6 +18,14 @@ import HelloWorld from './components/HelloWorld.vue'
   </div>
   <div class="d-flex flex-column gap-4 mb-10">
     <HelloWorld msg="Component Testing and Preview" />
+    <div class="row">
+      <div class="col-3">
+        <TSCalendar label="Single Select" mandatory />
+      </div>
+      <div class="col-3">
+        <TSCalendar label="Range Select" mode="range" />
+      </div>
+    </div>
     <ImageCompressorUsageTest />
     <DropdownOptionUsageTest />
     <h2>Select Group</h2>
@@ -71,6 +80,29 @@ import HelloWorld from './components/HelloWorld.vue'
 
   button {
     margin: 0 !important;
+  }
+}
+
+.field_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: start;
+  justify-content: start;
+
+  label {
+    color: $dark;
+    text-transform: capitalize;
+
+    font-size: 11.2px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16.8px;
+  }
+
+  .p-error {
+    width: 100%;
+    text-align: right;
   }
 }
 </style>
