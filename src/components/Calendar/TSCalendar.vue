@@ -1,20 +1,42 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const date = ref<string>();
 
 defineProps<{
   modelValue?: string;
-  label?: string;
   mandatory?: boolean;
+  label?: string;
   mode?: 'range' | 'single';
 }>();
 
-const setClass = () => {
-  const hls = document.querySelectorAll('.p-datepicker span.p-highlight');
-  hls[0]?.classList.add('first-and-last');
-  hls[hls.length - 1]?.classList.add('first-and-last');
+const emit = defineEmits<{
+  'update:modelValue': [date: string];
+}>();
+
+const getGMTTime = (date: string) => {
+  return new Date(new Date(date).toUTCString()).getTime();
+}
+
+const parseDate = (date: string | string[]) => {
+  if (typeof date === 'string') return JSON.stringify(getGMTTime(date));
+  else
+    return JSON.stringify(
+      [getGMTTime(date[0]), getGMTTime(date[1] ?? date[0])].join('-')
+    );
 };
+
+const setClass = (): void => {
+  const highlights = document.querySelectorAll('.p-datepicker span.p-highlight');
+  highlights[0]?.classList.add('first-and-last');
+  highlights[highlights.length - 1]?.classList.add('first-and-last');
+};
+
+watch(date, (newDate: string | undefined) => {
+  if (newDate) {
+    emit('update:modelValue', parseDate(newDate));
+  }
+});
 </script>
 
 <template>
@@ -29,10 +51,13 @@ const setClass = () => {
       iconDisplay="input"
       :selection-mode="mode ?? 'single'"
       hide-on-range-selection
-      placeholder="Select date" 
+      placeholder="Select date"
       @update:modelValue="setClass"
       @show="setClass"
-      :pt="{ root: { class: 'ts-calendar' }, panel: { class: 'ts-datepicker' }}"
+      :pt="{
+        root: { class: 'ts-calendar' },
+        panel: { class: 'ts-datepicker' },
+      }"
     />
   </div>
 </template>
@@ -47,7 +72,7 @@ const setClass = () => {
   .p-inputtext {
     border: none;
   }
-  
+
   .p-inputtext:enabled:hover {
     outline: none;
     border-color: none;
@@ -55,7 +80,7 @@ const setClass = () => {
 
   .p-button.p-datepicker-trigger,
   .p-button.p-datepicker-trigger:hover {
-      background: white;
+    background: white;
     border: none;
     color: $general-label;
   }
@@ -94,7 +119,6 @@ const setClass = () => {
       display: flex;
       gap: 12px;
       color: $general-header-weak;
-      @include font-size(12px);
       font-style: normal;
       font-weight: 500;
       line-height: normal;
@@ -103,6 +127,10 @@ const setClass = () => {
       button.p-link {
         padding: 0;
         margin-right: 0;
+      }
+
+      > * {
+        @include font-size(12px !important);
       }
     }
   }
@@ -137,15 +165,15 @@ const setClass = () => {
       margin: 0;
     }
 
-    tbody tr td:hover span:not(.p-disabled),
+    tbody tr td:hover:active span:not(.p-disabled),
     .p-datepicker-prev:hover,
     .p-datepicker-next:hover,
     .p-datepicker-today span {
       background: $primary-bg-strong;
     }
 
-    tbody tr td:hover span.first-and-last,
-    tbody tr td span.first-and-last{
+    tbody tr td:hover:active span.first-and-last,
+    tbody tr td span.first-and-last {
       color: white;
       background: $primary;
     }
@@ -162,6 +190,11 @@ const setClass = () => {
   .p-yearpicker .p-yearpicker-year:hover,
   .p-monthpicker .p-monthpicker-month:hover {
     background: $primary-bg-strong !important;
+  }
+
+  .p-monthpicker-month,
+  .p-yearpicker-year {
+    @include font-size(12px !important);
   }
 }
 </style>

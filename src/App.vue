@@ -5,6 +5,9 @@ import NameContainerUsageTest from '@/components/NameContainer/NameContainerUsag
 import ImageCompressorUsageTest from '@/components/ImageCompressor/ImageCompressorUsageTest.vue';
 import HelloWorld from './components/HelloWorld.vue'
 import TSCalendar from '@/components/Calendar/TSCalendar.vue';
+import { ref } from 'vue';
+
+const dateStringified = ref<string>();
 </script>
 
 <template>
@@ -20,10 +23,10 @@ import TSCalendar from '@/components/Calendar/TSCalendar.vue';
     <HelloWorld msg="Component Testing and Preview" />
     <div class="row">
       <div class="col-3">
-        <TSCalendar label="Single Select" mandatory />
+        <TSCalendar v-model="dateStringified" label="Single Select" mode="range" mandatory @update:model-value="console.log($event)"/>
       </div>
       <div class="col-3">
-        <TSCalendar label="Range Select" mode="range" />
+        <TSCalendar label="Range Select" />
       </div>
     </div>
     <ImageCompressorUsageTest />
