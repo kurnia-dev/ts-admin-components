@@ -5,6 +5,7 @@ import { Cropper } from 'vue-advanced-cropper';
 import base64toblob from 'base64toblob';
 import Dialog from 'primevue/dialog';
 import ImagePreview from 'primevue/image';
+import { useField } from 'vee-validate';
 
 const props = defineProps({
   showInput: {
@@ -23,13 +24,35 @@ const props = defineProps({
     type: String,
     default: undefined,
   },
+  useValidator: {
+    type: Boolean,
+    default: false,
+  },
+  imagePreviewSize: {
+    type: String as () => 'small' | 'big',
+    default: 'big',
+  },
+  mandatory: {
+    type: Boolean,
+    default: false,
+  },
+  validatorMessage: {
+    type: String,
+    default: 'Photo must be uploaded',
+  },
+  fieldName: {
+    type: String,
+  }
 });
+
 const emit = defineEmits<{ final: [value: any] }>();
 
 onMounted(() => {
   if (props.compressedBlob) {
     previewUrl.value = props.compressedBlob;
   }
+
+  setField();
 });
 
 onUnmounted(() => {
@@ -47,6 +70,7 @@ const image = ref<Image>({
   src: null,
   type: null,
 });
+
 const cropper = ref<any>();
 const inputFile = ref<any>();
 const result = ref<any>();
@@ -58,6 +82,24 @@ const previewUrl = ref<string>('');
 const isError = ref(false);
 const showAdjustPhoto = ref(false);
 const inputKey = ref(0);
+const imageUploadErrorMessage = ref<string>();
+
+const field = ref<any>({});
+
+const setField = () => {
+  if (props.useValidator) {
+    field.value = useField(
+    props.fieldName ?? '',
+    (value: any) => {
+      if (!value && props.mandatory) {
+        preview.value.message = undefined;
+        return props.validatorMessage;
+      }
+
+      return true;
+    })
+  }
+}
 
 const crop = async () => {
   const imgResult = cropper.value.getResult();
@@ -75,6 +117,7 @@ const resetCropper = () => {
 
 const reset = () => {
   preview.value = { message: 'File has been deleted' };
+  field.value.value = undefined;
   previewUrl.value = '';
   sendData();
 };
@@ -87,19 +130,21 @@ const loadImage = (event: any) => {
 
   // Ensure that you have a file before attempting to read it
   if (files[0]) {
-    // Check file size
-    if (isExceededLimit(files[0].size)) {
+    // Check file type
+    if (!isImage(files[0].type)) {
       isError.value = true;
-      preview.value = { message: 'File size has exceeded the limit' };
+      preview.value = { message: 'File type is not image' };
+      imageUploadErrorMessage.value = preview.value.message;
       previewUrl.value = '';
       sendData();
       return;
     }
 
-    // Check file type
-    if (!isImage(files[0].type)) {
+    // Check file size
+    if (isExceededLimit(files[0].size)) {
       isError.value = true;
-      preview.value = { message: 'File type is not image' };
+      preview.value = { message: 'File size too big! Max. 1 MB' };
+      imageUploadErrorMessage.value = preview.value.message;
       previewUrl.value = '';
       sendData();
       return;
@@ -224,6 +269,9 @@ const drawImage = async (imgUrl: string) => {
     objToPass.compressed.type = 'image/jpeg';
     preview.value = { ...objToPass, message: 'File has been compressed' };
     previewUrl.value = objToPass.compressed.blob;
+
+    // 'value' is a Ref ariable from useField vee-validate
+    field.value.value = objToPass.compressed.newFile;
     sendData();
   } catch (error) {
     console.error(error);
@@ -267,144 +315,208 @@ const openCropper = () => {
 </script>
 
 <template>
-  <div>
-    <div v-if="props.showInput" class="d-flex col-12">
-      <div v-if="previewUrl.length" class="">
-        <ImagePreview
-          :src="previewUrl"
-          :preview="true"
-          imageStyle="height:125px;width:125px;object-fit:cover;border-radius:10px;"
-          class="image img-preview-md"
-          :pt="{
-            mask: { style: 'z-index: 99999999' },
-            rotateRightButton: { class: 'd-none' },
-            rotateLeftButton: { class: 'd-none' },
-            zoomOutButton: { class: 'd-none' },
-            zoomInButton: { class: 'd-none' },
+  <div class="d-flex flex-column gap-2">
+    <div class="image-compressor">
+      <template v-if="props.showInput">
+        <div v-if="previewUrl.length" class="">
+          <ImagePreview
+            :src="previewUrl"
+            :preview="true"
+            :imageStyle="
+              'object-fit:cover; border-radius:8px;' +
+              (props.imagePreviewSize === 'small'
+                ? 'height:80px; width:80px;'
+                : 'height:125px; width:125px;')
+            "
+            class="image img-preview-md"
+            :pt="{
+              mask: { style: 'z-index: 99999999' },
+              rotateRightButton: { class: 'd-none' },
+              rotateLeftButton: { class: 'd-none' },
+              zoomOutButton: { class: 'd-none' },
+              zoomInButton: { class: 'd-none' },
+            }"
+          >
+            <template #refresh>
+              <div class="d-none"></div>
+            </template>
+            <template #undo>
+              <div class="d-none"></div>
+            </template>
+            <template #zoomout>
+              <div class="d-none"></div>
+            </template>
+            <template #zoomin>
+              <div class="d-none"></div>
+            </template>
+          </ImagePreview>
+          <div class="mt-2">
+            <Button
+              icon="ri-pencil-line"
+              label="Edit"
+              @click="openCropper"
+              text
+              style="padding: 0.15rem 0.3rem"
+            />
+            <Button
+              @click="reset"
+              icon="ri-delete-bin-6-line"
+              label="Delete"
+              text
+              severity="danger"
+              style="padding: 0.15rem 0.3rem"
+            />
+          </div>
+        </div>
+        <div
+          v-else
+          class="input-trigger d-flex align-items-center justify-content-center"
+          :class="{
+            'input-trigger-disabled': props.disabled,
+            'small': props.imagePreviewSize === 'small',
+            'p-invalid': field.errorMessage ?? imageUploadErrorMessage,
           }"
+          @click="openCropper"
         >
-        <template #refresh>
-          <div class="d-none"></div>
-        </template>
-        <template #undo>
-          <div class="d-none"></div>
-        </template>
-        <template #zoomout>
-          <div class="d-none"></div>
-        </template>
-        <template #zoomin>
-          <div class="d-none"></div>
-        </template>
-        </ImagePreview>
-        <div class="mt-1">
+          <i
+            class="ri-add-circle-line input-trigger-icon"
+            :class="{ 'input-trigger-icon-disabled': props.disabled }"
+          ></i>
+        </div>
+  
+        <div
+          class="d-flex"
+          :class="{ 'text-danger': isError, 'disabled': props.disabled }"
+        >
+          <ul class="requirements">
+            <li>Max. 1 MB</li>
+            <li>Must be image format</li>
+          </ul>
+        </div>
+      </template>
+      <div class="d-none" :key="inputKey">
+        <input
+          class="d-none"
+          type="file"
+          ref="inputFile"
+          @change="loadImage($event)"
+          accept="image/*"
+          :id="props.inputId"
+          :key="inputKey"
+        />
+      </div>
+      <Dialog
+        v-model:visible="showAdjustPhoto"
+        modal
+        :draggable="false"
+        header="Adjust Photo"
+        :style="{ width: '840px' }"
+        :auto-z-index="false"
+        @hide="resetCropper"
+        @show="resetCropper"
+        :pt="{
+          root: { style: 'z-index: 99999999; width: 840px' },
+          mask: { style: 'z-index: 99999999' },
+        }"
+      >
+        <Cropper
+          ref="cropper"
+          class="upload-example-cropper h-400"
+          imageClass="h-400"
+          backgroundClass="h-400"
+          foregroundClass="h-400"
+          :src="image.src"
+          :stencil-props="{
+            aspectRatio: 1 / 1,
+          }"
+        />
+        <div class="col-12 d-flex justify-content-end" style="margin-top: 12px">
           <Button
-            icon="ri-pencil-line"
-            label="Edit"
+            label="Cancel"
+            class="mx-3"
+            @click="() => (showAdjustPhoto = false)"
             text
-            @click="openCropper"
+            plain
           />
           <Button
-            icon="ri-delete-bin-6-line"
-            label="Delete"
-            text
-            severity="danger"
-            @click="reset"
+            label="Apply"
+            severity="success"
+            type="button"
+            @click="applyImage"
           />
         </div>
-      </div>
-      <div
-        v-else
-        class="input-trigger d-flex align-items-center justify-content-center"
-        :class="{ 'input-trigger-disabled': props.disabled }"
-        @click="openCropper"
-      >
-        <i
-          class="ri-add-circle-line input-trigger-icon"
-          :class="{ 'input-trigger-icon-disabled': props.disabled }"
-        ></i>
-      </div>
-      <div
-        class="d-flex"
-        :class="{ 'text-danger': isError, 'disabled': props.disabled }"
-      >
-        <ul class="">
-          <li>Max. 1 MB</li>
-          <li>Must be image format.</li>
-        </ul>
-      </div>
+      </Dialog>
     </div>
-    <div class="d-none" :key="inputKey">
-      <input
-        class="d-none"
-        type="file"
-        ref="inputFile"
-        @change="loadImage($event)"
-        accept="image/*"
-        :id="props.inputId"
-        :key="inputKey"
-      />
-    </div>
-    <Dialog
-      v-model:visible="showAdjustPhoto"
-      modal
-      :draggable="false"
-      header="Adjust Photo"
-      :style="{ width: '840px' }"
-      :auto-z-index="false"
-      @hide="resetCropper"
-      @show="resetCropper"
-      :pt="{
-        root: { style: 'z-index: 99999999; width: 840px' },
-        mask: { style: 'z-index: 99999999' },
-      }"
+    <small
+      class="validator-message text-danger"
+      v-show="!preview.compressed && (imageUploadErrorMessage ?? field.errorMessage)"
+      >{{ imageUploadErrorMessage ?? field.errorMessage }}</small
     >
-      <Cropper
-        ref="cropper"
-        class="upload-example-cropper h-400"
-        imageClass="h-400"
-        backgroundClass="h-400"
-        foregroundClass="h-400"
-        :src="image.src"
-        :stencil-props="{
-          aspectRatio: 1 / 1,
-        }"
-      />
-      <div class="col-12 d-flex justify-content-end" style="margin-top: 12px">
-        <Button
-          label="Cancel"
-          class="mx-3"
-          @click="() => (showAdjustPhoto = false)"
-          text
-          plain
-        />
-        <Button
-          label="Apply"
-          severity="success"
-          type="button"
-          @click="applyImage"
-        />
-      </div>
-    </Dialog>
   </div>
+
 </template>
 
 <style lang="scss" scoped>
+@import 'scss/var';
+
+.image-compressor {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
 .h-400 {
   height: 400px;
+}
+
+.p-image-preview-container {
+  width: max-content;
+  height: max-content;
+  border-radius: 8px;
 }
 
 .input-trigger {
   height: 125px;
   width: 125px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: 1px solid #ced4da;
   background: #fff;
   cursor: pointer;
 }
 
+.p-invalid {
+  border-color: #e24c4c;
+}
+
 .input-trigger-icon {
   color: #ced4da;
   font-size: 24px;
+}
+
+.input-trigger.small {
+  height: 80px;
+  width: 80px;
+}
+
+.requirements {
+  color: $dark;
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16.8px;
+  padding-left: 1rem;
+  margin: 0;
+
+  li {
+    text-align: left;
+  }
+}
+
+.validator-message {
+  text-align: left;
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 16px;
 }
 
 .input-trigger-disabled {

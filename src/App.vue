@@ -2,6 +2,7 @@
 import DropdownOptionUsageTest from './components/DropdownOption/DropdownOptionUsageTest.vue';
 import SelectGroupUsageTest from './components/SelectGroup/SelectGroupUsageTest.vue';
 import NameContainerUsageTest from '@/components/NameContainer/NameContainerUsageTest.vue';
+import ImageCompressorUsageTest from '@/components/ImageCompressor/ImageCompressorUsageTest.vue';
 import HelloWorld from './components/HelloWorld.vue'
 </script>
 
@@ -14,13 +15,17 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Component Testing and Preview" />
-  <DropdownOptionUsageTest />
-  <h2>Select Group</h2>
-  <SelectGroupUsageTest />
+  <div class="d-flex flex-column gap-4 mb-10">
+    <HelloWorld msg="Component Testing and Preview" />
+    <ImageCompressorUsageTest />
+    <DropdownOptionUsageTest />
+    <h2>Select Group</h2>
+    <SelectGroupUsageTest />
 
-  <h2>Name Container</h2>
-  <NameContainerUsageTest />
+    <h2>Name Container</h2>
+    <NameContainerUsageTest />
+
+  </div>
 </template>
 <style>
 @import '~primevue/resources/themes/lara-light-blue/theme.css';
