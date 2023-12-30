@@ -78,15 +78,13 @@ const setSeverity = (): string[] => {
 </script>
 
 <template>
-  <div
+  <span
     v-if="hasValue"
-    class="border d-inline-flex text-nowrap"
+    class="name-container"
     :class="setSeverity()"
-    style="padding: 4px 4px; border-radius: 4px"
   >
     <span
-      class="text-nowrap"
-      style="font-size: 9px; line-height: 12px; text-wrap: nowrap"
+      class="name-container-name"
       >{{ formattedText }}</span
     >
     <Button
@@ -97,14 +95,33 @@ const setSeverity = (): string[] => {
       text
       rounded
     />
-  </div>
-  <div v-else>-</div>
+  </span>
+  <span v-else>-</span>
 </template>
 
-<style scoped>
-.remove-btn {
-  width: 16px;
-  height: 16px !important;
-  margin-left: 3px;
+<style scoped lang="scss">
+.name-container {
+  display: flex;
+  padding: 4px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px;
+  height: 20px;
+
+  border-radius: 4px;
+  border: 1px solid;
+  .name-container-name {
+    font-size: 9px;
+    line-height: 1;
+    text-wrap: nowrap;
+    white-space: nowrap !important;
+  }
+
+  .remove-btn {
+    width: 12px !important;
+    height: 12px !important;
+    padding: 0 !important;
+  }
 }
+
 </style>

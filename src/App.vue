@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import DropdownOptionUsageTest from './components/DropdownOption/DropdownOptionUsageTest.vue';
 import SelectGroupUsageTest from './components/SelectGroup/SelectGroupUsageTest.vue';
+import NameContainerUsageTest from '@/components/NameContainer/NameContainerUsageTest.vue';
 import HelloWorld from './components/HelloWorld.vue'
 </script>
 
@@ -15,7 +16,11 @@ import HelloWorld from './components/HelloWorld.vue'
   </div>
   <HelloWorld msg="Component Testing and Preview" />
   <DropdownOptionUsageTest />
+  <h2>Select Group</h2>
   <SelectGroupUsageTest />
+
+  <h2>Name Container</h2>
+  <NameContainerUsageTest />
 </template>
 <style>
 @import '~primevue/resources/themes/lara-light-blue/theme.css';

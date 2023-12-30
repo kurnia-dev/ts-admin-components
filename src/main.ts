@@ -13,7 +13,9 @@ import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 import { Icon } from '@iconify/vue';
-
+import NameContainer from './components/NameContainer.vue';
+import MultiSelect from 'primevue/multiselect';
+import Dropdown from 'primevue/dropdown';
 
 // Vue Router
 import router from './routers';
@@ -31,5 +33,8 @@ app.component('Button', Button);
 app.component('Dialog', Dialog);
 app.component('InputText', InputText);
 app.component('Icon', Icon);
+app.component('NameContainer', NameContainer);
+app.component('MultiSelect', MultiSelect);
+app.component('Dropdown', Dropdown);
 
 app.mount('#app');

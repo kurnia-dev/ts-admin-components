@@ -138,7 +138,7 @@ watch(singleSelectedGroupTemp, (val) => {
 </script>
 
 <template>
-  <div v-if="props.selectionMode === 'single'">
+  <template v-if="props.selectionMode === 'single'">
     <Button
       v-if="isObjectEmpty(groupTemp)"
       :label="buttonLabel"
@@ -148,25 +148,25 @@ watch(singleSelectedGroupTemp, (val) => {
       :style="btnStyle"
       :pt="btnPassThrough"
     />
-    <div v-else class="">
+    <div v-else class="d-flex align-item-center gap-1">
       <NameContainer
         :name="singleSelectedGroup?.name || props.singleSelectedGroupName"
-        class="me-1"
       />
       <Button
         @click="showGroupDialog"
         :disabled="disabled"
-        icon="ri-edit-2-line"
-        severity="secondary"
-        class="mx-1"
+        severity="primary"
+        class="edit-group"
         text
         rounded
-      />
-      <span v-if="showExceededLabel" class="mx-1 text-danger"
+      >
+        <i class="ri-edit-2-line" />
+      </Button>
+      <span v-if="showExceededLabel" class="ms-1 text-danger"
         >Group Quota Exceeded</span
       >
     </div>
-  </div>
+  </template>
   <Button
     v-else
     :label="buttonLabel"
@@ -199,3 +199,15 @@ watch(singleSelectedGroupTemp, (val) => {
     @close="() => (showExceededDialog = false)"
   />
 </template>
+<style scoped lang="scss">
+.p-button-rounded.edit-group {
+  padding: 2px;
+  border-radius: 50%;
+  height: 1.2rem;
+  width: 1.2rem;
+
+  .ri-edit-2-line {
+    font-size: 0.925rem;
+  }
+}
+</style>
