@@ -5,12 +5,14 @@ import NameContainerUsageTest from '@/components/NameContainer/NameContainerUsag
 import ImageCompressorUsageTest from '@/components/ImageCompressor/ImageCompressorUsageTest.vue';
 import HelloWorld from './components/HelloWorld.vue'
 import TSCalendar from '@/components/Calendar/TSCalendar.vue';
+import BreadcrumbUsageExample from './components/Breadcrumb/BreadcrumbUsageExample.vue';
 import { ref } from 'vue';
 
 const dateStringified = ref<string>();
 </script>
 
 <template>
+  <BreadcrumbUsageExample />
   <div>
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />

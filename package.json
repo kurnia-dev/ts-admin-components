@@ -1,6 +1,6 @@
 {
   "name": "ts-admin-components-dev",
-  "version": "1.0.6",
+  "version": "1.1.2",
   "private": false,
   "description": "Global reusable components for micro frontend",
   "author": "kurnia-dev",
@@ -25,6 +25,8 @@
     "remixicon": "^4.0.1",
     "rfs": "^10.0.0",
     "sass": "^1.62.1",
+    "single-spa": "^6.0.0",
+    "single-spa-vue": "^3.0.0",
     "vee-validate": "^4.9.5",
     "vue": "^3.2.45",
     "vue-advanced-cropper": "^2.8.8",
