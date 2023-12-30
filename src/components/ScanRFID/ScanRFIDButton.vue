@@ -20,6 +20,7 @@ const props = defineProps<{
   disabled?: boolean;
   btnClass?: string;
   btnStyle?: string;
+  labelOnly?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -149,7 +150,9 @@ const bulkScan = () => {
   });
   socket.value = new WebSocket('wss://localhost:9002');
   socket.value.onopen = (event) => {
-    socket.value?.send(`${scanner.value.API}/bulkscan/${scanner.value.serialNumber}`);
+    socket.value?.send(
+      `${scanner.value.API}/bulkscan/${scanner.value.serialNumber}`
+    );
   };
   socket.value.onmessage = (event) => {
     const { data } = event;
@@ -190,24 +193,23 @@ defineExpose({
 
 <template>
   <button
-    class="p-button p-component p-button-icon-left"
     :class="btnClass"
     :style="btnStyle"
-    type="button"
-    @click="start"
     :disabled="props.disabled || isButtonDisabled"
     :id="props.id || 'rfidScanBtn'"
+    @click="start"
+    class="ts-rfid-button"
+    type="button"
   >
-    <span class="p-button-icon p-button-icon-left ri-rfid-line"></span>
-    <span class="p-button-label">{{
-      props.label ? props.label : 'Scan RFID'
-    }}</span>
-    <!--
+    <span v-if="!labelOnly" class="ts-button-icon ri-rfid-line"></span>
+    <span class="ts-button-label">
+      {{ props.label ?? 'Scan RFID' }}
+    </span>
+
     <span
-      class="custom-badge"
+      class="indicator"
       :class="{ 'bg-success': isConnected, 'bg-danger': !isConnected }"
     ></span>
-    -->
   </button>
 
   <ErrorDialog
@@ -245,17 +247,6 @@ defineExpose({
     </template>
   </Toast>
 </template>
-
-<style lang="scss" scoped>
-@import '~rfs/scss';
-
-.custom-badge {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  @include margin-left(0.5rem);
-}
-</style>
 
 <style>
 .p-toast {

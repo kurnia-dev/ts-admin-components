@@ -7,6 +7,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import TSCalendar from '@/components/Calendar/TSCalendar.vue';
 import BreadcrumbUsageExample from './components/Breadcrumb/BreadcrumbUsageExample.vue';
 import { ref } from 'vue';
+import { ScanQR, ScanRFID } from './components';
 
 const dateStringified = ref<string>();
 </script>
@@ -29,6 +30,12 @@ const dateStringified = ref<string>();
       </div>
       <div class="col-3">
         <TSCalendar label="Range Select" />
+      </div>
+      <div class="col-6 d-flex gap-2">
+        <ScanRFID />
+        <ScanRFID label-only label="Start Scan" />
+        <ScanQR />
+        <ScanQR label-only label="Start Scan" />
       </div>
     </div>
     <ImageCompressorUsageTest />
@@ -108,6 +115,42 @@ const dateStringified = ref<string>();
   .p-error {
     width: 100%;
     text-align: right;
+  }
+}
+
+.ts-rfid-button,
+.ts-qr-button {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 26px;
+  @include padding(7.6px 12px);
+  gap: 4px;
+
+  background-color: $primary-bg;
+  color: $primary-color;
+  border-radius: 4px;
+
+  .ts-button-icon {
+    @include font-size(8px);
+    width: max-content;
+    height: max-content;
+  }
+
+  .ts-button-label {
+    @include font-size(9px);
+    font-weight: 500;
+  }
+
+  .indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 0.5px solid white;
+    position: absolute;
+    left: 2px;
+    top: 2px;
   }
 }
 </style>
