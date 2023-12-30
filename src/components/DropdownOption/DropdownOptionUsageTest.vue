@@ -18,25 +18,27 @@ const cities = ref([
 ]);
 
 const onSubmit = handleSubmit((values) => {
-console.log(values);
+  if (values) console.log(values);
 });
 </script>
 
 <template>
   <form @submit="onSubmit" style="display: flex; flex-direction: column; gap: 1.2rem">
     <DropdownOption 
-      :options="cities"
       v-model="value1"
+      :options="cities"
       label="option"
       mode='single'
+      use-form-field
     />
     <DropdownOption
       v-model="value2"
-      mandatory
-      message="You must select an option"
       :options="cities"
-      label="other option"
       mode='single'
+      message="You must select an option"
+      label="other option"
+      use-form-field
+      mandatory
     />
     <Button severity="success" type="submit" label="Submit"></Button>
   </form>

@@ -6,6 +6,7 @@ import { useField } from 'vee-validate';
 const props = defineProps<{
   modelValue: string | string[];
   options: TDropdownOption[];
+  useFormField?: boolean;
   mandatory?: boolean;
   message?: string;
   mode: 'single' | 'multi';
@@ -21,13 +22,18 @@ onMounted(() => setOption(props.options));
 
 const dropdownOptions = ref<TDropdownOption[]>()
 
-const { value, errorMessage } = useField(props.label, (value: any) => {
+const field = ref<any>({});
 
-  if (!value) {
-      return props.message ?? '';
+onMounted(() => {
+  if (props.useFormField) {
+    field.value = useField(props.label, (value: any) => {
+      if (!value && props.mandatory) {
+          return props.message ?? '';
+      }
+
+      return true;
+    });
   }
-
-  return true;
 });
 
 watch(() => props.options, (options) => setOption(options));
@@ -44,12 +50,12 @@ const setOption = (options: TDropdownOption[]) => {
     </label>
     <MultiSelect
       v-if="mode === 'multi'"
-      v-model="value"
+      v-model="field.value"
       :filter="true"
       :options="dropdownOptions"
       :placeholder="placeholder ?? `Select ${label}`"
-      :class="[{ 'p-invalid': errorMessage }, 'w-100']"
-      @update:modelValue="$emit('update:modelValue', $event)"
+      :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
+      @update:modelValue="$emit('update:modelValue', $event), console.log($event)"
       aria-describedby="dd-error"
       filter-placeholder="Search"
       option-label="label"
@@ -58,16 +64,16 @@ const setOption = (options: TDropdownOption[]) => {
     />
     <Dropdown
       v-else
-      v-model="value"
+      v-model="field.value"
       :options="dropdownOptions"
       :placeholder="placeholder ?? `Select ${label}`"
-      :class="[{ 'p-invalid': errorMessage }, 'w-100']"
+      :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
       @update:modelValue="$emit('update:modelValue', $event)"
       aria-describedby="dd-error"
       optionLabel="label"
       optionValue="value"
     />
-    <small class="p-error" id="dd-error" v-if="errorMessage">{{ errorMessage }}</small>
+    <small class="p-error" id="dd-error" v-if="field.errorMessage">{{ field.errorMessage }}</small>
   </div>
 </template>
 <style lang="scss">
