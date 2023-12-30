@@ -6,6 +6,8 @@ const props = defineProps<{
   show: boolean;
   destination: object;
   selectionMode: 'checkbox' | 'single';
+  header?: string;
+  buttonLabel?: string;
   params?: object;
   readonly?: boolean;
 }>();
@@ -27,7 +29,7 @@ const show = computed(() => props.show);
     modal
     style="width: 400px"
     :draggable="false"
-    :header="props.readonly ? 'Selected Group' : 'Select Group'"
+    :header="header ?? props.readonly ? 'Selected Group' : 'Select Group'"
     @show="() => (destinationTemp = props.destination ? props.destination : {})"
     @hide="() => (destinationTemp = {})"
     :base-z-index="99999999"
@@ -60,7 +62,7 @@ const show = computed(() => props.show);
           @click="emit('cancel')"
         />
         <Button
-          label="Apply"
+          :label="buttonLabel ?? 'Apply'"
           severity="success"
           :disabled="
             selectionMode === 'single' && !Object.keys(destinationTemp).length

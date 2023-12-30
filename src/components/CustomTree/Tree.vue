@@ -364,52 +364,54 @@ export default {
         <Icon width="22" height="22" icon="line-md:loading-twotone-loop" />
       </div>
     </template>
-    <div class="p-tree-filter-container" v-else>
-      <div class="tree-search-bar">
-        <span class="w-100 p-input-icon-left flex-fill">
-          <Icon width="14" height="14" icon="ri-search-2-line" />
-          <InputText
-            v-model="filterValue"
-            autocomplete="off"
-            class="p-tree-filter"
-            :placeholder="filterPlaceholder"
-            @keydown="onFilterKeydown"
-          />
-        </span>
-        <Icon class="reset-filter" v-show="filterValue" icon="ri:close-line" @click="filterValue = ''" />
+    <template v-else>
+      <div class="p-tree-filter-container">
+        <div class="tree-search-bar">
+          <span class="w-100 p-input-icon-left flex-fill">
+            <Icon width="14" height="14" icon="ri-search-2-line" />
+            <InputText
+              v-model="filterValue"
+              autocomplete="off"
+              class="p-tree-filter"
+              :placeholder="filterPlaceholder"
+              @keydown="onFilterKeydown"
+            />
+          </span>
+          <Icon class="reset-filter" v-show="filterValue" icon="ri:close-line" @click="filterValue = ''" />
+        </div>
       </div>
-    </div>
-    <div class="p-tree-wrapper" :style="{ maxHeight: scrollHeight }">
-      <ul
-        class="p-tree-container"
-        role="tree"
-        :aria-labelledby="ariaLabelledby"
-        :aria-label="ariaLabel"
-      >
-        <TreeNode
-          v-for="(node, index) of valueToRender"
-          :key="node.key"
-          :node="node"
-          :templates="$slots"
-          :level="level + 1"
-          :index="index"
-          :expandedKeys="d_expandedKeys"
-          @node-toggle="onNodeToggle"
-          @node-click="onNodeClick"
-          :selectionMode="selectionMode"
-          :selectionKeys="selectionKeys"
-          @checkbox-change="onCheckboxChange"
-          :useOptions="useOptions"
-          :useCustomElement="useCustomElement"
-          @toggle-options="toggleOptions"
-          :disabled-keys="$attrs['disabled-keys']"
+      <div class="p-tree-wrapper" :style="{ maxHeight: scrollHeight }">
+        <ul
+          class="p-tree-container"
+          role="tree"
+          :aria-labelledby="ariaLabelledby"
+          :aria-label="ariaLabel"
         >
-          <template #custom-element="{ data }" v-if="useCustomElement">
-            <slot name="custom-element" :data="data" hola="haduh"></slot>
-          </template>
-        </TreeNode>
-      </ul>
-    </div>
+          <TreeNode
+            v-for="(node, index) of valueToRender"
+            :key="node.key"
+            :node="node"
+            :templates="$slots"
+            :level="level + 1"
+            :index="index"
+            :expandedKeys="d_expandedKeys"
+            @node-toggle="onNodeToggle"
+            @node-click="onNodeClick"
+            :selectionMode="selectionMode"
+            :selectionKeys="selectionKeys"
+            @checkbox-change="onCheckboxChange"
+            :useOptions="useOptions"
+            :useCustomElement="useCustomElement"
+            @toggle-options="toggleOptions"
+            :disabled-keys="$attrs['disabled-keys']"
+          >
+            <template #custom-element="{ data }" v-if="useCustomElement">
+              <slot name="custom-element" :data="data" hola="haduh"></slot>
+            </template>
+          </TreeNode>
+        </ul>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -421,7 +423,11 @@ export default {
   margin: 0;
   padding: 0;
   list-style-type: none;
-  overflow: auto;
+  overflow: hidden;
+}
+
+.p-treenode-children {
+  overflow: hidden;
 }
 
 .tree-search-bar {
@@ -540,9 +546,13 @@ export default {
   transform: translateY(-50%);
 }
 
+.reset-filter {
+  right: 9px;
+  font-size: 0.9rem;
+}
+
 .p-tree-loading {
   position: relative;
-  min-height: 4rem;
 }
 
 .p-tree .p-tree-loading-overlay {

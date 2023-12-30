@@ -4,7 +4,19 @@ import { isObjectEmpty } from '@/utils';
 import SelectGroupDialog from './SelectGroupDialog.vue';
 import QuotaExceededDialog from './QuotaExceededDialog.vue';
 
+/**
+ * Define the props for the Vue component
+ * @property {boolean} show - A boolean prop to control the visibility of the component
+ * @property {object} destination - An object prop to specify the destination
+ * @property {'checkbox' | 'single'} selectionMode - A string prop to specify the selection mode, which can be either 'checkbox' or 'single'
+ * @property {string} [dialogHeader] - An optional string prop to specify the header text
+ * @property {string} [dialogFooterButtonLabel] - The footer action button label - default to 'Apply'
+ * @property {object} [params] - An optional object prop to pass additional parameters for getting the grub
+ * @property {boolean} [readonly] - No select mode - view only
+ */
 const props = defineProps<{
+  dialogHeader?: string;
+  dialogFooterButtonLabel?: string;
   modelValue: number[];
   selectionMode: 'checkbox' | 'single';
   params?: object;
@@ -167,6 +179,8 @@ watch(singleSelectedGroupTemp, (val) => {
   />
 
   <SelectGroupDialog
+    :header="dialogHeader"
+    :button-label="dialogFooterButtonLabel"
     :show="showGroups"
     :destination="
       props.selectionMode === 'checkbox' ? groupTemp : singleActiveGroup
