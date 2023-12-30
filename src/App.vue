@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import DropdownOptionUsageTest from './components/DropdownOption/DropdownOptionUsageTest.vue';
+import DropdownOptionUsageTest from './components/OptionSelectionField/OptionSelectionFieldUsageTest.vue';
 import SelectGroupUsageTest from './components/SelectGroup/SelectGroupUsageTest.vue';
 import NameContainerUsageTest from '@/components/NameContainer/NameContainerUsageTest.vue';
 import ImageCompressorUsageTest from '@/components/ImageCompressor/ImageCompressorUsageTest.vue';
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/HelloWorld.vue';
 import TSCalendar from '@/components/Calendar/TSCalendar.vue';
 import BreadcrumbUsageExample from './components/Breadcrumb/BreadcrumbUsageExample.vue';
 import { ref } from 'vue';
@@ -26,7 +26,13 @@ const dateStringified = ref<string>();
     <HelloWorld msg="Component Testing and Preview" />
     <div class="row">
       <div class="col-3">
-        <TSCalendar v-model="dateStringified" label="Single Select" mode="range" mandatory @update:model-value="console.log($event)"/>
+        <TSCalendar
+          v-model="dateStringified"
+          label="Single Select"
+          mode="range"
+          mandatory
+          @update:model-value="console.log($event)"
+        />
       </div>
       <div class="col-3">
         <TSCalendar label="Range Select" />
@@ -45,7 +51,6 @@ const dateStringified = ref<string>();
 
     <h2>Name Container</h2>
     <NameContainerUsageTest />
-
   </div>
 </template>
 <style>
@@ -95,12 +100,21 @@ const dateStringified = ref<string>();
   }
 }
 
+.row {
+  gap: 1rem !important;
+}
+
+.row > * {
+  padding: 0;
+}
+
 .field_wrapper {
   display: flex;
   flex-direction: column;
   gap: 4px;
   align-items: start;
   justify-content: start;
+  position: relative;
 
   label {
     color: $dark;
@@ -112,9 +126,20 @@ const dateStringified = ref<string>();
     line-height: 16.8px;
   }
 
-  .p-error {
+  .validator-message {
+    color: $danger;
+    font-weight: 300;
     width: 100%;
     text-align: right;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    @include font-size(11.2px);
+  }
+
+  .text-left {
+    text-align: left;
   }
 }
 
@@ -154,3 +179,4 @@ const dateStringified = ref<string>();
   }
 }
 </style>
+./components/OptionSelectionField/DropdownOptionUsageTest.vue

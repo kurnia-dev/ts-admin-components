@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import 'vue-advanced-cropper/dist/style.css';
-import { ref, onUnmounted, onMounted } from 'vue';
+import { ref, onUnmounted, onMounted, reactive } from 'vue';
 import { Cropper } from 'vue-advanced-cropper';
 import base64toblob from 'base64toblob';
 import Dialog from 'primevue/dialog';
 import ImagePreview from 'primevue/image';
 import { useField } from 'vee-validate';
+import { FieldValidation } from '@/types/fieldValidation.type';
 
 const props = defineProps({
   showInput: {
@@ -24,10 +25,6 @@ const props = defineProps({
     type: String,
     default: undefined,
   },
-  useValidator: {
-    type: Boolean,
-    default: false,
-  },
   imagePreviewSize: {
     type: String as () => 'small' | 'big',
     default: 'big',
@@ -36,13 +33,20 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  useValidator: {
+    type: Boolean,
+    default: false,
+  },
   validatorMessage: {
     type: String,
     default: 'Photo must be uploaded',
   },
+  label: {
+    type: String,
+  },
   fieldName: {
     type: String,
-  }
+  },
 });
 
 const emit = defineEmits<{ final: [value: any] }>();
@@ -84,22 +88,23 @@ const showAdjustPhoto = ref(false);
 const inputKey = ref(0);
 const imageUploadErrorMessage = ref<string>();
 
-const field = ref<any>({});
+const field = reactive<FieldValidation>({});
 
 const setField = () => {
   if (props.useValidator) {
-    field.value = useField(
-    props.fieldName ?? '',
-    (value: any) => {
-      if (!value && props.mandatory) {
-        preview.value.message = undefined;
-        return props.validatorMessage;
-      }
+    Object.assign(
+      field,
+      useField(props.fieldName ?? '', (value: any) => {
+        if (!value && props.mandatory) {
+          preview.value.message = undefined;
+          return props.validatorMessage;
+        }
 
-      return true;
-    })
+        return true;
+      })
+    );
   }
-}
+};
 
 const crop = async () => {
   const imgResult = cropper.value.getResult();
@@ -117,7 +122,7 @@ const resetCropper = () => {
 
 const reset = () => {
   preview.value = { message: 'File has been deleted' };
-  field.value.value = undefined;
+  field.value = undefined;
   previewUrl.value = '';
   sendData();
 };
@@ -271,7 +276,7 @@ const drawImage = async (imgUrl: string) => {
     previewUrl.value = objToPass.compressed.blob;
 
     // 'value' is a Ref ariable from useField vee-validate
-    field.value.value = objToPass.compressed.newFile;
+    field.value = objToPass.compressed.newFile;
     sendData();
   } catch (error) {
     console.error(error);
@@ -315,7 +320,11 @@ const openCropper = () => {
 </script>
 
 <template>
-  <div class="d-flex flex-column gap-2">
+  <div class="d-flex flex-column gap-1 field_wrapper">
+    <label>
+      {{ label }}
+      <span class="text-danger" v-if="mandatory">*</span>
+    </label>
     <div class="image-compressor">
       <template v-if="props.showInput">
         <div v-if="previewUrl.length" class="">
@@ -383,7 +392,7 @@ const openCropper = () => {
             :class="{ 'input-trigger-icon-disabled': props.disabled }"
           ></i>
         </div>
-  
+
         <div
           class="d-flex"
           :class="{ 'text-danger': isError, 'disabled': props.disabled }"
@@ -448,12 +457,13 @@ const openCropper = () => {
       </Dialog>
     </div>
     <small
-      class="validator-message text-danger"
-      v-show="!preview.compressed && (imageUploadErrorMessage ?? field.errorMessage)"
+      class="validator-message text-left"
+      v-show="
+        !preview.compressed && (imageUploadErrorMessage ?? field.errorMessage)
+      "
       >{{ imageUploadErrorMessage ?? field.errorMessage }}</small
     >
   </div>
-
 </template>
 
 <style lang="scss" scoped>
@@ -505,6 +515,7 @@ const openCropper = () => {
   line-height: 16.8px;
   padding-left: 1rem;
   margin: 0;
+  max-width: 121px;
 
   li {
     text-align: left;
@@ -524,7 +535,7 @@ const openCropper = () => {
 }
 
 .input-trigger-icon-disabled {
-  color: #e6e9ec !important;
+  color: $general-label;
 }
 
 .disabled {

@@ -1,4 +1,4 @@
-export type TDropdownOption = {
+export type TOptionSelection = {
   label: string;
   value: string | number;
 }

@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { TDropdownOption } from '@/types/dropdownOption';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { TOptionSelection } from '@/types/optionSelection.type';
 import { useField } from 'vee-validate';
+import { FieldValidation } from '@/types/fieldValidation.type';
 
 const props = defineProps<{
   modelValue: string | string[];
-  options: TDropdownOption[];
-  useFormField?: boolean;
+  options: TOptionSelection[];
+  useValidator?: boolean;
   mandatory?: boolean;
-  message?: string;
+  validatorMessage?: string;
   mode: 'single' | 'multi';
   label: string;
+  fieldName?: string;
   placeholder?: string;
 }>();
 
@@ -20,27 +22,38 @@ defineEmits<{
 
 onMounted(() => setOption(props.options));
 
-const dropdownOptions = ref<TDropdownOption[]>()
+const dropdownOptions = ref<TOptionSelection[]>();
 
-const field = ref<any>({});
+const field = reactive<FieldValidation>({ value: '' });
+const defaultMessage = computed(() => {
+  return props.mode == 'single'
+    ? 'You must pick an item'
+    : 'You must pick at least an item';
+})
 
 onMounted(() => {
-  if (props.useFormField) {
-    field.value = useField(props.label, (value: any) => {
-      if (!value && props.mandatory) {
-          return props.message ?? '';
-      }
+  if (props.useValidator) {
+    Object.assign(
+      field,
+      useField(props.fieldName ?? '', (value) => {
+        if (!value && props.mandatory) {
+          return props.validatorMessage ?? defaultMessage.value;
+        }
 
-      return true;
-    });
+        return true;
+      })
+    );
   }
 });
 
-watch(() => props.options, (options) => setOption(options));
+watch(
+  () => props.options,
+  (options) => setOption(options)
+);
 
-const setOption = (options: TDropdownOption[]) => {
-  if (!dropdownOptions.value) (dropdownOptions.value = options);
-}
+const setOption = (options: TOptionSelection[]) => {
+  if (!dropdownOptions.value) dropdownOptions.value = options;
+};
 </script>
 <template>
   <div class="field_wrapper">
@@ -55,7 +68,9 @@ const setOption = (options: TDropdownOption[]) => {
       :options="dropdownOptions"
       :placeholder="placeholder ?? `Select ${label}`"
       :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
-      @update:modelValue="$emit('update:modelValue', $event), console.log($event)"
+      @update:modelValue="
+        $emit('update:modelValue', $event), console.log($event)
+      "
       aria-describedby="dd-error"
       filter-placeholder="Search"
       option-label="label"
@@ -73,6 +88,9 @@ const setOption = (options: TDropdownOption[]) => {
       optionLabel="label"
       optionValue="value"
     />
-    <small class="p-error" id="dd-error" v-if="field.errorMessage">{{ field.errorMessage }}</small>
+    <small class="validator-message" id="dd-error" v-if="field.errorMessage">{{
+      field.errorMessage
+    }}</small>
   </div>
 </template>
+@/types/optionSelection.type

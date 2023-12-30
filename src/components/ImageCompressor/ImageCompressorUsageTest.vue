@@ -32,6 +32,7 @@ const onSubmit = handleSubmit((values) => {
     <ImageCompressor
       :key="imageCompressorKey"
       :compressedBlob="imageBlob"
+      label="image-1"
       field-name="image-1"
       use-validator
     />
@@ -39,6 +40,7 @@ const onSubmit = handleSubmit((values) => {
       image-preview-size="small"
       :key="imageCompressorKey2"
       :compressedBlob="imageBlob2"
+      label="image-2"
       field-name="image-2"
       use-validator
       mandatory
@@ -48,6 +50,6 @@ const onSubmit = handleSubmit((values) => {
   <ImageCompressor
     :key="imageCompressorKey3"
     @final="setImage"
-    field-name="no-validate"
+    label="no-validate"
   />
 </template>

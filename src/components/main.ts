@@ -40,7 +40,7 @@ import {
   ImagePreview,
 } from '@/components';
 
-import DropdownOption from './DropdownOption/DropdownOption.vue';
+import DropdownOption from './OptionSelectionField/DropdownOption.vue';
 import DateUtils from '@/utils/date.util';
 import StringUtils from '@/utils/string.util';
 

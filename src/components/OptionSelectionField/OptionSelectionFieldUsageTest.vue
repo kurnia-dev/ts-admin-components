@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import DropdownOption from './DropdownOption.vue';
+import DropdownOption from './OptionSelectionField.vue';
 import { useForm } from 'vee-validate';
 import Button from 'primevue/button';
+import TextField from '../TextField/TextField.vue';
 
 const { handleSubmit } = useForm();
 const value1 = ref<any>();
@@ -14,7 +15,7 @@ const cities = ref([
   { label: 'Rome', value: 'RM' },
   { label: 'London', value: 'LDN' },
   { label: 'Istanbul', value: 'IST' },
-  { label: 'Paris', value: 'PRS' }
+  { label: 'Paris', value: 'PRS' },
 ]);
 
 const onSubmit = handleSubmit((values) => {
@@ -23,24 +24,47 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form @submit="onSubmit" style="display: flex; flex-direction: column; gap: 1.2rem">
-    <DropdownOption 
+  <form @submit="onSubmit" class="row gap-2 align-items-end">
+    <DropdownOption
+      class="col-3"
       v-model="value1"
       :options="cities"
       label="option"
-      mode='single'
-      use-form-field
+      fieldName="option"
+      mode="single"
+      use-validator
+      mandatory
+      validator-message="You must select an option"
     />
     <DropdownOption
+      class="col-3"
       v-model="value2"
       :options="cities"
-      mode='single'
-      message="You must select an option"
+      mode="multi"
       label="other option"
-      use-form-field
+      fieldName="otherOption"
       mandatory
+      use-validator
     />
-    <Button severity="success" type="submit" label="Submit"></Button>
+    <TextField
+      class="col-3"
+      mandatory
+      use-validator
+      label="Text field"
+      field-name="textField"
+    />
+    <TextField
+      class="col-3"
+      label="Not mandatory"
+      field-name="notMandatory"
+      use-validator
+    />
+    <Button
+      class="col-1"
+      severity="success"
+      type="submit"
+      label="Submit"
+    ></Button>
   </form>
   <DropdownOption
     :options="cities"

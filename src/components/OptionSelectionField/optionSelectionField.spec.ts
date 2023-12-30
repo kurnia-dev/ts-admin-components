@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
-import Component from './DropdownOption.vue';
+import Component from './OptionSelectionField.vue';
 
 describe('Component', () => {
   it('renders correctly', async () => {
@@ -56,6 +56,6 @@ describe('Component', () => {
 
     await nextTick();
 
-    expect(wrapper.find('.p-error').text()).toBe('This field is required');
+    expect(wrapper.find('.validator-message').text()).toBe('This field is required');
   });
 });
