@@ -5,6 +5,7 @@ export type TableColumn = {
   field: string;
   style?: string;
   sortable?: boolean;
+  fixed?: boolean;
   bodyStyle?: (props: any) => string;
   bodyTemplate?: (data: any) => string;
   bodyComponent?: (data: any) => {

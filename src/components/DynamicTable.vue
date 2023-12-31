@@ -2,14 +2,15 @@
 import { ref, computed } from 'vue';
 import { TableColumn } from '@/types/columns';
 import { MenuOption } from '@/types/options';
+import type Menu from 'primevue/menu';
 
 const props = defineProps<{
   columns: TableColumn[];
-  selectedColumns?: TableColumn[];
-  isSelectedAll?: boolean;
   dataKey: string;
   datas: any;
   rows: number;
+  selectedColumns?: TableColumn[];
+  isSelectedAll?: boolean;
   loading?: boolean;
   totalRecords?: number;
   useSelection?: boolean;
@@ -20,17 +21,20 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'set-detail', data: any): void;
-  (e: 'select-datas', data: any): void;
-  (e: 'row-select', data: any): void;
-  (e: 'select-all-change', data: any): void;
-  (e: 'update:isSelectedAll', data: boolean): void;
-  (e: 'page', data: any): void;
-  (e: 'sort', data: any): void;
+  'setDetail': [data: any];
+  'selectDatas': [data: any];
+  'rowSelect': [data: any];
+  'selectAllChange': [data: any];
+  'update:isSelectedAll': [data: boolean];
+  'page': [data: any];
+  'sort': [data: any];
 }>();
 
+const tableOptions = ref<Menu | null>(null);
+const customColumn = ref<Menu | null>(null);
 const rowsPerPageOptions = ref([5, 10, 20, 50]);
-const tableOptions = ref();
+const selectedColumns = ref<TableColumn[]>(props.columns);
+
 const isSelectedAll = computed({
   get() {
     return props.isSelectedAll;
@@ -45,17 +49,27 @@ const selectedDatas = computed({
     return props.selectedDatas;
   },
   set(newSelectedDatas: any) {
-    emit('select-datas', newSelectedDatas);
+    emit('selectDatas', newSelectedDatas);
   },
 });
 
 const onRowClick = (event: any) => {
-  emit('row-select', event);
+  emit('rowSelect', event);
 };
 
 const toggleOptions = (event: any, data: any) => {
-  emit('set-detail', data);
-  tableOptions.value.toggle(event);
+  emit('setDetail', data);
+  tableOptions.value?.toggle(event);
+};
+
+const toggleCustomColumn = (event: any) => {
+  customColumn.value?.toggle(event);
+};
+
+const selectColumn = (cols: TableColumn[]) => {
+  selectedColumns.value = props.columns.filter((col) =>
+    cols.map((col) => col.field).includes(col.field)
+  );
 };
 </script>
 
@@ -66,30 +80,30 @@ const toggleOptions = (event: any, data: any) => {
     :loading="loading"
     :lazy="true"
     :paginator="true"
-    :dataKey="dataKey"
+    :data-key="dataKey"
     :rows="props.rows"
-    :rowsPerPageOptions="rowsPerPageOptions"
-    :totalRecords="totalRecords"
-    :selectAll="isSelectedAll"
-    :selectionMode="props.singleSelect ? 'single' : undefined"
-    @rowClick="onRowClick"
+    :rows-per-page-options="rowsPerPageOptions"
+    :total-records="totalRecords"
+    :select-all="isSelectedAll"
+    :selection-mode="props.singleSelect ? 'single' : undefined"
+    @row-click="onRowClick"
     @page="emit('page', $event)"
     @sort="emit('sort', $event)"
-    @select-all-change="emit('select-all-change', $event)"
+    @select-all-change="emit('selectAllChange', $event)"
     @row-unselect="emit('update:isSelectedAll', false)"
-    paginatorTemplate="FirstPageLink PrevPageLink PageLinks JumpToPageInput NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    paginator-template="FirstPageLink PrevPageLink PageLinks JumpToPageInput NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+    current-page-report-template="Showing {first} to {last} of {totalRecords}"
     scrollable
     class="ts-datatable"
   >
     <template #empty> No data found. </template>
     <Column
       v-if="useSelection"
-      selectionMode="multiple"
-      headerStyle="width: 32px"
-    ></Column>
+      selection-mode="multiple"
+      header-style="width: 32px"
+    />
     <Column
-      v-for="col of props.columns"
+      v-for="col of selectedColumns"
       :key="col.field"
       :field="col.field"
       :header="col.header"
@@ -124,13 +138,16 @@ const toggleOptions = (event: any, data: any) => {
       </template>
     </Column>
     <Column v-if="useOption" style="width: 35px" frozen alignFrozen="right">
+      <template #header>
+        <i class="ri-more-fill" @click="toggleCustomColumn" />
+      </template>
       <template #body="{ data }">
         <Button
-          icon="pi pi-ellipsis-h"
+          @click="toggleOptions($event, data)"
+          icon="ri-more-fill"
           severity="primary"
           rounded
           outlined
-          @click="toggleOptions($event, data)"
           class="btn-ellipsis"
         />
       </template>
@@ -138,8 +155,8 @@ const toggleOptions = (event: any, data: any) => {
   </DataTable>
 
   <Menu
-    v-if="useOption"
     ref="tableOptions"
+    v-if="useOption"
     :model="options"
     :popup="true"
     :pt="{
@@ -150,15 +167,39 @@ const toggleOptions = (event: any, data: any) => {
   >
     <template #item="{ item }">
       <span
-        :class="[
-          'p-menuitem-icon',
-          item.icon,
-          { 'text-danger': item.danger },
-        ]"
+        :class="['p-menuitem-icon', item.icon, { 'text-danger': item.danger }]"
       ></span>
       <span :class="['p-menuitem-text', { 'text-danger': item.danger }]">
         {{ item.label }}
       </span>
+    </template>
+  </Menu>
+  <Menu
+    v-if="useOption"
+    ref="customColumn"
+    :model="props.columns"
+    :popup="true"
+    :pt="{
+      root: {
+        style: 'min-width: 12.5rem !important; width: auto !important',
+      },
+      content: { style: 'align-items: center; padding: 0' },
+    }"
+  >
+    <template #item="{ item }">
+      <label
+        :class="['p-menuitem-select-column', { disabled: item.fixed }]"
+        @click.stop=""
+      >
+        <Checkbox
+          :modelValue="selectedColumns"
+          :inputId="item.field"
+          :value="item"
+          :disabled="item.fixed"
+          @update:modelValue="selectColumn"
+        />
+        {{ item.header }}
+      </label>
     </template>
   </Menu>
 </template>
@@ -184,6 +225,11 @@ const toggleOptions = (event: any, data: any) => {
       padding: 6px 9.6px;
       border-bottom: 1px solid $general-line;
       background: $primary-weak;
+    }
+
+    th.p-frozen-column .p-column-header-content {
+      cursor: pointer;
+      justify-content: center;
     }
 
     th.p-sortable-column:hover,
@@ -231,8 +277,8 @@ const toggleOptions = (event: any, data: any) => {
       .p-frozen-column {
         .p-button-icon-only.btn-ellipsis {
           padding: 0 !important;
-          height: 20px;
-          width: 20px;
+          height: 1rem;
+          width: 1rem;
 
           .pi {
             @include font-size(9px);
@@ -301,7 +347,7 @@ const toggleOptions = (event: any, data: any) => {
     }
 
     .p-dropdown {
-      gap: 2px;
+      gap: 4px;
 
       .p-dropdown-label {
         padding-left: 0;
@@ -309,10 +355,6 @@ const toggleOptions = (event: any, data: any) => {
 
       .p-dropdown-trigger {
         width: max-content;
-        .p-dropdown-trigger-icon {
-          width: 16px;
-          padding: 4px;
-        }
       }
     }
   }
@@ -324,8 +366,9 @@ const toggleOptions = (event: any, data: any) => {
 
 .p-menu.p-menu-overlay {
   @include padding(4px 0);
-  
-  .p-menuitem-content {
+
+  .p-menuitem-content,
+  .p-menuitem-select-column {
     display: flex;
     flex: 1 0 0;
     align-items: baseline;
@@ -334,6 +377,13 @@ const toggleOptions = (event: any, data: any) => {
     @include rfs(8px, gap);
 
     color: $general-body;
+
+    .p-checkbox,
+    .p-checkbox-box {
+      width: 12.8px;
+      height: 12.8px;
+      border-radius: 3px;
+    }
 
     .p-menuitem-icon {
       @include font-size(12.8px);
@@ -349,10 +399,25 @@ const toggleOptions = (event: any, data: any) => {
     background: $primary-weak !important;
   }
 
+  .p-menuitem-select-column {
+    align-items: center;
+  }
+
+  .p-menuitem-select-column.disabled {
+    cursor: default;
+
+    .p-checkbox-box {
+      border-color: $general-placeholder;
+      background: $general-placeholder;
+    }
+  }
+
+  .p-menuitem-select-column.disabled:hover {
+    background: #a0a3bd1a;
+  }
 }
 
-.p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus   {
-
+.p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus {
   > .p-menuitem-content {
     background: none !important;
   }

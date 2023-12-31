@@ -20,6 +20,7 @@ import Calendar from 'primevue/calendar';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Menu from 'primevue/menu';
+import Checkbox from 'primevue/checkbox';
 
 // Vue Router
 import router from './routers';
@@ -44,5 +45,6 @@ app.component('Calendar', Calendar);
 app.component('Column', Column);
 app.component('DataTable', DataTable);
 app.component('Menu', Menu);
+app.component('Checkbox', Checkbox);
 
 app.mount('#app');

@@ -28,42 +28,45 @@ const dateStringified = ref<string>();
     <HelloWorld msg="Component Testing and Preview" />
   </div>
   <BreadcrumbUsageExample />
-  <Card style="width: 80vw">
+  <Card>
     <template #content>
       <DynamicTableUsageExample />
     </template>
   </Card>
+  <Card>
+    <template #content>
+      <div class="d-flex flex-column gap-4" style="margin: 32px 0">
+        <TSButtonUsageExample />
+        <div class="row">
+          <div class="col-3">
+            <TSCalendar
+              v-model="dateStringified"
+              label="Single Select"
+              mode="range"
+              mandatory
+              @update:model-value="console.log($event)"
+            />
+          </div>
+          <div class="col-3">
+            <TSCalendar label="Range Select" />
+          </div>
+          <div class="col-6 d-flex gap-2">
+            <ScanRFID />
+            <ScanRFID label-only label="Start Scan" />
+            <ScanQR />
+            <ScanQR label-only label="Start Scan" />
+          </div>
+        </div>
+        <ImageCompressorUsageTest />
+        <DropdownOptionUsageTest />
+        <h2>Select Group</h2>
+        <SelectGroupUsageTest />
 
-  <div class="d-flex flex-column gap-4" style="margin: 32px 0">
-    <TSButtonUsageExample />
-    <div class="row">
-      <div class="col-3">
-        <TSCalendar
-          v-model="dateStringified"
-          label="Single Select"
-          mode="range"
-          mandatory
-          @update:model-value="console.log($event)"
-        />
+        <h2>Name Container</h2>
+        <NameContainerUsageTest />
       </div>
-      <div class="col-3">
-        <TSCalendar label="Range Select" />
-      </div>
-      <div class="col-6 d-flex gap-2">
-        <ScanRFID />
-        <ScanRFID label-only label="Start Scan" />
-        <ScanQR />
-        <ScanQR label-only label="Start Scan" />
-      </div>
-    </div>
-    <ImageCompressorUsageTest />
-    <DropdownOptionUsageTest />
-    <h2>Select Group</h2>
-    <SelectGroupUsageTest />
-
-    <h2>Name Container</h2>
-    <NameContainerUsageTest />
-  </div>
+    </template>
+  </Card>
 </template>
 <style>
 @import '~primevue/resources/themes/lara-light-blue/theme.css';
@@ -226,7 +229,7 @@ const dateStringified = ref<string>();
 
 .ts-button.outlined {
   border: 1px solid;
-  background: $general-bg-white !important;
+  background: transparent !important;
 }
 
 .ts-button-success.outlined,
@@ -245,13 +248,13 @@ const dateStringified = ref<string>();
 }
 
 .ts-button.text-only {
-  background: $general-bg-white !important;
+  background: transparent !important;
   border: none !important;
 }
 
 .ts-button.button-default {
   color: $general-header-weak !important;
-  background: $general-bg-white;
+  background: transparent;
 }
 
 .ts-button:hover {

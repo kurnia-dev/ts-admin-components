@@ -12,11 +12,13 @@ const useColumns = (): Ref<TableColumn[]> => {
       field: 'name',
       header: 'Device Name',
       sortable: true,
+      fixed: true,
       bodyTemplate: (data: any) => data.name,
     },
     {
       field: 'sku',
       header: 'SKU',
+      fixed: true,
       sortable: true,
     },
     {
