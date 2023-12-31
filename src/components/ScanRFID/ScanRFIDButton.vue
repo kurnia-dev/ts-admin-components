@@ -198,18 +198,16 @@ defineExpose({
     :disabled="props.disabled || isButtonDisabled"
     :id="props.id || 'rfidScanBtn'"
     @click="start"
-    class="ts-rfid-button"
+    class="ts-button ts-rfid-button ts-button-primary"
     type="button"
   >
-    <span v-if="!labelOnly" class="ts-button-icon ri-rfid-line"></span>
-    <span class="ts-button-label">
-      {{ props.label ?? 'Scan RFID' }}
-    </span>
+    <i v-if="!labelOnly" class="ts-button-icon ri-rfid-line" />
+    {{ props.label ?? 'Scan RFID' }}
 
-    <span
+    <i
       class="indicator"
       :class="{ 'bg-success': isConnected, 'bg-danger': !isConnected }"
-    ></span>
+    ></i>
   </button>
 
   <ErrorDialog

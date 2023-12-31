@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import DropdownOptionUsageTest from './components/OptionSelectionField/OptionSelectionFieldUsageTest.vue';
-import SelectGroupUsageTest from './components/SelectGroup/SelectGroupUsageTest.vue';
-import NameContainerUsageTest from '@/components/NameContainer/NameContainerUsageTest.vue';
 import ImageCompressorUsageTest from '@/components/ImageCompressor/ImageCompressorUsageTest.vue';
-import HelloWorld from './components/HelloWorld.vue';
-import TSCalendar from '@/components/Calendar/TSCalendar.vue';
+import NameContainerUsageTest from '@/components/NameContainer/NameContainerUsageTest.vue';
 import BreadcrumbUsageExample from './components/Breadcrumb/BreadcrumbUsageExample.vue';
+import SelectGroupUsageTest from './components/SelectGroup/SelectGroupUsageTest.vue';
+import TSButtonUsageExample from './components/TSButtons/TSButtonUsageExample.vue';
+import TSCalendar from '@/components/Calendar/TSCalendar.vue';
+import HelloWorld from './components/HelloWorld.vue';
 import { ref } from 'vue';
 import { ScanQR, ScanRFID } from './components';
 
@@ -22,8 +23,9 @@ const dateStringified = ref<string>();
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <div class="d-flex flex-column gap-4 mb-10">
-    <HelloWorld msg="Component Testing and Preview" />
+  <HelloWorld msg="Component Testing and Preview" />
+  <div class="d-flex flex-column gap-4" style="margin: 32px 0">
+    <TSButtonUsageExample />
     <div class="row">
       <div class="col-3">
         <TSCalendar
@@ -149,23 +151,22 @@ const dateStringified = ref<string>();
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 26px;
-  @include padding(7.6px 12px);
+  @include padding(7.6px 12px !important);
   gap: 4px;
 
   background-color: $primary-bg;
   color: $primary-color;
   border-radius: 4px;
 
+  @include font-size(9px !important);
+  @include rfs(10.8px !important, line-height);
+
+  font-weight: 500;
+
   .ts-button-icon {
     @include font-size(8px);
-    width: max-content;
-    height: max-content;
-  }
-
-  .ts-button-label {
-    @include font-size(9px);
-    font-weight: 500;
+    width: 9px;
+    height: 9px;
   }
 
   .indicator {
@@ -178,5 +179,114 @@ const dateStringified = ref<string>();
     top: 2px;
   }
 }
+
+.ts-button {
+  all: unset;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  width: max-content !important;
+  @include padding(6.5px 12px);
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  gap: 4px;
+
+  color: $general-bg-white;
+  text-align: center;
+
+  @include font-size(11.2px);
+  @include rfs(11.4px, line-height);
+  font-style: normal;
+  font-weight: 500;
+  transition: 0.1s all ease;
+}
+
+.ts-button-success {
+  background: $success;
+}
+
+.ts-button-primary {
+  background: $primary;
+}
+
+.ts-button-danger {
+  background: $danger;
+}
+
+.ts-button.outlined {
+  border: 1px solid;
+  background: $general-bg-white !important;
+}
+
+.ts-button-success.outlined,
+.ts-button-success.text-only {
+  color: $success !important;
+}
+
+.ts-button-primary.outlined,
+.ts-button-primary.text-only {
+  color: $primary !important;
+}
+
+.ts-button-danger.outlined,
+.ts-button-danger.text-only {
+  color: $danger !important;
+}
+
+.ts-button.text-only {
+  background: $general-bg-white !important;
+  border: none !important;
+}
+
+.ts-button.button-default {
+  color: $general-header-weak !important;
+  background: $general-bg-white;
+}
+
+.ts-button:hover {
+  background: $primary-strong !important;
+}
+
+.ts-button-success:hover {
+  background: $success-strong !important;
+}
+
+.ts-button-danger:hover {
+  background: $danger-strong !important;
+}
+
+.ts-button-success.outlined:hover,
+.ts-button-success.text-only:hover {
+  background: $success-weak !important;
+}
+
+.ts-button-primary.outlined:hover,
+.ts-button-primary.text-only:hover {
+  background: $primary-weak !important;
+}
+
+.ts-button-danger.outlined:hover,
+.ts-button-danger.text-only:hover {
+  background: $danger-weak !important;
+}
+
+.ts-button.button-default:hover {
+  background: $dark-thin !important;
+}
+
+span.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 0.25s linear;
+  background-color: rgba(255, 255, 255, 0.363);
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
 </style>
-./components/OptionSelectionField/DropdownOptionUsageTest.vue

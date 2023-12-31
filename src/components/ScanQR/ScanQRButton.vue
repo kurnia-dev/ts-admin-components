@@ -196,18 +196,15 @@ defineExpose({
     :disabled="props.disabled || isButtonDisabled"
     :id="props.id || 'qrScanBtn'"
     @click="start"
-    class="ts-qr-button"
+    class="ts-button ts-button-primary ts-qr-button"
     type="button"
   >
-    <span v-if="!labelOnly" class="ts-button-icon ri-qr-code-line"></span>
-    <span class="ts-button-label">
-      {{ props.label ?? 'Scan QR' }}
-    </span>
-
-    <span
+    <i v-if="!labelOnly" class="ts-button-icon ri-qr-code-line"></i>
+    {{ props.label ?? 'Scan QR' }}
+    <i
       class="indicator"
       :class="{ 'bg-success': isConnected, 'bg-danger': !isConnected }"
-    ></span>
+    ></i>
   </button>
 
   <ErrorDialog
