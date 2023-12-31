@@ -102,6 +102,7 @@ const setSeverity = (): string[] => {
 <style scoped lang="scss">
 .name-container {
   display: flex;
+  width: max-content;
   padding: 4px;
   justify-content: center;
   align-items: flex-start;

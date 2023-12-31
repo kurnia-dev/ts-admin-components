@@ -40,7 +40,7 @@ import {
   ImagePreview,
 } from '@/components';
 
-import DropdownOption from './OptionSelectionField/DropdownOption.vue';
+import OptionSelectionField from './OptionSelectionField/OptionSelectionField.vue';
 import DateUtils from '@/utils/date.util';
 import StringUtils from '@/utils/string.util';
 
@@ -85,7 +85,7 @@ export default {
     app.component('StaticTable', StaticTable);
     app.component('ButtonCopy', ButtonCopy);
     app.component('ImagePreview', ImagePreview);
-    app.component('DropdownOption', DropdownOption);
+    app.component('OptionSelectionField', OptionSelectionField);
   },
 };
 
@@ -129,5 +129,5 @@ export {
   ImagePreview,
   DateUtils,
   StringUtils,
-  DropdownOption,
+  OptionSelectionField,
 };

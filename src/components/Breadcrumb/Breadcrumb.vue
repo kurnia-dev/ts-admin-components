@@ -21,7 +21,7 @@ const lastIndex = computed(() => props.menus.length - 1);
         <a
           v-if="menu.route"
           :href="menu.route"
-          @click="navigateToUrl(menu.route)"
+          @click="navigateToUrl(menu.route!)"
           class="text-decoration-none breadcrumb-label"
           style="cursor: pointer"
         >

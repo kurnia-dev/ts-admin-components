@@ -9,12 +9,20 @@ import TSCalendar from '@/components/Calendar/TSCalendar.vue';
 import HelloWorld from './components/HelloWorld.vue';
 import { ref } from 'vue';
 import { ScanQR, ScanRFID } from './components';
+import Card from 'primevue/card';
+import DynamicTableUsageExample from './components/DynamicTable/DynamicTableUsageExample.vue';
 
 const dateStringified = ref<string>();
 </script>
 
 <template>
   <BreadcrumbUsageExample />
+  <Card style="width: 80vw">
+    <template #content>
+      <DynamicTableUsageExample />
+    </template>
+  </Card>
+  <!--
   <div>
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
@@ -51,9 +59,9 @@ const dateStringified = ref<string>();
     <h2>Select Group</h2>
     <SelectGroupUsageTest />
 
-    <h2>Name Container</h2>
-    <NameContainerUsageTest />
-  </div>
+  </div> -->
+  <h2>Name Container</h2>
+  <NameContainerUsageTest />
 </template>
 <style>
 @import '~primevue/resources/themes/lara-light-blue/theme.css';
@@ -287,6 +295,23 @@ span.ripple {
   to {
     transform: scale(2);
     opacity: 0;
+  }
+}
+
+.p-card {
+  background: $general-bg-white !important;
+  box-shadow: none !important;
+
+  .p-card-body {
+    @include padding(12px 24px);
+    border-radius: 8px;
+  }
+
+  .p-card-content {
+    padding : 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 }
 </style>
