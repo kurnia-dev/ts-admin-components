@@ -8,7 +8,8 @@ import TSButtonUsageExample from './components/TSButtons/TSButtonUsageExample.vu
 import TSCalendar from '@/components/Calendar/TSCalendar.vue';
 import HelloWorld from './components/HelloWorld.vue';
 import { ref } from 'vue';
-import { ScanQR, ScanRFID } from './components';
+import ScanQR from './components/ScanQR/ScanQRButton.vue';
+import ScanRFID from './components/ScanRFID/ScanRFIDButton.vue';
 import Card from 'primevue/card';
 import DynamicTableUsageExample from './components/DynamicTable/DynamicTableUsageExample.vue';
 

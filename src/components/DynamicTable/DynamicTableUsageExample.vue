@@ -99,9 +99,9 @@ const useColumns = (): Ref<TableColumn[]> => {
   ]);
 };
 
-import { data } from './stock';
+// import { data } from './stock';
 const columns = useColumns();
-const stock = ref(data);
+const stock = ref([]);
 const totalRecords = ref<number>(100);
 const companyList = computed(() =>
   stock.value?.reduce((option: string[], item: any) => {
@@ -110,7 +110,7 @@ const companyList = computed(() =>
     }
 
     return option;
-  }, []).map((option) => {
+  }, []).map((option: any) => {
     return {
       label: option,
       value: option,
