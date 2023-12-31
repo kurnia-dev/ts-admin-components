@@ -115,6 +115,32 @@ const dateStringified = ref<string>();
   }
 }
 
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+  @include padding(11.2px 8px !important);
+  border-width: 0 0 2px 0 !important;
+  text-decoration: none;
+
+  .p-menuitem-text {
+    @include font-size(11.2px);
+    font-weight: 500;
+    color: $general-placeholder;
+  }
+}
+
+.p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus {
+  box-shadow: none;
+}
+
+.p-tabmenu .p-tabmenu-nav,
+.p-tabmenuitem .p-menuitem-link {
+  border-width: 0 0 2px 0 !important;
+  color: $general-placeholder;
+}
+
+.p-tabmenuitem.p-highlight .p-menuitem-text {
+  color: $primary;
+}
+
 .row {
   gap: 1rem !important;
 }
@@ -213,6 +239,7 @@ const dateStringified = ref<string>();
   font-style: normal;
   font-weight: 500;
   transition: 0.1s all ease;
+  height: 26px;
 }
 
 .ts-button-success {

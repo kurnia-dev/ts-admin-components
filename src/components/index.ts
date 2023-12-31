@@ -34,6 +34,7 @@ import StaticTable from './StaticTable.vue';
 import ButtonCopy from './ButtonCopy.vue';
 import ImagePreview from './ImagePreview.vue';
 import HelloWorld from './HelloWorld.vue';
+import App from '../App.vue';
 
 export {
   DynamicDialog,
@@ -72,4 +73,5 @@ export {
   StaticTable,
   ButtonCopy,
   ImagePreview,
+  App
 };

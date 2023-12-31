@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import { ref, reactive, Ref } from 'vue';
+import { ref, reactive, Ref, computed } from 'vue';
 import { MenuOption } from '@/types/options';
 import { TableColumn } from '@/types/columns';
 import ScanRFID from '@/components/ScanRFID/ScanRFIDButton.vue';
 import DynamicTable from '../DynamicTable.vue';
 import NameContainer from '../NameContainer.vue';
+import FilterContainer from '@/components/FilterContainer/FilterContainer.vue';
+import OptionSelectionField from '../OptionSelectionField/OptionSelectionField.vue';
 
 const useColumns = (): Ref<TableColumn[]> => {
   return ref<TableColumn[]>([
@@ -101,6 +103,20 @@ import { data } from './stock';
 const columns = useColumns();
 const stock = ref(data);
 const totalRecords = ref<number>(100);
+const companyList = computed(() =>
+  stock.value?.reduce((option: string[], item: any) => {
+    if (!option.includes(item.company)) {
+      option.push(item.company);
+    }
+
+    return option;
+  }, []).map((option) => {
+    return {
+      label: option,
+      value: option,
+    }
+  })
+);
 
 /**
  * To store the item's _id on set-detail event
@@ -161,11 +177,20 @@ const sortTable = (data: any) => {
   fetchParams.sortOrder = data.sortOrder;
   fetchParams.sortField = data.sortField;
 };
+
+const companyField = ref<string[]>([]);
 </script>
 <template>
   <div class="table__toolbar">
     <ScanRFID />
   </div>
+  <FilterContainer>
+    <template #content>
+      <OptionSelectionField v-model="companyField" :options="companyList" mode="multi" label="Company" />
+      <OptionSelectionField v-model="companyField" :options="companyList" mode="multi" label="Company" />
+      <OptionSelectionField v-model="companyField" :options="companyList" mode="multi" label="Company" />
+    </template>
+  </FilterContainer>
   <DynamicTable
     :columns="columns"
     :datas="stock"

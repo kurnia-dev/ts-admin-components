@@ -227,6 +227,16 @@ const selectColumn = (cols: TableColumn[]) => {
       background: $primary-weak;
     }
 
+    th.p-frozen-column {
+      padding: 0;
+
+      i.ri-more-fill {
+        padding: 6px 9.6px;
+        width: 100%;
+        text-align: center;
+      }
+    }
+
     th.p-frozen-column .p-column-header-content {
       cursor: pointer;
       justify-content: center;

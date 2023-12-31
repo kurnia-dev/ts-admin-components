@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { TreeNode } from 'primevue/tree';
+import Tree, { TreeNode } from 'primevue/tree';
 import { useToast } from 'primevue/usetoast';
 import { onMounted, ref } from 'vue';
-import Tree from 'primevue/tree';
 import ProgressSpinner from 'primevue/progressspinner';
 
 interface GroupOptions {

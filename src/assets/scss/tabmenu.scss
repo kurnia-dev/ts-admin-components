@@ -1,19 +1,4 @@
 @import 'var.scss';
 @import '~rfs/scss';
 
-.p-tabmenu {
-  .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
-    @include padding(9.7px 8px);
-    border-width: 0 0 3px 0 !important;
-    text-decoration: none;
 
-  }
-  .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus {
-    box-shadow: none;
-  }
-}
-
-.p-menuitem-text {
-  @include font-size(11.2px);
-  font-weight: 500;
-}
