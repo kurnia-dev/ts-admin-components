@@ -13,6 +13,16 @@ import Card from 'primevue/card';
 import DynamicTableUsageExample from './components/DynamicTable/DynamicTableUsageExample.vue';
 
 const dateStringified = ref<string>();
+  const menus = ref([
+  {
+    label: 'Stock',
+    to: '/',
+  },
+  {
+    label: 'Transaction History',
+    to: '/reader/transaction-history',
+  },
+]);
 </script>
 
 <template>
@@ -30,6 +40,7 @@ const dateStringified = ref<string>();
   <BreadcrumbUsageExample />
   <Card>
     <template #content>
+      <TabMenu :model="menus" :exact="false" />
       <DynamicTableUsageExample />
     </template>
   </Card>
@@ -138,7 +149,7 @@ const dateStringified = ref<string>();
 }
 
 .p-tabmenuitem.p-highlight .p-menuitem-text {
-  color: $primary;
+  color: $primary !important;
 }
 
 .row {

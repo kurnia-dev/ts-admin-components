@@ -11,17 +11,46 @@ onUnmounted(async () => {
   await stop();
 });
 
-const props = defineProps<{
+interface ScanRFIDPProps {
+  /**
+   * The value of the input (RFID tag).
+   */
   modelValue?: string;
+  /**
+   *  The label of the input.
+   */
   label?: string;
+  /**
+   *  Whether the scanner is in bulk mode.
+   */
   bulk?: boolean;
+  /**
+   *  The id of the button element.
+   */
   id?: string;
+  /**
+   *  Whether the scanner is a powerbank.
+   */
   powerbank?: boolean;
+  /**
+   * Wether the button should be disabled.
+   */
   disabled?: boolean;
+  /**
+   * A string template classes to be atched on button element.
+   */
   btnClass?: string;
+  /**
+   * A string template styles to be atched on button element.
+   */
   btnStyle?: string;
+  /**
+   * Display the label only (wihout icon).
+   */
   labelOnly?: boolean;
-}>();
+}
+
+const props = defineProps<ScanRFIDPProps>();
 
 const emit = defineEmits<{
   (e: 'update:modelValue', rfid: string): void;

@@ -1,8 +1,21 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
-// Initialize empty route so that can using router-link component
 const router = createRouter({
-  routes: [],
+  routes: [
+    {
+      path: '/',
+      name: 'index',
+      component: () => import('@/layout/Layout.vue'),
+      redirect: '/home',
+      children: [
+        {
+          path: '/home',
+          component: () => import('@/components/DynamicTable/DynamicTableUsageExample.vue'),
+          name: 'Home',
+        }
+      ]
+    },
+  ],
   history: createWebHashHistory(),
 });
 

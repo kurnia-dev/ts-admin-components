@@ -21,6 +21,8 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Menu from 'primevue/menu';
 import Checkbox from 'primevue/checkbox';
+import TabMenu from 'primevue/tabmenu';
+import TabPanel from 'primevue/tabpanel';
 
 // Vue Router
 import router from './routers';
@@ -46,5 +48,7 @@ app.component('Column', Column);
 app.component('DataTable', DataTable);
 app.component('Menu', Menu);
 app.component('Checkbox', Checkbox);
+app.component('TabMenu', TabMenu);
+app.component('TabPanel', TabPanel);
 
 app.mount('#app');
