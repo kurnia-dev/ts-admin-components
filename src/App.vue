@@ -16,22 +16,24 @@ const dateStringified = ref<string>();
 </script>
 
 <template>
+  <div style="margin-bottom: 50px">
+    <div>
+      <a href="https://vitejs.dev" target="_blank">
+        <img src="/vite.svg" class="logo" alt="Vite logo" />
+      </a>
+      <a href="https://vuejs.org/" target="_blank">
+        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+      </a>
+    </div>
+    <HelloWorld msg="Component Testing and Preview" />
+  </div>
   <BreadcrumbUsageExample />
   <Card style="width: 80vw">
     <template #content>
       <DynamicTableUsageExample />
     </template>
   </Card>
-  <!--
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Component Testing and Preview" />
+
   <div class="d-flex flex-column gap-4" style="margin: 32px 0">
     <TSButtonUsageExample />
     <div class="row">
@@ -59,9 +61,9 @@ const dateStringified = ref<string>();
     <h2>Select Group</h2>
     <SelectGroupUsageTest />
 
-  </div> -->
-  <h2>Name Container</h2>
-  <NameContainerUsageTest />
+    <h2>Name Container</h2>
+    <NameContainerUsageTest />
+  </div>
 </template>
 <style>
 @import '~primevue/resources/themes/lara-light-blue/theme.css';
@@ -308,7 +310,7 @@ span.ripple {
   }
 
   .p-card-content {
-    padding : 0 !important;
+    padding: 0 !important;
     display: flex;
     flex-direction: column;
     gap: 10px;

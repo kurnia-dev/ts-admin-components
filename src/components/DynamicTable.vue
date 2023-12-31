@@ -149,20 +149,16 @@ const toggleOptions = (event: any, data: any) => {
     }"
   >
     <template #item="{ item }">
-      <a
-        :class="`p-menuitem-link text-nowrap`"
-        tabindex="-1"
-        aria-hidden="true"
-      >
-        <span
-          :class="`p-menuitem-icon ${item.icon} ${
-            item.danger && 'text-danger'
-          }`"
-        ></span>
-        <span :class="`p-menuitem-text ${item.danger && 'text-danger'}`">{{
-          item.label
-        }}</span>
-      </a>
+      <span
+        :class="[
+          'p-menuitem-icon',
+          item.icon,
+          { 'text-danger': item.danger },
+        ]"
+      ></span>
+      <span :class="['p-menuitem-text', { 'text-danger': item.danger }]">
+        {{ item.label }}
+      </span>
     </template>
   </Menu>
 </template>
@@ -248,8 +244,8 @@ const toggleOptions = (event: any, data: any) => {
 
   .p-paginator-bottom {
     .p-paginator {
-      height: 26px;
       padding: 0;
+      justify-content: start;
     }
 
     button.p-paginator-element.p-link {
@@ -288,7 +284,7 @@ const toggleOptions = (event: any, data: any) => {
       min-width: unset;
       height: unset;
     }
-  
+
     .p-paginator-rpp-options,
     .p-paginator-page-input input {
       border-radius: 7px;
@@ -319,74 +315,51 @@ const toggleOptions = (event: any, data: any) => {
         }
       }
     }
-
   }
 
+  .p-frozen-column {
+    right: -1px !important;
+  }
 }
-</style>
 
-<style lang="scss" scoped>
-@import '../assets/var.scss';
-@import '~rfs/scss';
+.p-menu.p-menu-overlay {
+  @include padding(4px 0);
+  
+  .p-menuitem-content {
+    display: flex;
+    flex: 1 0 0;
+    align-items: baseline;
+    cursor: pointer;
+    @include padding(11px 16px);
+    @include rfs(8px, gap);
 
-:deep(.p-datatable) {
-  @include margin(10px 0);
-  .p-sortable-column .p-sortable-column-icon {
-    @include font-size(9px);
-    height: 9px;
-  }
-  .p-datatable-thead tr th {
-    @include padding(6px 9.6px);
-  }
-  .p-datatable-tbody tr td {
-    @include padding(6px 9.6px);
-  }
-  .p-paginator {
-    @include font-size(11px);
-    @include padding(0.5rem 0);
-    .p-paginator-first,
-    .p-paginator-prev,
-    .p-paginator-next,
-    .p-paginator-last,
-    .p-paginator-pages .p-paginator-page {
-      @include font-size(11px);
-      min-width: 0;
-      width: 24px;
-      height: 24px;
+    color: $general-body;
+
+    .p-menuitem-icon {
+      @include font-size(12.8px);
     }
+
+    @include font-size(11.2px);
+    font-weight: 500;
+    @include rfs(16.8px, line-height);
   }
+
+  .p-menuitem-content:hover {
+    color: $general-body;
+    background: $primary-weak !important;
+  }
+
 }
 
-:deep(.p-column-title) {
-  @include font-size(11.2px !important);
-}
+.p-menu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus   {
 
-:deep(.p-datatable-tbody) {
-  @include font-size(11.2px !important);
-}
+  > .p-menuitem-content {
+    background: none !important;
+  }
 
-// :deep(
-//     .p-dropdown.p-component.p-inputwrapper.p-inputwrapper-filled.p-paginator-rpp-options
-//   ) {
-//   width: 48px !important;
-//   height: 26.2px !important;
-// }
-
-// :deep(.p-dropdown-trigger) {
-//   width: 18px !important;
-//   height: 26.2px !important;
-// }
-
-:deep(.p-dropdown-label.p-inputtext) {
-  @include font-size(11px !important);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-:deep(.p-paginator-bottom) {
-  display: flex !important;
-  justify-content: start !important;
-  align-items: center !important;
+  > .p-menuitem-content:hover {
+    color: $general-body;
+    background: $primary-weak !important;
+  }
 }
 </style>

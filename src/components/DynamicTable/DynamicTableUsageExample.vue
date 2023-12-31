@@ -107,7 +107,7 @@ const _id = ref<string>('');
 
 const options = ref<MenuOption[]>([
   {
-    label: 'Add Stock',
+    label: 'Add Stock Add Stock Add Stock',
     icon: 'ri-add-line',
     command: () => {
       //
