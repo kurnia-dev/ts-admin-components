@@ -8,6 +8,84 @@ import NameContainer from '../NameContainer.vue';
 import FilterContainer from '@/components/FilterContainer/FilterContainer.vue';
 import OptionSelectionField from '../OptionSelectionField/OptionSelectionField.vue';
 
+const data = ref([
+{
+    image: 'https://loremflickr.com/640/480',
+    name: 'name 1',
+    sku: 'sku 1',
+    category: 'category 1',
+    brand: 'brand 1',
+    model: 'model 1',
+    stock: 67,
+    lastTransaction: 'lastTransaction 1',
+    transactionQty: 40,
+    company: 'company 1',
+    manager: 'manager 1',
+    transactionDate: 'transactionDate 1',
+    _id: '1',
+  },
+  {
+    image: 'https://loremflickr.com/640/480',
+    name: 'name 2',
+    sku: 'sku 2',
+    category: 'category 2',
+    brand: 'brand 2',
+    model: 'model 2',
+    stock: 61,
+    lastTransaction: 'lastTransaction 2',
+    transactionQty: 47,
+    company: 'company 2',
+    manager: 'manager 2',
+    transactionDate: 'transactionDate 2',
+    _id: '2',
+  },
+  {
+    image: 'https://loremflickr.com/640/480',
+    name: 'name 3',
+    sku: 'sku 3',
+    category: 'category 3',
+    brand: 'brand 3',
+    model: 'model 3',
+    stock: 61,
+    lastTransaction: 'lastTransaction 3',
+    transactionQty: 80,
+    company: 'company 3',
+    manager: 'manager 3',
+    transactionDate: 'transactionDate 3',
+    _id: '3',
+  },
+  {
+    image: 'https://loremflickr.com/640/480',
+    name: 'name 4',
+    sku: 'sku 4',
+    category: 'category 4',
+    brand: 'brand 4',
+    model: 'model 4',
+    stock: 13,
+    lastTransaction: 'lastTransaction 4',
+    transactionQty: 52,
+    company: 'company 4',
+    manager: 'manager 4',
+    transactionDate: 'transactionDate 4',
+    _id: '4',
+  },
+  {
+    image: 'https://loremflickr.com/640/480',
+    name: 'name 5',
+    sku: 'sku 5',
+    category: 'category 5',
+    brand: 'brand 5',
+    model: 'model 5',
+    stock: 83,
+    lastTransaction: 'lastTransaction 5',
+    transactionQty: 27,
+    company: 'company 5',
+    manager: 'manager 5',
+    transactionDate: 'transactionDate 5',
+    _id: '5',
+  },
+])
+
 const useColumns = (): Ref<TableColumn[]> => {
   return ref<TableColumn[]>([
     {
@@ -99,9 +177,8 @@ const useColumns = (): Ref<TableColumn[]> => {
   ]);
 };
 
-import { data } from './stock';
 const columns = useColumns();
-const stock = ref(data);
+const stock = ref(data.value);
 const totalRecords = ref<number>(100);
 const companyList = computed(() =>
   stock.value?.reduce((option: string[], item: any) => {
