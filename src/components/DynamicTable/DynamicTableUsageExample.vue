@@ -99,9 +99,9 @@ const useColumns = (): Ref<TableColumn[]> => {
   ]);
 };
 
-// import { data } from './stock';
+import { data } from './stock';
 const columns = useColumns();
-const stock = ref([]);
+const stock = ref(data);
 const totalRecords = ref<number>(100);
 const companyList = computed(() =>
   stock.value?.reduce((option: string[], item: any) => {
