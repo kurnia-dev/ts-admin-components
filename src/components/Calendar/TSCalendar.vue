@@ -16,18 +16,21 @@ const emit = defineEmits<{
 
 const getGMTTime = (date: string) => {
   return new Date(new Date(date).toUTCString()).getTime();
-}
+};
 
 const parseDate = (date: string | string[]) => {
   if (typeof date === 'string') return JSON.stringify(getGMTTime(date));
   else
-    return JSON.stringify(
-      [getGMTTime(date[0]), getGMTTime(date[1] ?? date[0])].join('-')
-    );
+    return JSON.stringify([
+      getGMTTime(date[0]),
+      getGMTTime(date[1] ?? date[0]),
+    ]);
 };
 
 const setClass = (): void => {
-  const highlights = document.querySelectorAll('.p-datepicker span.p-highlight');
+  const highlights = document.querySelectorAll(
+    '.p-datepicker span.p-highlight'
+  );
   highlights[0]?.classList.add('first-and-last');
   highlights[highlights.length - 1]?.classList.add('first-and-last');
 };
@@ -68,6 +71,7 @@ watch(date, (newDate: string | undefined) => {
 .ts-calendar {
   border-radius: 4px;
   border: 1px solid $general-body;
+  width: 100%;
 
   .p-inputtext {
     border: none;
