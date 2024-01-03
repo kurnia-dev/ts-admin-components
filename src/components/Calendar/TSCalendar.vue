@@ -72,9 +72,24 @@ watch(date, (newDate: string | undefined) => {
   border-radius: 4px;
   border: 1px solid $general-body;
   width: 100%;
+  max-height: 26px;
+  display: flex;
+  padding: 4px 12px;
+  align-items: center;
+  align-self: stretch;
+  gap: 5px;
+  background: $general-bg-white;
 
   .p-inputtext {
     border: none;
+    height: auto !important;
+    background: none !important;
+    padding: 0 !important;
+  }
+
+  .p-datepicker-trigger {
+    width: 20px !important;
+    height: 20px !important;
   }
 
   .p-inputtext:enabled:hover {

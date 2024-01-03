@@ -76,6 +76,7 @@ const setOption = (options: TOptionSelection[]) => {
       option-label="label"
       option-value="value"
       display="chip"
+      class="ts-multiselect"
     />
     <Dropdown
       v-else
@@ -87,10 +88,53 @@ const setOption = (options: TOptionSelection[]) => {
       aria-describedby="dd-error"
       optionLabel="label"
       optionValue="value"
+      class="ts-dropdown"
     />
     <small class="validator-message" id="dd-error" v-if="field.errorMessage">{{
       field.errorMessage
     }}</small>
   </div>
 </template>
-@/types/optionSelection.type
+<style lang="scss">
+@import 'scss/var';
+@import '~rfs/scss';
+
+.ts-multiselect,
+.ts-dropdown {
+  display: flex;
+  align-items: center;
+  height: 26px;
+  padding: 4px 4px 4px 12px;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 4px !important;
+  border: 1px solid $general-body !important;
+  background: $general-bg-white !important;
+
+  .p-multiselect-label.p-placeholder,
+  .p-dropdown-label.p-placeholder {
+    color: $general-placeholder !important;
+
+    @include font-size(11.2px);
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1rem;
+    letter-spacing: 0.224px;
+    padding: 0;
+    text-align: left;
+    height: auto !important;
+  }
+
+  .p-multiselect-trigger,
+  .p-dropdown-trigger {
+    width: 20px !important;
+    height: 20px !important;
+
+    .p-multiselect-trigger-icon,
+    .p-dropdown-trigger-icon { 
+      width: 11.2px;
+    }
+  }
+}
+</style>

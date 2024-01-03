@@ -316,7 +316,7 @@ const clear = () => {
       <OptionSelectionField
         v-model="filter.companyField"
         :options="companyList"
-        mode="multi"
+        mode="single"
         label="Company"
       />
       <TSCalendar
