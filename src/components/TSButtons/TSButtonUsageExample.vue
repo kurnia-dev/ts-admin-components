@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
 import ButtonDefault from './ButtonDefault.vue';
 import ButtonPrimary from './ButtonPrimary.vue';
 import ButtonPrimaryOutline from './ButtonPrimaryOutline.vue';
@@ -8,6 +9,9 @@ import ButtonSuccess from './ButtonSuccess.vue';
 import ButtonSuccessOutline from './ButtonSuccessOutline.vue';
 import ButtonTextPrimary from './ButtonTextPrimary.vue';
 import Button from './Button.vue';
+import InputSwitch from '@/components/Input/InputSwitch.vue';
+const isOn = ref<boolean>(true);
+watch(isOn, (on) => console.log(on))
 </script>
 <template>
   <label style="text-align: left">Tag Samurai Button with Riple Effect</label>
@@ -32,5 +36,6 @@ import Button from './Button.vue';
     <ButtonPrimaryOutline label="Primary" />
     <ButtonDangerOutline label="Danger" />
     <ButtonSuccessOutline label="Success" />
+    <InputSwitch v-model="isOn" />
   </div>
 </template>

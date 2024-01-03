@@ -1,22 +1,75 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import { TableColumn } from '@/types/columns';
 import { MenuOption } from '@/types/options';
 import type Menu from 'primevue/menu';
+import {
+  DataTablePageEvent,
+  DataTableSelectAllChangeEvent,
+  DataTableSortEvent,
+} from 'primevue/datatable';
+
+type Data = Record<string, any>;
 
 const props = defineProps<{
+  /**
+   * An array of table columns to display.
+   */
   columns: TableColumn[];
+  /**
+   * An array of objects to display in the table.
+   */
+  datas: Data[];
+  /**
+   * The key of the data object to use as a unique identifier.
+   */
   dataKey: string;
-  datas: any;
-  rows: number;
-  selectedColumns?: TableColumn[];
+  /**
+   * The number of rows to display per page.
+   * @defaultValue 5
+   */
+  rows?: number;
+  /**
+   * Whether all rows are selected or not.
+   */
   isSelectedAll?: boolean;
+  /**
+   * Whether to display a loading animation on the table.
+   */
   loading?: boolean;
+  /**
+   * The total number of records in the table.
+   * Defaults to the length of `datas` when not defined.
+   */
   totalRecords?: number;
+  /**
+   * Whether to enable checkbox multi-selection.
+   */
   useSelection?: boolean;
-  selectedDatas?: any;
+  /**
+   * The name of the property in each item of the `datas` array that determines whether the checkbox for that row should be enabled or disabled.
+   * If a row's value for the `selectionKey` property is truthy, the checkbox for that row will be enabled. If it is falsy, the checkbox will be disabled.
+   */
+  selectionKey?: string;
+  /**
+   * An array of selected objects from `datas`.
+   */
+  selectedDatas?: Data[];
+  /**
+   * Whether to display an options menu for each row or not.
+   * The options menu will be displayed on the right side of the table row.
+   */
   useOption?: boolean;
+  /**
+   * The options that will be visible for each row data.
+   */
   options?: MenuOption[];
+  /**
+   * Whether to enable single selection or not.
+   * If enabled, clicking a row will trigger the `rowSelect` event with the corresponding data object passed as a parameter.
+   *
+   * @note Do not combine `singleSelect` with `useSelection`, as it may lead to unexpected behavior.
+   */
   singleSelect?: boolean;
 }>();
 
@@ -24,10 +77,56 @@ const emit = defineEmits<{
   'setDetail': [data: any];
   'selectDatas': [data: any];
   'rowSelect': [data: any];
-  'selectAllChange': [data: any];
+  /**
+   * Event emitted when the `isSelectedAll` property is updated.
+   *
+   * @event update:isSelectedAll
+   * @param {boolean} data - The updated value of `isSelectedAll`.
+   *
+   * @example
+   * <DynamicTable v-model:is-selected-all="isSelectedAll" />
+   *
+   * This will update the `isSelectedAll` value when one of checkbox is unchecked.
+   */
   'update:isSelectedAll': [data: boolean];
-  'page': [data: any];
-  'sort': [data: any];
+  'selectAllChange': [data: DataTableSelectAllChangeEvent];
+  /**
+   * Event emitted when the page changes in the data table.
+   *
+   * @event page
+   * @param {DataTablePageEvent} data - The event data containing information about the new page.
+   *
+   * @example
+   * <DynamicTable @page="handlePageChange" />
+   *
+   * This will call the `handlePageChange` method whenever the page changes in the data table.
+   */
+  'page': [data: DataTablePageEvent];
+
+  /**
+   * Event emitted when the sort order changes in the data table.
+   *
+   * @event sort
+   * @param {DataTableSortEvent} data - The event data containing information about the new sort order.
+   *
+   * @example
+   * <DynamicTable @sort="handleSortChange" />
+   *
+   * This will call the `handleSortChange` method whenever the sort order changes in the data table.
+   */
+  'sort': [data: DataTableSortEvent];
+  /**
+   * Event emitted when the `selectedDatas` property is updated.
+   *
+   * @event update:selectedDatas
+   * @param {Data[]} datas - The updated array of selected data objects.
+   *
+   * @example
+   * <DynamicTable v-model:selected-datas="selectedDatas" />
+   *
+   * This will update the `selectedDatas` value whenever a row is selected or deselected.
+   */
+  'update:selectedDatas': [datas: Data[]];
 }>();
 
 const tableOptions = ref<Menu | null>(null);
@@ -44,12 +143,26 @@ const isSelectedAll = computed({
   },
 });
 
+/**
+ * Filter the disabled row data.
+ */
+const filterSelectedDatas = (datas?: Data[]) => {
+  return (datas ?? []).filter(
+    (data: any) => !disabledRows.value.includes(data[props.dataKey])
+  );
+}
+
 const selectedDatas = computed({
   get() {
-    return props.selectedDatas;
+    return filterSelectedDatas(props.selectedDatas);
   },
-  set(newSelectedDatas: any) {
-    emit('selectDatas', newSelectedDatas);
+  set(newSelectedDatas: Data[]) {
+    const filtered = filterSelectedDatas(newSelectedDatas)
+    emit('selectDatas', filtered);
+    emit('update:selectedDatas', filtered);
+    const total = props.totalRecords ?? props.datas.length
+    const checked = total == filtered.length + disabledRows.value.length
+    emit('update:isSelectedAll', checked);
   },
 });
 
@@ -71,6 +184,40 @@ const selectColumn = (cols: TableColumn[]) => {
     cols.map((col) => col.field).includes(col.field)
   );
 };
+
+const checkboxClass = ref<string>('');
+const disabledRows = computed(() => {
+  return props.datas
+    .filter((data: any) => data[props.selectionKey ?? 'isDefault'])
+    .map((data: any) => data[props.dataKey]);
+});
+
+const disableCheckbox = () => {
+  checkboxClass.value = 'checkbox' + +new Date();
+  const checkboxes = document.getElementsByClassName(checkboxClass.value);
+
+  nextTick(() => {
+    disabledRows.value.forEach((row) => {
+      const index = props.datas.findIndex(
+        (data: any) => data[props.dataKey] == row
+      );
+
+      if (index !== -1) {
+        checkboxes[index]?.classList.add('disabled');
+      }
+    });
+  });
+};
+
+onMounted(() => {
+  disableCheckbox();
+});
+
+watch(props, () => {
+  if (props.datas.length) {
+    setTimeout(disableCheckbox, 500);
+  }
+});
 </script>
 
 <template>
@@ -81,15 +228,18 @@ const selectColumn = (cols: TableColumn[]) => {
     :lazy="true"
     :paginator="true"
     :data-key="dataKey"
-    :rows="props.rows"
+    :rows="props.rows ?? 5"
     :rows-per-page-options="rowsPerPageOptions"
-    :total-records="totalRecords"
+    :total-records="totalRecords ?? datas.length"
     :select-all="isSelectedAll"
     :selection-mode="props.singleSelect ? 'single' : undefined"
     @row-click="onRowClick"
     @page="emit('page', $event)"
     @sort="emit('sort', $event)"
-    @select-all-change="emit('selectAllChange', $event)"
+    @select-all-change="
+      emit('selectAllChange', $event),
+      emit('update:isSelectedAll', $event.checked)
+    "
     @row-unselect="emit('update:isSelectedAll', false)"
     paginator-template="FirstPageLink PrevPageLink PageLinks JumpToPageInput NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
     current-page-report-template="Showing {first} to {last} of {totalRecords}"
@@ -100,7 +250,7 @@ const selectColumn = (cols: TableColumn[]) => {
     <Column
       v-if="useSelection"
       selection-mode="multiple"
-      header-style="width: 32px"
+      :body-class="checkboxClass"
     />
     <Column
       v-for="col of selectedColumns"
@@ -130,7 +280,8 @@ const selectColumn = (cols: TableColumn[]) => {
           v-bind="col.bodyComponent!(data).props"
           v-model="col.bodyComponent!(data).model"
           v-on="col.bodyComponent!(data).events ? col.bodyComponent!(data).events : {}"
-          @change="col.bodyComponent!(data).onChange(data)"
+          @change="col.bodyComponent!(data).onChange?.(data)"
+          @update:modelValue="col.bodyComponent!(data).onChange?.(data)"
         ></component>
       </template>
       <template v-else-if="col.bodyTemplate" #body="{ data }">
@@ -207,7 +358,7 @@ const selectColumn = (cols: TableColumn[]) => {
 @import '~rfs/scss';
 @import 'scss/var';
 
-.ts-datatable {
+.ts-datatable.p-datatable {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -219,8 +370,7 @@ const selectColumn = (cols: TableColumn[]) => {
     line-height: 16px;
     letter-spacing: 0.224px;
 
-    th.p-sortable-column,
-    th.p-frozen-column {
+    > tr > th {
       height: 28px;
       padding: 6px 9.6px;
       border-bottom: 1px solid $general-line;
@@ -371,6 +521,65 @@ const selectColumn = (cols: TableColumn[]) => {
 
   .p-frozen-column {
     right: -1px !important;
+  }
+
+  .p-datatable-thead > tr > th,
+  .p-datatable-tbody > tr > td {
+    .p-checkbox .p-checkbox-box {
+      width: 12.8px;
+      height: 12.8px;
+      border-radius: 4px;
+      border: 2px solid $general-line;
+      background: $general-bg-white;
+    }
+
+    .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+      box-shadow: 0 0 0 1px $primary-weak !important;
+    }
+  }
+
+  td.p-selection-column.disabled {
+    .p-checkbox .p-checkbox-box {
+      border-radius: 4px;
+      border: 2px solid $general-placeholder;
+      background: $general-input;
+    }
+  }
+
+  .p-checkbox .p-checkbox-box.p-highlight {
+    .p-checkbox-icon {
+      color: transparent;
+    }
+  }
+
+  th,
+  td.p-selection-column:not(.disabled) {
+    .p-checkbox .p-checkbox-box.p-highlight {
+      border: none !important;
+      background: $primary !important;
+
+      .p-checkbox-icon {
+        color: $general-bg-white;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 48%;
+        left: 54%;
+        transform: translate(-100%, -50%);
+      }
+    }
+  }
+
+  tr.p-highlight:has(td.disabled) {
+    background: $general-bg-white;
+  }
+
+  tr:has(td.disabled):focus {
+    outline: none !important;
+  }
+
+  .p-datatable-loading-overlay {
+    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 

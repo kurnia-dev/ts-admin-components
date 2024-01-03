@@ -7,10 +7,13 @@ import DynamicTable from '../DynamicTable.vue';
 import NameContainer from '../NameContainer.vue';
 import FilterContainer from '@/components/FilterContainer/FilterContainer.vue';
 import OptionSelectionField from '../OptionSelectionField/OptionSelectionField.vue';
+import InputSwitch from '../Input/InputSwitch.vue';
 
-const data = ref([
-{
+const data = [
+  {
     image: 'https://loremflickr.com/640/480',
+    isDefault: true,
+    isActive: true,
     name: 'name 1',
     sku: 'sku 1',
     category: 'category 1',
@@ -26,6 +29,8 @@ const data = ref([
   },
   {
     image: 'https://loremflickr.com/640/480',
+    isDefault: true,
+    isActive: true,
     name: 'name 2',
     sku: 'sku 2',
     category: 'category 2',
@@ -41,6 +46,8 @@ const data = ref([
   },
   {
     image: 'https://loremflickr.com/640/480',
+    isDefault: false,
+    isActive: false,
     name: 'name 3',
     sku: 'sku 3',
     category: 'category 3',
@@ -56,6 +63,8 @@ const data = ref([
   },
   {
     image: 'https://loremflickr.com/640/480',
+    isDefault: false,
+    isActive: true,
     name: 'name 4',
     sku: 'sku 4',
     category: 'category 4',
@@ -71,6 +80,8 @@ const data = ref([
   },
   {
     image: 'https://loremflickr.com/640/480',
+    isDefault: true,
+    isActive: true,
     name: 'name 5',
     sku: 'sku 5',
     category: 'category 5',
@@ -84,10 +95,30 @@ const data = ref([
     transactionDate: 'transactionDate 5',
     _id: '5',
   },
-])
+];
 
 const useColumns = (): Ref<TableColumn[]> => {
   return ref<TableColumn[]>([
+    {
+      field: 'name',
+      header: 'Device Name',
+      sortable: false,
+      fixed: true,
+      bodyComponent: (data: any) => {
+        return {
+          component: InputSwitch,
+          model: data.isActive,
+          props: {
+            disabled: data.isDefault,
+          },
+          events: {
+            'update:modelValue': (e: boolean) => {
+              data.isActive = e;
+            },
+          },
+        };
+      },
+    },
     {
       field: 'name',
       header: 'Device Name',
@@ -109,6 +140,8 @@ const useColumns = (): Ref<TableColumn[]> => {
         return {
           component: NameContainer,
           props: {
+            isDefault: true,
+            isActive: true,
             name: data.category,
           },
         };
@@ -122,6 +155,8 @@ const useColumns = (): Ref<TableColumn[]> => {
         return {
           component: NameContainer,
           props: {
+            isDefault: true,
+            isActive: true,
             name: data.brand,
           },
         };
@@ -135,6 +170,8 @@ const useColumns = (): Ref<TableColumn[]> => {
         return {
           component: NameContainer,
           props: {
+            isDefault: true,
+            isActive: true,
             name: data.model,
           },
         };
@@ -178,21 +215,23 @@ const useColumns = (): Ref<TableColumn[]> => {
 };
 
 const columns = useColumns();
-const stock = ref(data.value);
-const totalRecords = ref<number>(100);
+const stock = ref(data);
+const totalRecords = ref<number>(data.length);
 const companyList = computed(() =>
-  stock.value?.reduce((option: string[], item: any) => {
-    if (!option.includes(item.company)) {
-      option.push(item.company);
-    }
+  stock.value
+    ?.reduce((option: string[], item: any) => {
+      if (!option.includes(item.company)) {
+        option.push(item.company);
+      }
 
-    return option;
-  }, []).map((option: any) => {
-    return {
-      label: option,
-      value: option,
-    }
-  })
+      return option;
+    }, [])
+    .map((option: any) => {
+      return {
+        label: option,
+        value: option,
+      };
+    })
 );
 
 /**
@@ -256,6 +295,8 @@ const sortTable = (data: any) => {
 };
 
 const companyField = ref<string[]>([]);
+const selectedDatas = ref<any[]>();
+const isSelectedAll = ref<boolean>(false);
 </script>
 <template>
   <div class="table__toolbar">
@@ -263,14 +304,37 @@ const companyField = ref<string[]>([]);
   </div>
   <FilterContainer>
     <template #content>
-      <OptionSelectionField v-model="companyField" :options="companyList" mode="multi" label="Company" />
-      <OptionSelectionField v-model="companyField" :options="companyList" mode="multi" label="Company" />
-      <OptionSelectionField v-model="companyField" :options="companyList" mode="multi" label="Company" />
+      <OptionSelectionField
+        v-model="companyField"
+        :options="companyList"
+        mode="multi"
+        label="Company"
+      />
+      <OptionSelectionField
+        v-model="companyField"
+        :options="companyList"
+        mode="multi"
+        label="Company"
+      />
+      <OptionSelectionField
+        v-model="companyField"
+        :options="companyList"
+        mode="multi"
+        label="Company"
+      />
+      <OptionSelectionField
+        v-model="companyField"
+        :options="companyList"
+        mode="multi"
+        label="Company"
+      />
     </template>
   </FilterContainer>
   <DynamicTable
     :columns="columns"
     :datas="stock"
+    v-model:selected-datas="selectedDatas"
+    v-model:is-selected-all="isSelectedAll"
     dataKey="_id"
     :rows="5"
     :totalRecords="totalRecords"
@@ -286,5 +350,7 @@ const companyField = ref<string[]>([]);
     @set-detail="(item: any) => {
       _id = item._id;
     }"
+    use-selection
+    @select-all-change="selectedDatas = $event.checked ? data : []"
   />
 </template>
