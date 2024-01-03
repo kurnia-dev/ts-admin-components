@@ -32,6 +32,7 @@ defineEmits<{
   display: inline-block;
   width: 33.61px;
   height: 18.33px;
+  text-align: center;
 
   input.hidden-input {
     opacity: 0;
@@ -60,10 +61,9 @@ defineEmits<{
     content: '';
     height: 12.5px;
     width: 12.5px;
-    left: 3px;
     bottom: 50%;
 
-    transform: translateY(50%);
+    transform: translate(calc(-100% - 1px), 50%);
     background-color: $general-line;
     border-radius: 50%;
     transition: 0.4s;
@@ -75,9 +75,7 @@ defineEmits<{
   }
 
   input:checked + .slider:before {
-    right: 3px;
-    bottom: 50%;
-    transform: translate(100%, 50%);
+    transform: translate(1px, 50%);
     background: $general-bg-white;
   }
 }

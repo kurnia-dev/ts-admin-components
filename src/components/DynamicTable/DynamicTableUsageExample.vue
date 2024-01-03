@@ -8,6 +8,7 @@ import NameContainer from '../NameContainer.vue';
 import FilterContainer from '@/components/FilterContainer/FilterContainer.vue';
 import OptionSelectionField from '../OptionSelectionField/OptionSelectionField.vue';
 import InputSwitch from '../Input/InputSwitch.vue';
+import TSCalendar from '../Calendar/TSCalendar.vue';
 
 const data = [
   {
@@ -294,36 +295,37 @@ const sortTable = (data: any) => {
   fetchParams.sortField = data.sortField;
 };
 
-const companyField = ref<string[]>([]);
 const selectedDatas = ref<any[]>();
 const isSelectedAll = ref<boolean>(false);
+const filter = reactive<any>({});
+const clear = () => {
+  const keys = Object.keys(filter);
+  keys.forEach((key: string) => {
+    delete filter[key];
+  })
+
+  console.log(filter);
+}
 </script>
 <template>
   <div class="table__toolbar">
     <ScanRFID />
   </div>
-  <FilterContainer>
+  <FilterContainer @clear="clear" @apply="console.log(filter)">
     <template #content>
       <OptionSelectionField
-        v-model="companyField"
+        v-model="filter.companyField"
         :options="companyList"
         mode="multi"
         label="Company"
       />
-      <OptionSelectionField
-        v-model="companyField"
-        :options="companyList"
-        mode="multi"
-        label="Company"
+      <TSCalendar
+        v-model="filter.date"
+        label="Single Select"
+        mode="single"
       />
       <OptionSelectionField
-        v-model="companyField"
-        :options="companyList"
-        mode="multi"
-        label="Company"
-      />
-      <OptionSelectionField
-        v-model="companyField"
+        v-model="filter.company"
         :options="companyList"
         mode="multi"
         label="Company"
