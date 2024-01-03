@@ -74,7 +74,7 @@ const setOption = (options: TOptionSelection[]) => {
       aria-describedby="dd-error"
       filter-placeholder="Search"
       option-label="label"
-      option-lalue="value"
+      option-value="value"
       display="chip"
     />
     <Dropdown
