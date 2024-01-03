@@ -15,6 +15,7 @@ import GroupTree from './GroupTree.vue';
 import HelloWorld from './HelloWorld.vue';
 import ImageCompressor from './ImageCompressor-v2.vue';
 import ImagePreview from './ImagePreview.vue';
+import InputSwitch from './Input/InputSwitch.vue';
 import MultiInputText from './MultiInputText.vue';
 import NameContainer from './NameContainer.vue';
 import ScanQR from './ScanQR/ScanQRButton.vue';
@@ -54,6 +55,7 @@ export {
   HelloWorld,
   ImageCompressor,
   ImagePreview,
+  InputSwitch,
   MultiInputText,
   NameContainer,
   ScanQR,
