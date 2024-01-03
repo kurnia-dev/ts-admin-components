@@ -16,6 +16,8 @@ defineEmits<{
   clear: [];
 }>();
 
+const contentKey = ref<number>(0);
+
 onMounted(() => {
   const chilren = container.value!.children;
   const childCount = container.value!.childElementCount;
@@ -38,13 +40,13 @@ onMounted(() => {
 </script>
 <template>
   <div class="ts-filter-container" ref="container">
-    <slot name="content"></slot>
+    <slot name="content" :key="contentKey"></slot>
     <div class="ts-filter-action-button">
       <Button
         label="Clear Field"
         severity="primary"
         text-only
-        @click="$emit('clear')"
+        @click="$emit('clear'), contentKey++"
       />
       <Button label="Apply" severity="success" @click="$emit('apply')" />
     </div>
@@ -59,6 +61,11 @@ onMounted(() => {
   gap: 1rem;
   align-items: flex-end;
   background-color: #f5f5f5;
+  grid-template-columns: repeat(4, 1fr);
+
+  > * {
+    width: 100%;
+  }
 
   .ts-filter-action-button {
     display: flex;
