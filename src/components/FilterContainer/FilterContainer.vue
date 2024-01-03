@@ -65,6 +65,7 @@ onMounted(() => {
 
   > * {
     width: 100%;
+    min-width: 0;
   }
 
   .ts-filter-action-button {
