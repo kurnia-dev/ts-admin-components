@@ -523,26 +523,11 @@ watch(props, () => {
     right: -1px !important;
   }
 
-  .p-datatable-thead > tr > th,
-  .p-datatable-tbody > tr > td {
-    .p-checkbox .p-checkbox-box {
-      width: 12.8px;
-      height: 12.8px;
-      border-radius: 4px;
-      border: 2px solid $general-line;
-      background: $general-bg-white;
-    }
-
-    .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
-      box-shadow: 0 0 0 1px $primary-weak !important;
-    }
-  }
-
   td.p-selection-column.disabled {
     .p-checkbox .p-checkbox-box {
-      border-radius: 4px;
-      border: 2px solid $general-placeholder;
-      background: $general-input;
+      border-radius: 4px !important;
+      border: 2px solid $general-placeholder !important;
+      background: $general-input !important;
     }
   }
 
@@ -564,8 +549,7 @@ watch(props, () => {
         height: 10px;
         position: absolute;
         top: 48%;
-        left: 54%;
-        transform: translate(-100%, -50%);
+        transform: translate(0, -50%);
       }
     }
   }
@@ -626,8 +610,8 @@ watch(props, () => {
     cursor: default;
 
     .p-checkbox-box {
-      border-color: $general-placeholder;
-      background: $general-placeholder;
+      border-color: $general-placeholder !important;
+      background: $general-placeholder !important;
     }
   }
 

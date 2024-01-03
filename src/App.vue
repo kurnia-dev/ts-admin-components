@@ -14,7 +14,7 @@ import Card from 'primevue/card';
 import DynamicTableUsageExample from './components/DynamicTable/DynamicTableUsageExample.vue';
 
 const dateStringified = ref<string>();
-  const menus = ref([
+const menus = ref([
   {
     label: 'Stock',
     to: '/',
@@ -356,6 +356,37 @@ span.ripple {
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+}
+
+.p-inputtext {
+  color: $general-body !important;
+}
+
+.p-checkbox .p-checkbox-box {
+  width: 12.8px !important;
+  height: 12.8px !important;
+  border-radius: 4px !important;
+  border: 2px solid $general-line !important;
+  background: $general-bg-white !important;
+}
+
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+  box-shadow: 0 0 0 1px $primary-weak !important;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight {
+  border: none !important;
+  background: $primary !important;
+
+  .p-checkbox-icon {
+    transition: 0.1s;
+    color: $general-bg-white;
+    width: 10px !important;
+    height: 10px !important;
+    position: absolute;
+    top: 48%;
+    transform: translate(0, -50%);
   }
 }
 </style>

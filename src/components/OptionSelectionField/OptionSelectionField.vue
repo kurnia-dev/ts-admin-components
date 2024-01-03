@@ -14,6 +14,7 @@ const props = defineProps<{
   label: string;
   fieldName?: string;
   placeholder?: string;
+  closable?: boolean;
 }>();
 
 defineEmits<{
@@ -29,7 +30,7 @@ const defaultMessage = computed(() => {
   return props.mode == 'single'
     ? 'You must pick an item'
     : 'You must pick at least an item';
-})
+});
 
 onMounted(() => {
   if (props.useValidator) {
@@ -68,6 +69,9 @@ const setOption = (options: TOptionSelection[]) => {
       :options="dropdownOptions"
       :placeholder="placeholder ?? `Select ${label}`"
       :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
+      :pt="{
+        closeButton: { style: !closable && 'display: none' },
+      }"
       @update:modelValue="
         $emit('update:modelValue', $event), console.log($event)
       "
@@ -126,14 +130,99 @@ const setOption = (options: TOptionSelection[]) => {
     height: auto !important;
   }
 
+  .p-multiselect-label {
+    display: flex;
+    gap: 2px;
+    padding: 0 !important;
+  }
+
   .p-multiselect-trigger,
   .p-dropdown-trigger {
     width: 20px !important;
     height: 20px !important;
 
     .p-multiselect-trigger-icon,
-    .p-dropdown-trigger-icon { 
+    .p-dropdown-trigger-icon {
       width: 11.2px;
+    }
+  }
+
+  .p-multiselect-token {
+    display: flex;
+    height: 19px;
+    padding: 4px !important;
+    margin-right: 0 !important;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 2px !important;
+    border-radius: 4px !important;
+    border: 1px solid;
+    background: $general-bg-white !important;
+    color: $general-header-weak !important;
+
+    &-label {
+      text-align: center;
+      color: inherit;
+
+      font-size: 8.89px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 12px;
+      letter-spacing: 0.267px;
+    }
+  }
+
+  .p-multiselect-token-icon {
+    display: flex;
+    width: 10.13px !important;
+    height: 10.13px !important;
+    margin-left: 0 !important;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.p-multiselect-panel {
+  .p-multiselect-header {
+    display: flex;
+    padding: 12px 16px !important;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+
+    .p-checkbox {
+      width: max-content;
+      margin-right: 0 !important;
+    }
+  }
+
+  .p-multiselect-filter {
+    border-radius: 6px;
+    border: 1px solid $general-body !important;
+    background: $general-bg-white;
+    height: 32px !important;
+  }
+
+  .p-multiselect-filter-icon {
+    width: 12px !important;
+    height: 12px !important;
+    top: 50%;
+    margin-top: 0;
+    transform: translateY(-50%);
+  }
+
+  li.p-multiselect-item {
+    display: flex;
+    padding: 5.5px 16px !important;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    @include font-size(11.2px);
+    color: $general-body;
+    line-height: 1rem;
+
+    .p-checkbox {
+      width: max-content;
+      margin-right: 0 !important;
     }
   }
 }
