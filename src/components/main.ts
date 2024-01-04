@@ -10,7 +10,6 @@ import {
   CustomTree,
   CustomTreeNode,
   DateText,
-  DynamicDialog,
   DynamicTable,
   FilterContainer,
   GroupNameContainer,
@@ -31,6 +30,7 @@ import {
   TSBreadcrumb,
   TSButton,
   TSCalendar,
+  TSConfirmDialog,
   TSInputText,
   TSSelectOption,
   VCalendar,
@@ -57,7 +57,6 @@ export default {
     app.component('CustomTree', CustomTree);
     app.component('CustomTreeNode', CustomTreeNode);
     app.component('DateText', DateText);
-    app.component('DynamicDialog', DynamicDialog);
     app.component('DynamicTable', DynamicTable);
     app.component('FilterContainer', FilterContainer);
     app.component('GroupNameContainer', GroupNameContainer);
@@ -78,6 +77,7 @@ export default {
     app.component('TSBreadcrumb', TSBreadcrumb);
     app.component('TSButton', TSButton);
     app.component('TSCalendar', TSCalendar);
+    app.component('TSConfirmDialog', TSConfirmDialog);
     app.component('TSInputText', TSInputText);
     app.component('TSSelectOption', TSSelectOption);
     app.component('VCalendar', VCalendar);
@@ -101,7 +101,6 @@ export {
   CustomTree,
   CustomTreeNode,
   DateText,
-  DynamicDialog,
   DynamicTable,
   FilterContainer,
   GroupNameContainer,
@@ -122,6 +121,7 @@ export {
   TSBreadcrumb,
   TSButton,
   TSCalendar,
+  TSConfirmDialog,
   TSInputText,
   TSSelectOption,
   VCalendar,

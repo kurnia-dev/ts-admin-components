@@ -12,6 +12,7 @@ import ScanQR from './components/ScanQR/ScanQRButton.vue';
 import ScanRFID from './components/ScanRFID/ScanRFIDButton.vue';
 import Card from 'primevue/card';
 import DynamicTableUsageExample from './components/DynamicTable/DynamicTableUsageExample.vue';
+import TSConfirmDialogUsageExample from './components/TSConfirmDialog/TSConfirmDialogUsageExample.vue';
 
 const dateStringified = ref<string>();
 const menus = ref([
@@ -49,6 +50,8 @@ const menus = ref([
     <template #content>
       <div class="d-flex flex-column gap-4" style="margin: 32px 0">
         <TSButtonUsageExample />
+        <label>Confirm Dialog</label>
+        <TSConfirmDialogUsageExample />
         <div class="row">
           <div class="col-3">
             <TSCalendar

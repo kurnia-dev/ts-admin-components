@@ -41,16 +41,16 @@ const severityClass = computed(() => {
 const createRipple = (event: ButtonEvent): void => {
   const button = event.currentTarget;
 
-  const circle = document.createElement("span");
+  const circle = document.createElement('span');
   const diameter = Math.max(button.clientWidth, button.clientHeight);
   const radius = diameter / 2;
 
   circle.style.width = circle.style.height = `${diameter}px`;
   circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
   circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-  circle.classList.add("ripple");
+  circle.classList.add('ripple');
 
-  const ripple = button.getElementsByClassName("ripple")[0] as HTMLSpanElement;
+  const ripple = button.getElementsByClassName('ripple')[0] as HTMLSpanElement;
 
   if (ripple) {
     ripple.remove();
@@ -64,9 +64,14 @@ const createRipple = (event: ButtonEvent): void => {
   <button
     ref="button"
     class="ts-button"
-    :class="[severityClass, { outlined }, { 'text-only': textOnly }, {'icon-only outlined': iconOnly}]"
+    :class="[
+      severityClass,
+      { outlined },
+      { 'text-only': textOnly },
+      { 'icon-only outlined': iconOnly },
+    ]"
   >
-    <i :class="props.icon" class="ts-button-icon"/>
+    <i v-if="props.icon" :class="props.icon" class="ts-button-icon" />
     {{ props.label }}
   </button>
 </template>

@@ -7,7 +7,6 @@ import CustomOverlayPanel from './CustomOverlayPanel/OverlayPanel.vue';
 import CustomTree from './CustomTree/Tree.vue';
 import CustomTreeNode from './CustomTree/TreeNode.vue';
 import DateText from './DateText.vue';
-import DynamicDialog from './DynamicDialog.vue';
 import DynamicTable from './DynamicTable.vue';
 import FilterContainer from './FilterContainer/FilterContainer.vue';
 import GroupNameContainer from './GroupNameContainer.vue';
@@ -28,6 +27,7 @@ import TagTypeIdentifier from './TagTypeIdentifier.vue';
 import TSBreadcrumb from './Breadcrumb/Breadcrumb.vue';
 import TSButton from './TSButtons/Button.vue';
 import TSCalendar from './Calendar/TSCalendar.vue';
+import TSConfirmDialog from './TSConfirmDialog/TSConfirmDialog.vue';
 import TSInputText from './TextField/TextField.vue';
 import TSSelectOption from './OptionSelectionField/OptionSelectionField.vue';
 import VCalendar from './VCalendar.vue';
@@ -47,7 +47,6 @@ export {
   CustomTree,
   CustomTreeNode,
   DateText,
-  DynamicDialog,
   DynamicTable,
   FilterContainer,
   GroupNameContainer,
@@ -68,6 +67,7 @@ export {
   TSBreadcrumb,
   TSButton,
   TSCalendar,
+  TSConfirmDialog,
   TSInputText,
   TSSelectOption,
   VCalendar,
