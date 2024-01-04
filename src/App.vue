@@ -131,6 +131,7 @@ const menus = ref([
   @include padding(11.2px 8px !important);
   border-width: 0 0 2px 0 !important;
   text-decoration: none;
+  height: 35.4px;
 
   .p-menuitem-text {
     @include font-size(11.2px);
@@ -145,6 +146,7 @@ const menus = ref([
 
 .p-tabmenu .p-tabmenu-nav,
 .p-tabmenuitem .p-menuitem-link {
+  height: 35.4px;
   border-width: 0 0 2px 0 !important;
   color: $general-placeholder;
 }

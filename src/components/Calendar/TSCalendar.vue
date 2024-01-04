@@ -99,7 +99,7 @@ watch(date, (newDate: string | undefined) => {
 
   .p-button.p-datepicker-trigger,
   .p-button.p-datepicker-trigger:hover {
-    background: white;
+    background: none;
     border: none;
     color: $general-label;
   }

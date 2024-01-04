@@ -496,14 +496,19 @@ watch(props, () => {
       border-radius: 7px;
       border: 1px solid $general-body;
       width: max-content;
-      height: max-content;
+      height: 26.2px;
       @include padding(4px 12px);
       @include rfs(16px, line-height);
       color: $general-label;
 
       span {
+        padding: 0;
         @include font-size(11.2px !important);
       }
+    }
+
+    .p-paginator-page-input input {
+      border-color: $general-grey;
     }
 
     .p-dropdown {
@@ -515,6 +520,10 @@ watch(props, () => {
 
       .p-dropdown-trigger {
         width: max-content;
+        &-icon {
+          width: 10px;
+          height: 10px;
+        }
       }
     }
   }
