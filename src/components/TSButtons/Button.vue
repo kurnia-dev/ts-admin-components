@@ -2,10 +2,11 @@
 import { onMounted, ref, computed } from 'vue';
 
 const props = defineProps<{
-  label: string;
+  label?: string;
   severity?: 'primary' | 'danger' | 'success';
   outlined?: boolean;
   textOnly?: boolean;
+  icon?: string;
 }>();
 
 type ButtonEvent = MouseEvent & {
@@ -22,6 +23,7 @@ onMounted(() => {
 });
 
 const button = ref<HTMLButtonElement | null>(null);
+const iconOnly = computed<boolean>(() => !!props.icon && !props.label);
 
 const severityClass = computed(() => {
   switch (props.severity) {
@@ -62,8 +64,9 @@ const createRipple = (event: ButtonEvent): void => {
   <button
     ref="button"
     class="ts-button"
-    :class="[severityClass, { outlined }, { 'text-only': textOnly }]"
+    :class="[severityClass, { outlined }, { 'text-only': textOnly }, {'icon-only outlined': iconOnly}]"
   >
+    <i :class="props.icon" class="ts-button-icon"/>
     {{ props.label }}
   </button>
 </template>

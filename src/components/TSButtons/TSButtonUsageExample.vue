@@ -26,6 +26,9 @@ watch(isOn, (on) => console.log(on))
     <Button label="TS Button" severity="danger" text-only />
     <Button label="TS Button" severity="success" text-only />
     <Button label="TS Button" />
+    <Button icon="ri-filter-line" />
+    <Button icon="ri-file-text-line" />
+    <Button icon="ri-download-2-line" severity="success" />
   </div>
   <div class="d-flex gap-3">
     <ButtonDefault label="Default" />
