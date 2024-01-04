@@ -25,11 +25,24 @@ onMounted(() => setOption(props.options));
 
 const dropdownOptions = ref<TOptionSelection[]>();
 
+const formatLabel = (label: string): string => {
+  const wordsStartWithVowelSound = ['a', 'e', 'i', 'o', 'u'];
+  const specialCases = ['hour', 'honest', 'honor', 'heir', 'university', 'one'];
+  const firstLetter = label[0].toLowerCase();
+  const word = label.toLowerCase();
+
+  if (specialCases.includes(word)) {
+    return `an ${label}`;
+  }
+
+  return wordsStartWithVowelSound.includes(firstLetter) ? `an ${label}` : `a ${label}`;
+};
+
 const field = reactive<FieldValidation>({ value: '' });
 const defaultMessage = computed(() => {
   return props.mode == 'single'
-    ? 'You must pick an item'
-    : 'You must pick at least an item';
+    ? 'You must pick ' + formatLabel(props.label)
+    : 'You must pick at least ' + formatLabel(props.label);
 });
 
 onMounted(() => {
@@ -106,7 +119,6 @@ const setOption = (options: TOptionSelection[]) => {
 .ts-multiselect,
 .ts-dropdown {
   display: flex;
-  align-items: center;
   height: 26px;
   padding: 4px 4px 4px 12px;
   justify-content: space-between;
