@@ -150,18 +150,18 @@ const filterSelectedDatas = (datas?: Data[]) => {
   return (datas ?? []).filter(
     (data: any) => !disabledRows.value.includes(data[props.dataKey])
   );
-}
+};
 
 const selectedDatas = computed({
   get() {
     return filterSelectedDatas(props.selectedDatas);
   },
   set(newSelectedDatas: Data[]) {
-    const filtered = filterSelectedDatas(newSelectedDatas)
+    const filtered = filterSelectedDatas(newSelectedDatas);
     emit('selectDatas', filtered);
     emit('update:selectedDatas', filtered);
-    const total = props.totalRecords ?? props.datas.length
-    const checked = total == filtered.length + disabledRows.value.length
+    const total = props.totalRecords ?? props.datas.length;
+    const checked = total == filtered.length + disabledRows.value.length;
     emit('update:isSelectedAll', checked);
   },
 });
@@ -238,7 +238,7 @@ watch(props, () => {
     @sort="emit('sort', $event)"
     @select-all-change="
       emit('selectAllChange', $event),
-      emit('update:isSelectedAll', $event.checked)
+        emit('update:isSelectedAll', $event.checked)
     "
     @row-unselect="emit('update:isSelectedAll', false)"
     paginator-template="FirstPageLink PrevPageLink PageLinks JumpToPageInput NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -332,7 +332,8 @@ watch(props, () => {
     :popup="true"
     :pt="{
       root: {
-        style: 'min-width: 12.5rem !important; width: auto !important',
+        style:
+          'min-width: 12.5rem !important; width: auto !important; top: 375px',
       },
       content: { style: 'align-items: center; padding: 0' },
     }"

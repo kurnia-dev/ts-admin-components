@@ -140,6 +140,7 @@ const menus = ref([
     @include font-size(11.2px);
     font-weight: 500;
     color: $general-placeholder;
+    width: max-content;
   }
 }
 
@@ -399,6 +400,21 @@ span.ripple {
 
 .p-inputtext {
   color: $general-body !important;
+}
+
+.ts-inputtext  {
+  color: $general-body !important;
+  border-radius: 4px;
+  border: 1px solid !important;
+  background: $general-bg-white;
+}
+
+.ts-inputtext.p-inputtext.p-component::placeholder {
+  color: $general-placeholder !important;
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 300;
+  opacity: 1;
 }
 
 .p-checkbox .p-checkbox-box {

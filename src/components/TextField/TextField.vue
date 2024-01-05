@@ -37,6 +37,7 @@ onMounted(() => {
       v-model="field.value"
       :placeholder="placeholder ?? `Input ${label.toLowerCase()}`"
       :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
+      class="ts-inputtext"
     />
     <small class="validator-message" id="dd-error" v-if="field.errorMessage">{{
       field.errorMessage
