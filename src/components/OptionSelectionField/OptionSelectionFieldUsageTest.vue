@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import DropdownOption from './OptionSelectionField.vue';
 import { useForm } from 'vee-validate';
 import Button from 'primevue/button';
 import TextField from '../TextField/TextField.vue';
+import InputTextarea from '@/components/Input/InputTextarea.vue'
+import InputEmail from '@/components/Input/InputEmail.vue';
 
 const { handleSubmit } = useForm();
 const value1 = ref<any>();
@@ -21,6 +23,8 @@ const cities = ref([
 const onSubmit = handleSubmit((values) => {
   if (values) console.log(values);
 });
+
+const texts = reactive<any>({});
 </script>
 
 <template>
@@ -47,6 +51,8 @@ const onSubmit = handleSubmit((values) => {
       use-validator
     />
     <TextField
+      v-model="texts.text1"
+      @update:model-value="console.log($event)"
       class="col-3"
       mandatory
       use-validator
@@ -54,10 +60,30 @@ const onSubmit = handleSubmit((values) => {
       field-name="textField"
     />
     <TextField
+      v-model="texts.text2"
+      @update:model-value="console.log($event)"
       class="col-3"
       label="Not mandatory"
       field-name="notMandatory"
       use-validator
+    />
+    <InputEmail
+      v-model="texts.email"
+      @update:model-value="console.log($event)"
+      class="col-3"
+      label="Email"
+      field-name="email"
+      use-validator
+      mandatory
+    />
+    <InputTextarea
+      v-model="texts.textarea"
+      @update:model-value="console.log($event)"
+      class="col-3"
+      label="Text area"
+      field-name="textarea"
+      use-validator
+      mandatory
     />
     <Button
       class="col-1"

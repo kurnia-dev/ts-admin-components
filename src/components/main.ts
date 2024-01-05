@@ -32,8 +32,10 @@ import {
   TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
+  TSInputEmail,
   TSInputText,
   TSSelectOption,
+  TSTextarea,
 } from '@/components';
 
 import DateUtils from '@/utils/date.util';
@@ -74,8 +76,10 @@ export default {
     app.component('TSButtonFilter', TSButtonFilter);
     app.component('TSCalendar', TSCalendar);
     app.component('TSConfirmDialog', TSConfirmDialog);
+    app.component('TSInputEmail', TSInputEmail);
     app.component('TSInputText', TSInputText);
     app.component('TSSelectOption', TSSelectOption);
+    app.component('TSTextarea', TSTextarea);
   },
 };
 
@@ -113,6 +117,8 @@ export {
   TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
+  TSInputEmail,
   TSInputText,
   TSSelectOption,
+  TSTextarea,
 };

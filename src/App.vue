@@ -417,6 +417,12 @@ span.ripple {
   opacity: 1;
 }
 
+.ts-textarea {
+  height: unset;
+  min-height: 70px;
+  @include rfs(8px 12px, padding);
+}
+
 .p-checkbox .p-checkbox-box {
   width: 12.8px !important;
   height: 12.8px !important;

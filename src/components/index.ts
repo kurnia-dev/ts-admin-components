@@ -30,7 +30,9 @@ import TSButtonFilter from './TSButtons/ButtonFilter.vue';
 import TSCalendar from './Calendar/TSCalendar.vue';
 import TSConfirmDialog from './TSConfirmDialog/TSConfirmDialog.vue';
 import TSInputText from './TextField/TextField.vue';
+import TSInputEmail from './Input/InputEmail.vue';
 import TSSelectOption from './OptionSelectionField/OptionSelectionField.vue';
+import TSTextarea from './Input/InputTextarea.vue';
 
 export {
   App,
@@ -64,6 +66,8 @@ export {
   TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
+  TSInputEmail,
   TSInputText,
   TSSelectOption,
+  TSTextarea,
 };
