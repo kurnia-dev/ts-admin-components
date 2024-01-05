@@ -343,6 +343,28 @@ const menus = ref([
   background: $dark-thin !important;
 }
 
+
+.ts-button-filter.ts-button.ts-button-secondary {
+  background: $general-label !important;
+  color: $general-bg-white !important;
+  border: none;
+  transition: 0.1s;
+}
+
+.ts-button-filter.ts-button.ts-button-secondary:hover {
+  background: $general-label-hover;
+}
+
+.ts-button-filter.ts-button.ts-button-secondary.outlined {
+  background: $general-bg-white !important;
+  color: $general-header-weak !important;
+  border: 1px solid;
+}
+
+.ts-button-filter.ts-button.ts-button-secondary.outlined:hover {
+  background: $dark-thin !important;
+}
+
 span.ripple {
   position: absolute;
   border-radius: 50%;

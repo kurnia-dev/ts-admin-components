@@ -26,16 +26,11 @@ import StaticTable from './StaticTable.vue';
 import TagTypeIdentifier from './TagTypeIdentifier.vue';
 import TSBreadcrumb from './Breadcrumb/Breadcrumb.vue';
 import TSButton from './TSButtons/Button.vue';
+import TSButtonFilter from './TSButtons/ButtonFilter.vue';
 import TSCalendar from './Calendar/TSCalendar.vue';
 import TSConfirmDialog from './TSConfirmDialog/TSConfirmDialog.vue';
 import TSInputText from './TextField/TextField.vue';
 import TSSelectOption from './OptionSelectionField/OptionSelectionField.vue';
-import VCalendar from './VCalendar.vue';
-import VCheckbox from './VCheckbox.vue';
-import VDropdown from './VDropdown.vue';
-import VInput from './VInput.vue';
-import VMultiSelect from './VMultiSelect.vue';
-import VRadioButtons from './VRadioButtons.vue';
 
 export {
   App,
@@ -66,14 +61,9 @@ export {
   TagTypeIdentifier,
   TSBreadcrumb,
   TSButton,
+  TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
   TSInputText,
   TSSelectOption,
-  VCalendar,
-  VCheckbox,
-  VDropdown,
-  VInput,
-  VMultiSelect,
-  VRadioButtons
 };

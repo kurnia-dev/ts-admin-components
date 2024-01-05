@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { computed, ref, useAttrs, watch } from 'vue';
+import Button from 'primevue/button';
 
 const attrs: any = useAttrs();
-
 const showSearchInput = ref(false);
 
 const togglerId = computed(() => attrs['togglerId'] || attrs['toggler-id']);
-
 const onInput = (event: any) => {
   attrs['onUpdate:modelValue'](event.target.value);
 };
@@ -19,7 +18,7 @@ watch(showSearchInput, (val) => {
 </script>
 
 <template>
-  <div class="" v-if="!showSearchInput">
+  <template v-if="!showSearchInput">
     <Button
       icon="ri-search-2-line"
       severity="secondary"
@@ -27,8 +26,8 @@ watch(showSearchInput, (val) => {
       class="btn-icon"
       @click="showSearchInput = true"
     />
-  </div>
-  <div v-else>
+  </template>
+  <template v-else>
     <form class="p-inputgroup" @submit.prevent="$attrs.onSearch">
       <input
         placeholder="Search"
@@ -55,7 +54,7 @@ watch(showSearchInput, (val) => {
       </button>
       <button type="submit" class="d-none"></button>
     </form>
-  </div>
+  </template>
 </template>
 
 <style lang="scss">

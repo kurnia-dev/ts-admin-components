@@ -3,7 +3,7 @@ import { onMounted, ref, computed } from 'vue';
 
 const props = defineProps<{
   label?: string;
-  severity?: 'primary' | 'danger' | 'success';
+  severity?: 'primary' | 'danger' | 'success' | 'secondary';
   outlined?: boolean;
   textOnly?: boolean;
   icon?: string;
@@ -33,6 +33,8 @@ const severityClass = computed(() => {
       return 'ts-button-danger';
     case 'success':
       return 'ts-button-success';
+    case 'secondary':
+      return 'ts-button-secondary'
     default:
       return 'button-default';
   }
@@ -68,7 +70,7 @@ const createRipple = (event: ButtonEvent): void => {
       severityClass,
       { outlined },
       { 'text-only': textOnly },
-      { 'icon-only outlined': iconOnly },
+      { 'icon-only': iconOnly },
     ]"
   >
     <i v-if="props.icon" :class="props.icon" class="ts-button-icon" />

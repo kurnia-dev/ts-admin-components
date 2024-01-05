@@ -9,6 +9,7 @@ import FilterContainer from '@/components/FilterContainer/FilterContainer.vue';
 import OptionSelectionField from '../OptionSelectionField/OptionSelectionField.vue';
 import InputSwitch from '../Input/InputSwitch.vue';
 import TSCalendar from '../Calendar/TSCalendar.vue';
+import ButtonFilter from '../TSButtons/ButtonFilter.vue';
 
 const data = [
   {
@@ -302,16 +303,23 @@ const clear = () => {
   const keys = Object.keys(filter);
   keys.forEach((key: string) => {
     delete filter[key];
-  })
+  });
 
   console.log(filter);
-}
+};
+
+const showFilter = ref<boolean>(false);
 </script>
 <template>
-  <div class="table__toolbar">
+  <div class="d-flex gap-2 justify-content-end">
     <ScanRFID />
+    <ButtonFilter v-model:show-filter="showFilter" />
   </div>
-  <FilterContainer @clear="clear" @apply="console.log(filter)">
+  <FilterContainer
+    v-show="showFilter"
+    @clear="clear"
+    @apply="console.log(filter)"
+  >
     <template #content>
       <OptionSelectionField
         v-model="filter.companyField"
@@ -319,11 +327,7 @@ const clear = () => {
         mode="single"
         label="Company"
       />
-      <TSCalendar
-        v-model="filter.date"
-        label="Single Select"
-        mode="single"
-      />
+      <TSCalendar v-model="filter.date" label="Single Select" mode="single" />
       <OptionSelectionField
         v-model="filter.company"
         :options="companyList"

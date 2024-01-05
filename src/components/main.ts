@@ -29,16 +29,11 @@ import {
   TagTypeIdentifier,
   TSBreadcrumb,
   TSButton,
+  TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
   TSInputText,
   TSSelectOption,
-  VCalendar,
-  VCheckbox,
-  VDropdown,
-  VInput,
-  VMultiSelect,
-  VRadioButtons,
 } from '@/components';
 
 import DateUtils from '@/utils/date.util';
@@ -76,16 +71,11 @@ export default {
     app.component('TagTypeIdentifier', TagTypeIdentifier);
     app.component('TSBreadcrumb', TSBreadcrumb);
     app.component('TSButton', TSButton);
+    app.component('TSButtonFilter', TSButtonFilter);
     app.component('TSCalendar', TSCalendar);
     app.component('TSConfirmDialog', TSConfirmDialog);
     app.component('TSInputText', TSInputText);
     app.component('TSSelectOption', TSSelectOption);
-    app.component('VCalendar', VCalendar);
-    app.component('VCheckbox', VCheckbox);
-    app.component('VDropdown', VDropdown);
-    app.component('VInput', VInput);
-    app.component('VMultiSelect', VMultiSelect);
-    app.component('VRadioButtons', VRadioButtons);
   },
 };
 
@@ -120,14 +110,9 @@ export {
   TagTypeIdentifier,
   TSBreadcrumb,
   TSButton,
+  TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
   TSInputText,
   TSSelectOption,
-  VCalendar,
-  VCheckbox,
-  VDropdown,
-  VInput,
-  VMultiSelect,
-  VRadioButtons,
 };
