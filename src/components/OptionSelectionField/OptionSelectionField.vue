@@ -131,15 +131,15 @@ const setOption = (options: TOptionSelection[]) => {
   .p-multiselect-label.p-placeholder,
   .p-dropdown-label.p-placeholder {
     color: $general-placeholder !important;
+    height: 20px !important;
+    line-height: 18px;
 
     @include font-size(11.2px);
     font-style: normal;
     font-weight: 300;
-    line-height: 1rem;
     letter-spacing: 0.224px;
     padding: 0;
     text-align: left;
-    height: auto !important;
   }
 
   .p-multiselect-label {
@@ -157,6 +157,13 @@ const setOption = (options: TOptionSelection[]) => {
     .p-dropdown-trigger-icon {
       width: 11.2px;
     }
+  }
+
+  .p-dropdown-label {
+    @include font-size(11.2px);
+    text-align: left;
+    padding: 0;
+    height: 20px !important;
   }
 
   .p-multiselect-token {
@@ -191,6 +198,19 @@ const setOption = (options: TOptionSelection[]) => {
     margin-left: 0 !important;
     justify-content: center;
     align-items: center;
+  }
+}
+
+.p-dropdown-items {
+  li.p-dropdown-item {
+    display: flex;
+    padding: 5.5px 16px !important;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    @include font-size(11.2px);
+    color: $general-body;
+    line-height: 1rem;
   }
 }
 .p-multiselect-panel {
