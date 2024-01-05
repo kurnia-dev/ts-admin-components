@@ -6,6 +6,7 @@ import Button from 'primevue/button';
 import TextField from '../TextField/TextField.vue';
 import InputTextarea from '@/components/Input/InputTextarea.vue'
 import InputEmail from '@/components/Input/InputEmail.vue';
+import InputNumber from '@/components/Input/InputNumber.vue';
 
 const { handleSubmit } = useForm();
 const value1 = ref<any>();
@@ -25,6 +26,11 @@ const onSubmit = handleSubmit((values) => {
 });
 
 const texts = reactive<any>({});
+const initial = ref<number>(0);
+
+setTimeout(() => {
+  initial.value = 1;
+}, 2000);
 </script>
 
 <template>
@@ -85,6 +91,15 @@ const texts = reactive<any>({});
       use-validator
       mandatory
     />
+    <InputNumber
+      class="col-3"
+      :max="10"
+      :initial-value="1"
+      label="Number input"
+      use-validator
+      mandatory
+      field-name="number"
+    />  
     <Button
       class="col-1"
       severity="success"

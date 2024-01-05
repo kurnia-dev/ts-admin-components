@@ -33,6 +33,7 @@ import {
   TSCalendar,
   TSConfirmDialog,
   TSInputEmail,
+  TSInputNumber,
   TSInputText,
   TSSelectOption,
   TSTextarea,
@@ -77,6 +78,7 @@ export default {
     app.component('TSCalendar', TSCalendar);
     app.component('TSConfirmDialog', TSConfirmDialog);
     app.component('TSInputEmail', TSInputEmail);
+    app.component('TSInputNumber', TSInputNumber);
     app.component('TSInputText', TSInputText);
     app.component('TSSelectOption', TSSelectOption);
     app.component('TSTextarea', TSTextarea);
@@ -118,6 +120,7 @@ export {
   TSCalendar,
   TSConfirmDialog,
   TSInputEmail,
+  TSInputNumber,
   TSInputText,
   TSSelectOption,
   TSTextarea,

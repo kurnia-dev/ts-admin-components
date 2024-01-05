@@ -400,6 +400,7 @@ span.ripple {
 
 .p-inputtext {
   color: $general-body !important;
+  border-radius: 4px !important;
 }
 
 .ts-inputtext  {
