@@ -318,9 +318,7 @@ watch(props, () => {
     :popup="true"
     :pt="{
       root: {
-        style: `min-width: 12.5rem !important; width: auto !important; top: ${
-          tableOffsetTop + 50
-        }px`,
+        style: 'min-width: 12.5rem !important; width: auto !important',
       },
     }"
   >
