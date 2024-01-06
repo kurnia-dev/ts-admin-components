@@ -131,6 +131,7 @@ const emit = defineEmits<{
 
 const tableOptions = ref<Menu | null>(null);
 const customColumn = ref<Menu | null>(null);
+const tableOffsetTop = ref<number>(0);
 const rowsPerPageOptions = ref([5, 10, 20, 50]);
 const selectedColumns = ref<TableColumn[]>(props.columns);
 
@@ -175,8 +176,11 @@ const toggleOptions = (event: any, data: any) => {
   tableOptions.value?.toggle(event);
 };
 
-const toggleCustomColumn = (event: any) => {
+const toggleCustomColumn = async (event: any) => {
   customColumn.value?.toggle(event);
+  await nextTick();
+  const menu = document.querySelector('#custom_column_menu') as HTMLDivElement;
+  if (menu) menu.style.top = tableOffsetTop.value + 40 + 'px';
 };
 
 const selectColumn = (cols: TableColumn[]) => {
@@ -211,6 +215,8 @@ const disableCheckbox = () => {
 
 onMounted(() => {
   disableCheckbox();
+  const table = document.querySelector('.ts-datatable') as HTMLDivElement;
+  tableOffsetTop.value = table.offsetTop;
 });
 
 watch(props, () => {
@@ -312,7 +318,9 @@ watch(props, () => {
     :popup="true"
     :pt="{
       root: {
-        style: 'min-width: 12.5rem !important; width: auto !important',
+        style: `min-width: 12.5rem !important; width: auto !important; top: ${
+          tableOffsetTop + 50
+        }px`,
       },
     }"
   >
@@ -326,14 +334,14 @@ watch(props, () => {
     </template>
   </Menu>
   <Menu
-    v-if="useOption"
     ref="customColumn"
+    id="custom_column_menu"
+    v-if="useOption"
     :model="props.columns"
     :popup="true"
     :pt="{
       root: {
-        style:
-          'min-width: 12.5rem !important; width: auto !important; top: 375px',
+        style: 'min-width: 12.5rem !important; width: auto !important',
       },
       content: { style: 'align-items: center; padding: 0' },
     }"
