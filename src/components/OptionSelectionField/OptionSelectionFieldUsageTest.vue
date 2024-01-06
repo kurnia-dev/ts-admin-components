@@ -4,9 +4,10 @@ import DropdownOption from './OptionSelectionField.vue';
 import { useForm } from 'vee-validate';
 import Button from 'primevue/button';
 import TextField from '../TextField/TextField.vue';
-import InputTextarea from '@/components/Input/InputTextarea.vue'
+import InputTextarea from '@/components/Input/InputTextarea.vue';
 import InputEmail from '@/components/Input/InputEmail.vue';
 import InputNumber from '@/components/Input/InputNumber.vue';
+import TSCalendar from '../Calendar/TSCalendar.vue';
 
 const { handleSubmit } = useForm();
 const value1 = ref<any>();
@@ -27,6 +28,7 @@ const onSubmit = handleSubmit((values) => {
 
 const texts = reactive<any>({});
 const initial = ref<number>(0);
+const dateStringified = ref<string>();
 
 setTimeout(() => {
   initial.value = 1;
@@ -99,7 +101,17 @@ setTimeout(() => {
       use-validator
       mandatory
       field-name="number"
-    />  
+    />
+    <TSCalendar
+      class="col-3"
+      v-model="dateStringified"
+      label="Range Select"
+      field-name="rangeDate"
+      mode="range"
+      mandatory
+      use-validator
+      @update:model-value="console.log($event)"
+    />
     <Button
       class="col-1"
       severity="success"

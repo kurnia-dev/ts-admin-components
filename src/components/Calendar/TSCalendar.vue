@@ -1,18 +1,29 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
+import { useField } from 'vee-validate';
+import ValidatorMessage from '../Input/InputValidatorMessage.vue';
+import { formatVowelSoundLabel } from '@/utils/textFormater.util';
+import { FieldValidation } from '@/types/fieldValidation.type';
 
 const date = ref<string>();
 
-defineProps<{
+const props = defineProps<{
   modelValue?: string;
-  mandatory?: boolean;
   label?: string;
   mode?: 'range' | 'single';
+  fieldName?: string;
+  mandatory?: boolean;
+  useValidator?: boolean;
+  validatorMessage?: string;
 }>();
 
 const emit = defineEmits<{
   'update:modelValue': [date: string];
 }>();
+
+onMounted(() => setValidator());
+
+const field = reactive<FieldValidation>({});
 
 const getGMTTime = (date: string) => {
   return new Date(new Date(date).toUTCString()).getTime();
@@ -40,6 +51,29 @@ watch(date, (newDate: string | undefined) => {
     emit('update:modelValue', parseDate(newDate));
   }
 });
+
+const setValidator = () => {
+  if (props.useValidator) {
+    Object.assign(
+      field,
+      useField(props.fieldName ?? '', (value: string) => {
+        if (props.mandatory) return setValidatorMessage(value);
+        else return true;
+      })
+    );
+  }
+};
+
+const setValidatorMessage = (value: string) => {
+  if (!value) {
+    return (
+      props.validatorMessage ??
+      `Please pick ${formatVowelSoundLabel(props.label)} date!`
+    );
+  }
+
+  return true;
+};
 </script>
 
 <template>
@@ -61,6 +95,10 @@ watch(date, (newDate: string | undefined) => {
         root: { class: 'ts-calendar' },
         panel: { class: 'ts-datepicker' },
       }"
+    />
+    <ValidatorMessage
+      v-show="field.errorMessage"
+      :message="field.errorMessage"
     />
   </div>
 </template>

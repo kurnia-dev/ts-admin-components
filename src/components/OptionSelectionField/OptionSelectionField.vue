@@ -3,9 +3,11 @@ import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { TOptionSelection } from '@/types/optionSelection.type';
 import { useField } from 'vee-validate';
 import { FieldValidation } from '@/types/fieldValidation.type';
+import { formatVowelSoundLabel } from '@/utils/textFormater.util';
+import ValidatorMessage from '../Input/InputValidatorMessage.vue';
 
 const props = defineProps<{
-  modelValue: string | string[];
+  modelValue?: string | string[];
   options: TOptionSelection[];
   useValidator?: boolean;
   mandatory?: boolean;
@@ -25,24 +27,11 @@ onMounted(() => setOption(props.options));
 
 const dropdownOptions = ref<TOptionSelection[]>();
 
-const formatLabel = (label: string): string => {
-  const wordsStartWithVowelSound = ['a', 'e', 'i', 'o', 'u'];
-  const specialCases = ['hour', 'honest', 'honor', 'heir', 'university', 'one'];
-  const firstLetter = label[0].toLowerCase();
-  const word = label.toLowerCase();
-
-  if (specialCases.includes(word)) {
-    return `an ${label}`;
-  }
-
-  return wordsStartWithVowelSound.includes(firstLetter) ? `an ${label}` : `a ${label}`;
-};
-
 const field = reactive<FieldValidation>({ value: '' });
 const defaultMessage = computed(() => {
   return props.mode == 'single'
-    ? 'You must pick ' + formatLabel(props.label)
-    : 'You must pick at least ' + formatLabel(props.label);
+    ? 'You must pick ' + formatVowelSoundLabel(props.label)
+    : 'You must pick at least ' + formatVowelSoundLabel(props.label);
 });
 
 onMounted(() => {
@@ -107,9 +96,10 @@ const setOption = (options: TOptionSelection[]) => {
       optionValue="value"
       class="ts-dropdown"
     />
-    <small class="validator-message" id="dd-error" v-if="field.errorMessage">{{
-      field.errorMessage
-    }}</small>
+    <ValidatorMessage
+      v-show="field.errorMessage"
+      :message="field.errorMessage"
+    />
   </div>
 </template>
 <style lang="scss">
