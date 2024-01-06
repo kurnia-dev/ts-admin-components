@@ -9,14 +9,14 @@ import ValidatorMessage from '@/components/Input/InputValidatorMessage.vue';
 const props = defineProps<{
   modelValue?: number;
   initialValue?: number;
-  label: string;
+  label?: string;
   max?: number;
   fieldName?: string;
   mandatory?: boolean;
   useValidator?: boolean;
   validatorMessage?: string;
   placeholder?: string;
-  type?: 'email' | 'text';
+  size?: 'small' | 'normal' | 'full';
 }>();
 
 defineEmits<{
@@ -68,7 +68,10 @@ watch(
       mode="decimal"
       showButtons
       :min="0"
-      class="ts-inputnumber"
+      :class="['ts-inputnumber', { full: props.size === 'full' }]"
+      :pt="{
+        input: { class: props.size ?? 'small' },
+      }"
     />
     <ValidatorMessage
       v-show="field.errorMessage"
@@ -88,34 +91,44 @@ watch(
     border: none;
     padding: 6.4px;
     height: 100% !important;
+  }
+
+  .small {
     width: 26px;
+  }
+
+  .normal {
+    width: 100px;
+  }
+
+  .full {
+    width: 100%;
   }
 
   .p-inputnumber-button-group {
     border: none;
-  
+
     .p-button.p-button-icon-only {
       padding: 0;
       width: max-content;
       height: max-content;
       background: none;
       border: none;
-  
+
       .p-icon {
         color: $general-label;
         width: 20px;
         height: 15px;
       }
     }
-  
+
     .p-inputnumber-button-up {
       align-items: flex-start;
     }
-  
+
     .p-inputnumber-button-down {
       align-items: flex-end;
     }
   }
 }
-
 </style>

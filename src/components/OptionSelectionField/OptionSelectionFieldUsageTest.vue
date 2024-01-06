@@ -8,6 +8,7 @@ import InputTextarea from '@/components/Input/InputTextarea.vue';
 import InputEmail from '@/components/Input/InputEmail.vue';
 import InputNumber from '@/components/Input/InputNumber.vue';
 import TSCalendar from '../Calendar/TSCalendar.vue';
+import InputPhone from '../Input/InputPhone.vue';
 
 const { handleSubmit } = useForm();
 const value1 = ref<any>();
@@ -101,6 +102,16 @@ setTimeout(() => {
       use-validator
       mandatory
       field-name="number"
+    />
+    <InputPhone
+      v-model:phoneNumber="texts.phone"
+      class="col-3"
+      :max="10"
+      label="Phone input"
+      @update:phoneNumber="console.log($event)"
+      use-validator
+      mandatory
+      field-name="phone"
     />
     <TSCalendar
       class="col-3"

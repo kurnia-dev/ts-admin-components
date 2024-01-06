@@ -154,6 +154,13 @@ const setOption = (options: TOptionSelection[]) => {
     text-align: left;
     padding: 0;
     height: 20px !important;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .phone-code {
+      font-weight: 500;
+    }
   }
 
   .p-multiselect-token {
