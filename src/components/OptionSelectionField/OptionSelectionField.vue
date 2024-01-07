@@ -19,11 +19,14 @@ const props = defineProps<{
   closable?: boolean;
 }>();
 
-defineEmits<{
-  'update:modelValue': [value: string];
+const emit = defineEmits<{
+  'update:modelValue': [value: string | string[]];
 }>();
 
-onMounted(() => setOption(props.options));
+onMounted(() => {
+  setOption(props.options);
+  setValidator();
+});
 
 const dropdownOptions = ref<TOptionSelection[]>();
 
@@ -34,12 +37,12 @@ const defaultMessage = computed(() => {
     : 'You must pick at least ' + formatVowelSoundLabel(props.label);
 });
 
-onMounted(() => {
+const setValidator = () => {
   if (props.useValidator) {
     Object.assign(
       field,
-      useField(props.fieldName ?? '', (value) => {
-        if (!value && props.mandatory) {
+      useField(props.fieldName ?? '', (value: string | string[]) => {
+        if (!value?.length && props.mandatory) {
           return props.validatorMessage ?? defaultMessage.value;
         }
 
@@ -47,7 +50,12 @@ onMounted(() => {
       })
     );
   }
-});
+};
+
+const updateFieldValue = (event: string | string[]) => {
+  !event?.length && (field.value = undefined);
+  emit('update:modelValue', event);
+};
 
 watch(
   () => props.options,
@@ -64,42 +72,42 @@ const setOption = (options: TOptionSelection[]) => {
       {{ label }}
       <span class="text-danger" v-if="mandatory">*</span>
     </label>
-    <MultiSelect
-      v-if="mode === 'multi'"
-      v-model="field.value"
-      :filter="true"
-      :options="dropdownOptions"
-      :placeholder="placeholder ?? `Select ${label}`"
-      :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
-      :pt="{
-        closeButton: { style: !closable && 'display: none' },
-      }"
-      @update:modelValue="
-        $emit('update:modelValue', $event), console.log($event)
-      "
-      aria-describedby="dd-error"
-      filter-placeholder="Search"
-      option-label="label"
-      option-value="value"
-      display="chip"
-      class="ts-multiselect"
-    />
-    <Dropdown
-      v-else
-      v-model="field.value"
-      :options="dropdownOptions"
-      :placeholder="placeholder ?? `Select ${label}`"
-      :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
-      @update:modelValue="$emit('update:modelValue', $event)"
-      aria-describedby="dd-error"
-      optionLabel="label"
-      optionValue="value"
-      class="ts-dropdown"
-    />
-    <ValidatorMessage
-      v-show="field.errorMessage"
-      :message="field.errorMessage"
-    />
+    <div class="input_wrapper">
+      <MultiSelect
+        v-if="mode === 'multi'"
+        v-model="field.value"
+        :filter="true"
+        :options="dropdownOptions"
+        :placeholder="placeholder ?? `Select ${label}`"
+        :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
+        :pt="{
+          closeButton: { style: !closable && 'display: none' },
+        }"
+        @update:modelValue="updateFieldValue($event)"
+        aria-describedby="dd-error"
+        filter-placeholder="Search"
+        option-label="label"
+        option-value="value"
+        display="chip"
+        class="ts-multiselect"
+      />
+      <Dropdown
+        v-else
+        v-model="field.value"
+        :options="dropdownOptions"
+        :placeholder="placeholder ?? `Select ${label}`"
+        :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
+        @update:modelValue="updateFieldValue($event)"
+        aria-describedby="dd-error"
+        optionLabel="label"
+        optionValue="value"
+        class="ts-dropdown"
+      />
+      <ValidatorMessage
+        v-show="field.errorMessage"
+        :message="field.errorMessage"
+      />
+    </div>
   </div>
 </template>
 <style lang="scss">
@@ -222,21 +230,6 @@ const setOption = (options: TOptionSelection[]) => {
       width: max-content;
       margin-right: 0 !important;
     }
-  }
-
-  .p-multiselect-filter {
-    border-radius: 6px;
-    border: 1px solid $general-body !important;
-    background: $general-bg-white;
-    height: 32px !important;
-  }
-
-  .p-multiselect-filter-icon {
-    width: 12px !important;
-    height: 12px !important;
-    top: 50%;
-    margin-top: 0;
-    transform: translateY(-50%);
   }
 
   li.p-multiselect-item {

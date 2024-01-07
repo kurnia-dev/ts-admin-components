@@ -89,54 +89,59 @@ const setValidatorMessage = (value: Nullable<number>): boolean | string => {
       {{ label }}
       <span class="text-danger" v-if="mandatory">*</span>
     </label>
-    <div class="ts-inputgroup ts-phoneinput">
-      <Dropdown
-        v-model="selectedCountry"
-        :options="countryData"
-        placeholder="Phone Code"
-        class="ts-dropdown ts-select-country-code"
-        filter
-        option-label="name"
-        filter-placeholder="Search"
-      >
-        <template #value="slotProps">
-          <template v-if="slotProps.value">
-            <img
-              :alt="slotProps.value.name"
-              :src="slotProps.value.flag"
-              class="mr-2"
-              style="height: 12px; border: 1px solid #0a0a0a68;"
-            />
-            <label class="phone-code">(+{{ slotProps.value.code }})</label>
+    <div class="input_wrapper">
+      <div class="ts-inputgroup ts-phoneinput">
+        <Dropdown
+          v-model="selectedCountry"
+          :options="countryData"
+          placeholder="Phone Code"
+          class="ts-dropdown ts-select-country-code"
+          filter
+          option-label="name"
+          filter-placeholder="Search"
+        >
+          <template #value="slotProps">
+            <template v-if="slotProps.value">
+              <img
+                :alt="slotProps.value.name"
+                :src="slotProps.value.flag"
+                class="mr-2"
+                style="height: 12px; border: 1px solid #0a0a0a68;"
+              />
+              <label class="phone-code">(+{{ slotProps.value.code }})</label>
+            </template>
           </template>
-        </template>
-        <template #option="slotProps">
-          <template v-if="slotProps.option">
-            <img
-              :alt="slotProps.option.name"
-              :src="slotProps.option.flag"
-              class="mr-2"
-              style="width: 18px"
-            />
-            <label>{{ slotProps.option.name }}</label>
-            <label class="phone-code">(+{{ slotProps.option.code }})</label>
+          <template #option="slotProps">
+            <template v-if="slotProps.option">
+              <img
+                :alt="slotProps.option.name"
+                :src="slotProps.option.flag"
+                class="mr-2"
+                style="width: 18px"
+              />
+              <label>{{ slotProps.option.name }}</label>
+              <label class="phone-code">(+{{ slotProps.option.code }})</label>
+            </template>
           </template>
-        </template>
-      </Dropdown>
-
-      <InputNumber
-        :modelValue="field.value"
-        :useGrouping="false"
-        :disabled="!selectedCountry"
-        @input="field.value = $event.value, $emit('update:phoneNumber', fullPhoneNumber)"
-        class="ts-inputnumber"
-        placeholder="Phone Number"
+          <template #filtericon>
+            <i class="pi pi-search p-dropdown-filter-icon" />
+          </template>
+        </Dropdown>
+  
+        <InputNumber
+          :modelValue="field.value"
+          :useGrouping="false"
+          :disabled="!selectedCountry"
+          @input="field.value = $event.value, $emit('update:phoneNumber', fullPhoneNumber)"
+          class="ts-inputnumber"
+          placeholder="Phone Number"
+        />
+      </div>
+      <ValidatorMessage
+        v-show="field.errorMessage"
+        :message="field.errorMessage ?? ''"
       />
     </div>
-    <ValidatorMessage
-      v-show="field.errorMessage"
-      :message="field.errorMessage ?? ''"
-    />
   </div>
 </template>
 <style lang="scss">

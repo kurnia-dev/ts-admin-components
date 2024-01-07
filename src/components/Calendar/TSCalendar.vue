@@ -21,7 +21,10 @@ const emit = defineEmits<{
   'update:modelValue': [date: string];
 }>();
 
-onMounted(() => setValidator());
+onMounted(() => {
+  setValidator();
+  setupWatcher();
+});
 
 const field = reactive<FieldValidation>({});
 
@@ -46,11 +49,16 @@ const setClass = (): void => {
   highlights[highlights.length - 1]?.classList.add('first-and-last');
 };
 
-watch(date, (newDate: string | undefined) => {
-  if (newDate) {
-    emit('update:modelValue', parseDate(newDate));
+const setupWatcher = () => {
+  if (props.modelValue) {
+    watch(date, (newDate: string | undefined) => {
+      if (newDate) {
+        const parsed = parseDate(newDate);
+        emit('update:modelValue', parsed);
+      }
+    });
   }
-});
+};
 
 const setValidator = () => {
   if (props.useValidator) {
@@ -70,9 +78,9 @@ const setValidatorMessage = (value: string) => {
       props.validatorMessage ??
       `Please pick ${formatVowelSoundLabel(props.label)} date!`
     );
+  } else {
+    return true;
   }
-
-  return true;
 };
 </script>
 
@@ -82,24 +90,27 @@ const setValidatorMessage = (value: string) => {
       {{ label }}
       <span class="text-danger" v-if="mandatory">*</span>
     </label>
-    <Calendar
-      v-model="date"
-      showIcon
-      iconDisplay="input"
-      :selection-mode="mode ?? 'single'"
-      hide-on-range-selection
-      placeholder="Select date"
-      @update:modelValue="setClass"
-      @show="setClass"
-      :pt="{
-        root: { class: 'ts-calendar' },
-        panel: { class: 'ts-datepicker' },
-      }"
-    />
-    <ValidatorMessage
-      v-show="field.errorMessage"
-      :message="field.errorMessage"
-    />
+    <div class="input_wrapper">
+      <Calendar
+        v-model="date"
+        @update:model-value="field.value = parseDate($event)"
+        showIcon
+        iconDisplay="input"
+        :selection-mode="mode ?? 'single'"
+        hide-on-range-selection
+        placeholder="Select date"
+        @update:modelValue="setClass"
+        @show="setClass"
+        :pt="{
+          root: { class: 'ts-calendar' },
+          panel: { class: 'ts-datepicker' },
+        }"
+      />
+      <ValidatorMessage
+        v-show="field.errorMessage"
+        :message="field.errorMessage"
+      />
+    </div>
   </div>
 </template>
 <style lang="scss">
@@ -128,6 +139,11 @@ const setValidatorMessage = (value: string) => {
   .p-datepicker-trigger {
     width: 20px !important;
     height: 20px !important;
+
+    .p-icon {
+      width: 14px;
+      height: 14px;
+    }
   }
 
   .p-inputtext:enabled:hover {
@@ -150,6 +166,8 @@ const setValidatorMessage = (value: string) => {
 .p-datepicker.ts-datepicker {
   padding: 24px;
   width: auto;
+  max-width: 272px;
+  min-width: unset !important;
 
   .p-datepicker-header {
     border: none;

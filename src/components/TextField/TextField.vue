@@ -37,19 +37,17 @@ onMounted(() => {
   }
 });
 
-const setValidatorMessage = (value: string) => {
+const setValidatorMessage = (value: string): boolean | string => {
   if (!value) {
-    return props.validatorMessage ?? props.label + ' must not be empty!';
-  } else if (value.length <= 30) {
-    if (props.type == 'email') {
-      const emailRegexp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-      return emailRegexp.test(value) ? '' : 'Email format is incorrect!';
-    }
-  } else {
+    return props.validatorMessage ?? `${props.label} must not be empty!`;
+  } else if (value.length > 30) {
     return 'Max. 30 characters!';
+  } else if (props.type === 'email') {
+    const emailRegexp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    return emailRegexp.test(value) ? true : 'Email format is incorrect!';
+  } else {
+    return true;
   }
-
-  return true;
 };
 </script>
 <template>
@@ -58,15 +56,17 @@ const setValidatorMessage = (value: string) => {
       {{ label }}
       <span class="text-danger" v-if="mandatory">*</span>
     </label>
-    <InputText
-      v-model="field.value"
-      @update:modelValue="$emit('update:modelValue', $event)"
-      :placeholder="placeholder ?? `Input ${label.toLowerCase()}`"
-      :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
-      class="ts-inputtext"
-    />
-    <small class="validator-message" id="dd-error" v-if="field.errorMessage">{{
-      field.errorMessage
-    }}</small>
+    <div class="input_wrapper">
+      <InputText
+        v-model="field.value"
+        @update:modelValue="$emit('update:modelValue', $event)"
+        :placeholder="placeholder ?? `Input ${label.toLowerCase()}`"
+        :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
+        class="ts-inputtext"
+      />
+      <small class="validator-message" id="dd-error" v-if="field.errorMessage">{{
+        field.errorMessage
+      }}</small>
+    </div>
   </div>
 </template>

@@ -61,22 +61,24 @@ watch(
       {{ label }}
       <span class="text-danger" v-if="mandatory">*</span>
     </label>
-    <InputNumber
-      v-model="field.value"
-      @update:modelValue="$emit('update:modelValue', $event)"
-      inputId="minmax-buttons"
-      mode="decimal"
-      showButtons
-      :min="0"
-      :class="['ts-inputnumber', { full: props.size === 'full' }]"
-      :pt="{
-        input: { class: props.size ?? 'small' },
-      }"
-    />
-    <ValidatorMessage
-      v-show="field.errorMessage"
-      :message="field.errorMessage ?? ''"
-    />
+    <div class="input_wrapper">
+      <InputNumber
+        v-model="field.value"
+        @update:modelValue="$emit('update:modelValue', $event)"
+        inputId="minmax-buttons"
+        mode="decimal"
+        showButtons
+        :min="0"
+        :class="['ts-inputnumber', { full: props.size === 'full' }]"
+        :pt="{
+          input: { class: props.size ?? 'small' },
+        }"
+      />
+      <ValidatorMessage
+        v-show="field.errorMessage"
+        :message="field.errorMessage ?? ''"
+      />
+    </div>
   </div>
 </template>
 <style lang="scss">
@@ -91,18 +93,6 @@ watch(
     border: none;
     padding: 6.4px;
     height: 100% !important;
-  }
-
-  .small {
-    width: 26px;
-  }
-
-  .normal {
-    width: 100px;
-  }
-
-  .full {
-    width: 100%;
   }
 
   .p-inputnumber-button-group {
@@ -130,5 +120,17 @@ watch(
       align-items: flex-end;
     }
   }
+}
+
+.small {
+  width: 26px;
+}
+
+.normal {
+  width: 100px;
+}
+
+.full {
+  width: 100%;
 }
 </style>

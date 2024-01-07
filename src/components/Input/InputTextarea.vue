@@ -48,6 +48,7 @@ const setValidatorMessage = (value: string) => {
       {{ label }}
       <span class="text-danger" v-if="mandatory">*</span>
     </label>
+    <div class="input_wrapper">
     <Textarea
       v-model="field.value"
       @update:modelValue="$emit('update:modelValue', $event)"
@@ -58,5 +59,6 @@ const setValidatorMessage = (value: string) => {
     <small class="validator-message" id="dd-error" v-if="field.errorMessage">{{
       field.errorMessage
     }}</small>
+    </div>
   </div>
 </template>

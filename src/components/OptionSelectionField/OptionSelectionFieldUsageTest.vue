@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import DropdownOption from './OptionSelectionField.vue';
-import { useForm } from 'vee-validate';
-import Button from 'primevue/button';
 import TextField from '../TextField/TextField.vue';
 import InputTextarea from '@/components/Input/InputTextarea.vue';
 import InputEmail from '@/components/Input/InputEmail.vue';
 import InputNumber from '@/components/Input/InputNumber.vue';
 import TSCalendar from '../Calendar/TSCalendar.vue';
 import InputPhone from '../Input/InputPhone.vue';
+import TSForm from '@/components/Input/TSForm.vue';
 
-const { handleSubmit } = useForm();
-const value1 = ref<any>();
-const value2 = ref<any>();
 const value3 = ref<any>();
 
 const cities = ref([
@@ -23,113 +19,81 @@ const cities = ref([
   { label: 'Paris', value: 'PRS' },
 ]);
 
-const onSubmit = handleSubmit((values) => {
-  if (values) console.log(values);
-});
-
-const texts = reactive<any>({});
 const initial = ref<number>(0);
-const dateStringified = ref<string>();
 
 setTimeout(() => {
-  initial.value = 1;
+  initial.value = 0;
 }, 2000);
 </script>
 
 <template>
-  <form @submit="onSubmit" class="row gap-2 align-items-end">
-    <DropdownOption
-      class="col-3"
-      v-model="value1"
-      :options="cities"
-      label="option"
-      fieldName="option"
-      mode="single"
-      use-validator
-      mandatory
-      validator-message="You must select an option"
-    />
-    <DropdownOption
-      class="col-3"
-      v-model="value2"
-      :options="cities"
-      mode="multi"
-      label="other option"
-      fieldName="otherOption"
-      mandatory
-      use-validator
-    />
-    <TextField
-      v-model="texts.text1"
-      @update:model-value="console.log($event)"
-      class="col-3"
-      mandatory
-      use-validator
-      label="Text field"
-      field-name="textField"
-    />
-    <TextField
-      v-model="texts.text2"
-      @update:model-value="console.log($event)"
-      class="col-3"
-      label="Not mandatory"
-      field-name="notMandatory"
-      use-validator
-    />
-    <InputEmail
-      v-model="texts.email"
-      @update:model-value="console.log($event)"
-      class="col-3"
-      label="Email"
-      field-name="email"
-      use-validator
-      mandatory
-    />
-    <InputTextarea
-      v-model="texts.textarea"
-      @update:model-value="console.log($event)"
-      class="col-3"
-      label="Text area"
-      field-name="textarea"
-      use-validator
-      mandatory
-    />
-    <InputNumber
-      class="col-3"
-      :max="10"
-      :initial-value="1"
-      label="Number input"
-      use-validator
-      mandatory
-      field-name="number"
-    />
-    <InputPhone
-      v-model:phoneNumber="texts.phone"
-      class="col-3"
-      :max="10"
-      label="Phone input"
-      @update:phoneNumber="console.log($event)"
-      use-validator
-      mandatory
-      field-name="phone"
-    />
-    <TSCalendar
-      class="col-3"
-      v-model="dateStringified"
-      label="Range Select"
-      field-name="rangeDate"
-      mode="range"
-      mandatory
-      use-validator
-      @update:model-value="console.log($event)"
-    />
-    <Button
-      class="col-1"
-      severity="success"
-      type="submit"
-      label="Submit"
-    ></Button>
-  </form>
+  <TSForm @save="console.log($event)">
+    <template #fields>
+      <TextField
+        mandatory
+        use-validator
+        label="Text field"
+        field-name="textField"
+      />
+      <DropdownOption
+        :options="cities"
+        label="option"
+        fieldName="option"
+        mode="single"
+        use-validator
+        mandatory
+        validator-message="You must select an option"
+      />
+      <DropdownOption
+        :options="cities"
+        mode="multi"
+        label="other option"
+        fieldName="otherOption"
+        mandatory
+        use-validator
+      />
+      <TextField
+        label="Not mandatory"
+        field-name="notMandatory"
+        use-validator
+      />
+      <InputEmail
+        label="Email"
+        field-name="email"
+        use-validator
+        mandatory
+      />
+      <InputTextarea
+        label="Text area"
+        field-name="textarea"
+        use-validator
+        mandatory
+      />
+      <InputNumber
+        :max="10"
+        :initial-value="1"
+        label="Number input"
+        use-validator
+        mandatory
+        field-name="number"
+        size="full"
+      />
+      <InputPhone
+        :max="10"
+        label="Phone input"
+        use-validator
+        mandatory
+        field-name="phone"
+      />
+      <TSCalendar
+        label="Range Select"
+        field-name="rangeDate"
+        mode="range"
+        mandatory
+        use-validator
+      />
+    </template>
+  </TSForm>
   <DropdownOption
     :options="cities"
     v-model="value3"

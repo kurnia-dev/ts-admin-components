@@ -175,6 +175,11 @@ const menus = ref([
   justify-content: start;
   position: relative;
 
+  .input_wrapper {
+    width: 100%;
+    position: relative;
+  }
+
   label {
     color: $dark;
     text-transform: capitalize;
@@ -185,21 +190,21 @@ const menus = ref([
     line-height: 16.8px;
   }
 
-  .validator-message {
-    color: $danger;
-    font-weight: 300;
-    width: 100%;
-    text-align: right;
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 50%;
-    transform: translateX(-50%);
-    @include font-size(11.2px);
-  }
-
   .text-left {
     text-align: left;
   }
+}
+
+.validator-message {
+  color: $danger;
+  font-weight: 300;
+  width: 100%;
+  text-align: right;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  @include font-size(11.2px);
 }
 
 .ts-rfid-button,
@@ -239,6 +244,7 @@ const menus = ref([
 
 .ts-button {
   all: unset;
+  box-sizing: border-box;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -302,7 +308,6 @@ const menus = ref([
   background: transparent;
 }
 
-
 .ts-button.icon-only {
   width: 26px !important;
   height: 26px !important;
@@ -343,7 +348,6 @@ const menus = ref([
 .ts-button.button-default:hover {
   background: $dark-thin !important;
 }
-
 
 .ts-button-filter.ts-button.ts-button-secondary {
   background: $general-label !important;
@@ -403,7 +407,8 @@ span.ripple {
   border-radius: 4px !important;
 }
 
-.ts-inputtext  {
+.ts-inputtext,
+.ts-textarea {
   color: $general-body !important;
   border-radius: 4px;
   border: 1px solid !important;
@@ -450,4 +455,23 @@ span.ripple {
     transform: translate(0, -50%);
   }
 }
+
+.p-multiselect-filter,
+.p-dropdown-filter {
+  border-radius: 6px;
+  border: 1px solid $general-body !important;
+  background: $general-bg-white;
+  height: 32px !important;
+  
+  .p-multiselect-filter-icon,
+  .p-dropdown-filter-icon {
+    width: 12px !important;
+    height: 12px !important;
+    top: 50% !important;
+    margin-top: 0 !important;
+    font-size: 12px;
+    transform: translateY(-50%);
+  }
+}
+
 </style>
