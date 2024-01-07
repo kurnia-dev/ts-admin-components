@@ -9,14 +9,7 @@ export type BodyComponent = {
   disabled?: boolean;
 }
 
-export type HeaderComponent = {
-  component: string | Component;
-  props?: any;
-  model?: any;
-  events?: any;
-  onChange?: any;
-  disabled?: boolean;
-}
+export type HeaderComponent = BodyComponent;
 
 export type TableColumn = {
   header: string;

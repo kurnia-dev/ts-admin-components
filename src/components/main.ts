@@ -43,6 +43,7 @@ import {
 
 import DateUtils from '@/utils/date.util';
 import StringUtils from '@/utils/string.util';
+import { handleError, handleSuccess } from '@/utils/toast.util';
 
 export default {
   install: (app: App) => {
@@ -93,6 +94,8 @@ export {
   CToastService,
   DateUtils,
   StringUtils,
+  handleError,
+  handleSuccess,
   ButtonCopy,
   ButtonScanQR,
   CategoryTree,
