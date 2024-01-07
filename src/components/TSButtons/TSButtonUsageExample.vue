@@ -10,8 +10,29 @@ import ButtonSuccessOutline from './ButtonSuccessOutline.vue';
 import ButtonTextPrimary from './ButtonTextPrimary.vue';
 import Button from './Button.vue';
 import InputSwitch from '@/components/Input/InputSwitch.vue';
+import TSBulkAction from './TSBulkAction.vue';
+import { MenuOption } from '@/types/options';
 const isOn = ref<boolean>(true);
-watch(isOn, (on) => console.log(on))
+watch(isOn, (on) => console.log(on));
+
+const bulkLabel = ref<string>('Bulk action');
+const bulkOptions = ref<MenuOption[]>([
+  {
+    label: 'Assign Group',
+    icon: 'ri-group-line',
+    command: (): void => {
+      console.log('Assign Group')
+    },
+  },
+  {
+    label: 'Delete',
+    icon: 'ri-delete-bin-line',
+    danger: true,
+    command: (): void => {
+      console.log('Delete')
+    },
+  },
+]);
 </script>
 <template>
   <label style="text-align: left">Tag Samurai Button with Riple Effect</label>
@@ -28,7 +49,7 @@ watch(isOn, (on) => console.log(on))
     <Button label="TS Button" />
     <Button icon="ri-filter-line" />
     <Button icon="ri-file-text-line" />
-    <Button icon="ri-download-2-line" severity="success" />
+    <Button icon="ri-download-2-line" severity="success" outlined />
   </div>
   <div class="d-flex gap-3">
     <ButtonDefault label="Default" />
@@ -40,5 +61,11 @@ watch(isOn, (on) => console.log(on))
     <ButtonDangerOutline label="Danger" />
     <ButtonSuccessOutline label="Success" />
     <InputSwitch v-model="isOn" />
+    <TSBulkAction
+      :selected-datas="[{ id: 'assas' }]"
+      :options="bulkOptions"
+      :label="bulkLabel"
+      naming="asset"
+    />
   </div>
 </template>

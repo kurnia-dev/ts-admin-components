@@ -29,6 +29,7 @@ import {
   TagTypeIdentifier,
   TSBreadcrumb,
   TSButton,
+  TSBulkAction,
   TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
@@ -76,6 +77,7 @@ export default {
     app.component('StaticTable', StaticTable);
     app.component('TagTypeIdentifier', TagTypeIdentifier);
     app.component('TSBreadcrumb', TSBreadcrumb);
+    app.component('TSBulkAction', TSBulkAction);
     app.component('TSButton', TSButton);
     app.component('TSButtonFilter', TSButtonFilter);
     app.component('TSCalendar', TSCalendar);
@@ -122,6 +124,7 @@ export {
   StaticTable,
   TagTypeIdentifier,
   TSBreadcrumb,
+  TSBulkAction,
   TSButton,
   TSButtonFilter,
   TSCalendar,

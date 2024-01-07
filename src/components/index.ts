@@ -25,6 +25,7 @@ import SelectGroup from './SelectGroup/SelectGroup.vue';
 import StaticTable from './StaticTable.vue';
 import TagTypeIdentifier from './TagTypeIdentifier.vue';
 import TSBreadcrumb from './Breadcrumb/Breadcrumb.vue';
+import TSBulkAction from './TSButtons/TSBulkAction.vue';
 import TSButton from './TSButtons/Button.vue';
 import TSButtonFilter from './TSButtons/ButtonFilter.vue';
 import TSCalendar from './Calendar/TSCalendar.vue';
@@ -35,7 +36,7 @@ import TSSelectOption from './OptionSelectionField/OptionSelectionField.vue';
 import TSTextarea from './Input/InputTextarea.vue';
 import TSInputNumber from './Input/InputNumber.vue';
 import TSPhoneInput from './Input/InputPhone.vue';
-import TSForm from './Input/TSForm.vue';
+import TSForm from './Input/TSForm.vue';  
 
 export {
   App,
@@ -64,6 +65,7 @@ export {
   StaticTable,
   TagTypeIdentifier,
   TSBreadcrumb,
+  TSBulkAction,
   TSButton,
   TSButtonFilter,
   TSCalendar,

@@ -1,9 +1,5 @@
-export type MenuOption = {
-  label: string;
-  command: (data?: any) => any;
-  icon?: string;
-  items?: any[];
-  class?: string;
-  disabled?: boolean | any
-  danger?: boolean
+import { MenuItem } from 'primevue/menuitem';
+
+export type MenuOption = MenuItem & {
+  danger?: boolean;
 };
