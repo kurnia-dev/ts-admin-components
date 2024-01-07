@@ -10,6 +10,7 @@ import OptionSelectionField from '../OptionSelectionField/OptionSelectionField.v
 import InputSwitch from '../Input/InputSwitch.vue';
 import TSCalendar from '../Calendar/TSCalendar.vue';
 import ButtonFilter from '../TSButtons/ButtonFilter.vue';
+import SearchButton from '@/components/SearchButton.vue';
 
 const data = [
   {
@@ -313,6 +314,7 @@ const showFilter = ref<boolean>(false);
 <template>
   <div class="d-flex gap-2 justify-content-end">
     <ScanRFID />
+    <SearchButton @search="console.log($event)" />
     <ButtonFilter v-model:show-filter="showFilter" />
   </div>
   <FilterContainer

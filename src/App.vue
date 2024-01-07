@@ -13,7 +13,6 @@ import ScanRFID from './components/ScanRFID/ScanRFIDButton.vue';
 import Card from 'primevue/card';
 import DynamicTableUsageExample from './components/DynamicTable/DynamicTableUsageExample.vue';
 import TSConfirmDialogUsageExample from './components/TSConfirmDialog/TSConfirmDialogUsageExample.vue';
-
 const dateStringified = ref<string>();
 const menus = ref([
   {
@@ -362,8 +361,8 @@ const menus = ref([
 
 .ts-button-filter.ts-button.ts-button-secondary.outlined {
   background: $general-bg-white !important;
-  color: $general-header-weak !important;
-  border: 1px solid;
+  color: $general-label !important;
+  border: 1px solid $general-body;
 }
 
 .ts-button-filter.ts-button.ts-button-secondary.outlined:hover {

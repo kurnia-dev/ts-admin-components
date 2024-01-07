@@ -1,64 +1,110 @@
-<script lang="ts" setup>
-import { computed, ref, useAttrs, watch } from 'vue';
-import Button from 'primevue/button';
+<script setup lang="ts">
+import { ref, watchEffect } from 'vue';
+import Button from '@/components/TSButtons/Button.vue';
 
-const attrs: any = useAttrs();
+defineEmits<{
+  search: [query?: string];
+}>();
 const showSearchInput = ref(false);
+const query = ref<string>();
 
-const togglerId = computed(() => attrs['togglerId'] || attrs['toggler-id']);
-const onInput = (event: any) => {
-  attrs['onUpdate:modelValue'](event.target.value);
-};
-
-watch(showSearchInput, (val) => {
-  if (attrs['onToggleInput']) {
-    attrs['onToggleInput'](val);
-  }
-});
+watchEffect(() => !query.value?.length && (query.value = undefined));
 </script>
 
 <template>
-  <template v-if="!showSearchInput">
+  <div class="ts-searchbox">
     <Button
-      icon="ri-search-2-line"
-      severity="secondary"
+      :icon="showSearchInput ? 'ri-close-line' : 'ri-search-2-line'"
+      :severity="showSearchInput ? 'danger' : undefined"
       outlined
-      class="btn-icon"
-      @click="showSearchInput = true"
+      @click="showSearchInput = !showSearchInput"
+      :class="['ts-searchbox-togglebutton', { close: showSearchInput }]"
     />
-  </template>
-  <template v-else>
-    <form class="p-inputgroup" @submit.prevent="$attrs.onSearch">
+    <form
+      :class="{ show: showSearchInput }"
+      class="ts-searchbox-form"
+      @submit.prevent="$emit('search', query)"
+    >
+      <i class="ri-search-2-line ts-searchbox-icon" />
       <input
         placeholder="Search"
-        :value="$attrs.modelValue"
-        @input="onInput"
-        class="w-100 p-inputtext p-component"
+        v-model="query"
+        class="ts-searchbox-input"
       />
-      <button
-        class="p-button p-component p-button-icon-only p-button-secondary p-button-outlined btn-icon"
-        type="button"
-        style="
-          border-width: 1px 1px 1px 0;
-          border-color: #ced4da;
-          border-radius: 0 4px 4px 0;
-        "
-        @click="showSearchInput = false"
-        :id="togglerId"
-      >
-        <span
-          class="p-button-icon ri-search-2-line"
-          data-pc-section="icon"
-        ></span
-        ><span class="p-button-label" data-pc-section="label">&nbsp;</span>
-      </button>
-      <button type="submit" class="d-none"></button>
+      <button type="submit" class="ts-searchbox-button-hidden"></button>
     </form>
-  </template>
+  </div>
 </template>
 
 <style lang="scss">
-.icon-btn-search {
-  border: 1px solid #ced4da !important;
+@import 'scss/var';
+
+.ts-searchbox {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  flex-direction: row-reverse;
+
+  .ts-searchbox-togglebutton.close {
+    border-radius: 0 4px 4px 0;
+    border-color: $general-body;
+  }
+
+  .ts-searchbox-form {
+    width: 0;
+    opacity: 0;
+    padding: 0;
+    border: none;
+    font-size: 11.2px;
+    color: $general-body;
+    border: 1px solid;
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+    height: 26px;
+    transition: all 0.1s ease;
+    box-sizing: border-box;
+
+    > * {
+      display: none;
+      height: 18px;
+    }
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .ts-searchbox-input {
+      color: $general-body;
+      border: none;
+    }
+
+    .ts-searchbox-input:focus,
+    .ts-searchbox-input:hover {
+      outline: none;
+    }
+
+    .ts-searchbox-input::placeholder {
+      color: $general-placeholder;
+    }
+
+    .ts-searchbox-button-hidden {
+      display: none;
+    }
+
+    .ts-searchbox-icon {
+      width: 12px;
+      font-size: 12px;
+    }
+  }
+
+  .ts-searchbox-form.show {
+    width: 100%;
+    opacity: 1;
+    padding: 0 10px;
+
+    > *:not(.ts-searchbox-button-hidden) {
+      display: block;
+    }
+  }
 }
 </style>

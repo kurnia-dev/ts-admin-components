@@ -22,7 +22,7 @@ import {
   NameContainer,
   ScanQR,
   ScanRFID,
-  SearchButton,
+  TSSearchbox,
   SelectCategory,
   SelectGroup,
   StaticTable,
@@ -70,7 +70,7 @@ export default {
     app.component('NameContainer', NameContainer);
     app.component('ScanQR', ScanQR);
     app.component('ScanRFID', ScanRFID);
-    app.component('SearchButton', SearchButton);
+    app.component('TSSearchbox', TSSearchbox);
     app.component('SelectCategory', SelectCategory);
     app.component('SelectGroup', SelectGroup);
     app.component('StaticTable', StaticTable);
@@ -116,7 +116,7 @@ export {
   NameContainer,
   ScanQR,
   ScanRFID,
-  SearchButton,
+  TSSearchbox,
   SelectCategory,
   SelectGroup,
   StaticTable,
