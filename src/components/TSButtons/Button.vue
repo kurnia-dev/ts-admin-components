@@ -2,7 +2,7 @@
 import { onMounted, ref, computed } from 'vue';
 
 const props = defineProps<{
-  label?: string;
+  label?: string | ((...args: any) => string);
   severity?: 'primary' | 'danger' | 'success' | 'secondary';
   outlined?: boolean;
   textOnly?: boolean;
