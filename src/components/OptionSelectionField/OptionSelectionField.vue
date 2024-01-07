@@ -5,6 +5,8 @@ import { useField } from 'vee-validate';
 import { FieldValidation } from '@/types/fieldValidation.type';
 import { formatVowelSoundLabel } from '@/utils/textFormater.util';
 import ValidatorMessage from '../Input/InputValidatorMessage.vue';
+import { MultiSelectChangeEvent } from 'primevue/multiselect';
+import { DropdownChangeEvent } from 'primevue/dropdown';
 
 const props = defineProps<{
   modelValue?: string | string[];
@@ -52,9 +54,10 @@ const setValidator = () => {
   }
 };
 
-const updateFieldValue = (event: string | string[]) => {
-  !event?.length && (field.value = undefined);
-  emit('update:modelValue', event);
+const updateFieldValue = (event: DropdownChangeEvent | MultiSelectChangeEvent) => {
+  const { value } = event;
+  !value?.length && (field.value = undefined);
+  emit('update:modelValue', value);
 };
 
 watch(
@@ -83,7 +86,7 @@ const setOption = (options: TOptionSelection[]) => {
         :pt="{
           closeButton: { style: !closable && 'display: none' },
         }"
-        @update:modelValue="updateFieldValue($event)"
+        @change="updateFieldValue($event)"
         aria-describedby="dd-error"
         filter-placeholder="Search"
         option-label="label"
@@ -97,7 +100,7 @@ const setOption = (options: TOptionSelection[]) => {
         :options="dropdownOptions"
         :placeholder="placeholder ?? `Select ${label}`"
         :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
-        @update:modelValue="updateFieldValue($event)"
+        @change="updateFieldValue($event)"
         aria-describedby="dd-error"
         optionLabel="label"
         optionValue="value"

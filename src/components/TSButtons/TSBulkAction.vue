@@ -54,7 +54,7 @@ const toggleMenu = (e: Event): void => {
         <div
           :class="{ 'text-danger': item.danger }"
           class="ts-bulkaction-menu-item"
-          @click.stop="(selectedOption = item), toggleMenu($event)"
+          @click.stop="(selectedOption = item as MenuOption), toggleMenu($event)"
         >
           <i :class="item.icon" />
           <span>{{ item?.label }}</span>
@@ -62,9 +62,12 @@ const toggleMenu = (e: Event): void => {
       </template>
     </Menu>
     <slot name="addition" />
-    <template v-if="selectedDatas.length && label !== 'Bulk action'">
+    <template v-if="selectedDatas.length && selectedOption">
       <Button
-        @click="command?.($event), (selectedOption = undefined)"
+        @click="
+          command?.({ originalEvent: $event, item: selectedOption }),
+            (selectedOption = undefined)
+        "
         label="Apply"
         :severity="severity"
       />

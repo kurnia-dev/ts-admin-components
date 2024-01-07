@@ -93,7 +93,7 @@ const onSave = () => {
       <Button
         label="Cancel"
         @click="$emit('cancel')"
-        type="bubtton"
+        type="button"
       />
       <Button
         label="Save"
