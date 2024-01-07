@@ -312,6 +312,10 @@ const menus = ref([
   height: 26px !important;
 }
 
+.ts-button.icon-right {
+  flex-direction: row-reverse;
+}
+
 .ts-button.button-default.icon-only {
   border: 1px solid $general-body;
   color: $general-label !important;
