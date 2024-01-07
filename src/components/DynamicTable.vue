@@ -345,7 +345,7 @@ watch(props, () => {
     }"
   >
     <template #item="{ item }">
-      <label
+      <span
         :class="['p-menuitem-select-column', { disabled: item.fixed }]"
         @click.stop=""
       >
@@ -356,8 +356,8 @@ watch(props, () => {
           :disabled="item.fixed"
           @update:modelValue="selectColumn"
         />
-        {{ item.header }}
-      </label>
+        <label :for="item.field">{{ item.header }}</label>
+      </span>
     </template>
   </Menu>
 </template>
@@ -591,9 +591,7 @@ watch(props, () => {
     display: flex;
     flex: 1 0 0;
     align-items: baseline;
-    cursor: pointer;
-    @include padding(11px 16px);
-    @include rfs(8px, gap);
+    @include padding(0 0 0 16px);
 
     color: $general-body;
 
@@ -602,6 +600,12 @@ watch(props, () => {
       width: 12.8px;
       height: 12.8px;
       border-radius: 3px;
+    }
+
+    > label {
+      @include padding(11px 16px 11px 8px);
+      flex-grow: 1;
+      cursor: pointer;
     }
 
     .p-menuitem-icon {

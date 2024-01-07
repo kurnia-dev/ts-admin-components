@@ -32,9 +32,11 @@ import {
   TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
+  TSForm,
   TSInputEmail,
   TSInputNumber,
   TSInputText,
+  TSPhoneInput,
   TSSelectOption,
   TSTextarea,
 } from '@/components';
@@ -77,9 +79,11 @@ export default {
     app.component('TSButtonFilter', TSButtonFilter);
     app.component('TSCalendar', TSCalendar);
     app.component('TSConfirmDialog', TSConfirmDialog);
+    app.component('TSForm', TSForm);
     app.component('TSInputEmail', TSInputEmail);
     app.component('TSInputNumber', TSInputNumber);
     app.component('TSInputText', TSInputText);
+    app.component('TSPhoneInput', TSPhoneInput);
     app.component('TSSelectOption', TSSelectOption);
     app.component('TSTextarea', TSTextarea);
   },
@@ -119,9 +123,11 @@ export {
   TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
+  TSForm,
   TSInputEmail,
   TSInputNumber,
   TSInputText,
+  TSPhoneInput,
   TSSelectOption,
   TSTextarea,
 };

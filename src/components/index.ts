@@ -34,6 +34,8 @@ import TSInputEmail from './Input/InputEmail.vue';
 import TSSelectOption from './OptionSelectionField/OptionSelectionField.vue';
 import TSTextarea from './Input/InputTextarea.vue';
 import TSInputNumber from './Input/InputNumber.vue';
+import TSPhoneInput from './Input/InputPhone.vue';
+import TSForm from './Input/TSForm.vue';
 
 export {
   App,
@@ -67,9 +69,11 @@ export {
   TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
+  TSForm,
   TSInputEmail,
   TSInputNumber,
   TSInputText,
+  TSPhoneInput,
   TSSelectOption,
   TSTextarea,
 };
