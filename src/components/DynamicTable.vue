@@ -617,6 +617,12 @@ watch(props, () => {
     @include rfs(16.8px, line-height);
   }
 
+  .p-menuitem-content {
+    gap: 8px;
+    padding: 5.6px 12px;
+    cursor: pointer;
+  }
+
   .p-menuitem-content:hover {
     color: $general-body;
     background: $primary-weak !important;
