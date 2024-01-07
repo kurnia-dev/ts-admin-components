@@ -71,6 +71,10 @@ const props = defineProps<{
    * @note Do not combine `singleSelect` with `useSelection`, as it may lead to unexpected behavior.
    */
   singleSelect?: boolean;
+  /**
+   * Wether display pagination under the table or not.
+   */
+  usePaginator?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -232,7 +236,7 @@ watch(props, () => {
     :value="props.datas"
     :loading="loading"
     :lazy="true"
-    :paginator="true"
+    :paginator="usePaginator"
     :data-key="dataKey"
     :rows="props.rows ?? 5"
     :rows-per-page-options="rowsPerPageOptions"

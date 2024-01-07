@@ -8,11 +8,7 @@ const props = defineProps<{
   selectedDatas: object[];
   options: MenuOption[];
   disabled?: boolean;
-<<<<<<< HEAD
   naming?: string;
-=======
-  naming: string;
->>>>>>> b51d5de92f82130c0e2e86827ec7f52aa333bdf7
 }>();
 
 const menu = ref<Menu>();
@@ -22,13 +18,6 @@ const label = computed(() => selectedOption.value?.label ?? 'Bulk action');
 const command = computed(() => selectedOption.value?.command);
 const disabled = computed(() => props.disabled);
 
-<<<<<<< HEAD
-=======
-const toggleMenu = (e: Event): void => {
-  menu.value?.toggle(e);
-};
-
->>>>>>> b51d5de92f82130c0e2e86827ec7f52aa333bdf7
 const severity = computed(() => {
   return selectedOption.value
     ? selectedOption.value.danger
@@ -36,13 +25,10 @@ const severity = computed(() => {
       : 'primary'
     : undefined;
 });
-<<<<<<< HEAD
 
 const toggleMenu = (e: Event): void => {
   menu.value?.toggle(e);
 };
-=======
->>>>>>> b51d5de92f82130c0e2e86827ec7f52aa333bdf7
 </script>
 
 <template>
@@ -68,11 +54,7 @@ const toggleMenu = (e: Event): void => {
         <div
           :class="{ 'text-danger': item.danger }"
           class="ts-bulkaction-menu-item"
-<<<<<<< HEAD
           @click.stop="(selectedOption = item as MenuOption), toggleMenu($event)"
-=======
-          @click.stop="(selectedOption = item), toggleMenu($event)"
->>>>>>> b51d5de92f82130c0e2e86827ec7f52aa333bdf7
         >
           <i :class="item.icon" />
           <span>{{ item?.label }}</span>
@@ -117,10 +99,7 @@ const toggleMenu = (e: Event): void => {
   .ts-selection-message {
     width: max-content;
     text-transform: capitalize;
-<<<<<<< HEAD
     font-size: 11.2px;
-=======
->>>>>>> b51d5de92f82130c0e2e86827ec7f52aa333bdf7
   }
 }
 

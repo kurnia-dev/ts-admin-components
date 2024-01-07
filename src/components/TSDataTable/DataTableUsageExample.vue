@@ -3,7 +3,7 @@ import { ref, reactive, Ref, computed } from 'vue';
 import { MenuOption } from '@/types/options';
 import { TableColumn } from '@/types/columns';
 import ScanRFID from '@/components/ScanRFID/ScanRFIDButton.vue';
-import DynamicTable from '../DynamicTable.vue';
+import DynamicTable from './DataTable.vue';
 import NameContainer from '../NameContainer.vue';
 import FilterContainer from '@/components/FilterContainer/FilterContainer.vue';
 import OptionSelectionField from '../OptionSelectionField/OptionSelectionField.vue';
@@ -348,12 +348,28 @@ const showFilter = ref<boolean>(false);
     :totalRecords="totalRecords"
     :useOption="true"
     :options="options"
+    use-paginator
     @page="(data: any) => {
       fetchParams = Object.assign(fetchParams, {
         page: data.page + 1,
         limit: data.rows,
       })
     }"
+    @sort="sortTable"
+    @set-detail="(item: any) => {
+      _id = item._id;
+    }"
+    use-selection
+    @select-all-change="selectedDatas = $event.checked ? data : []"
+  />
+  <DynamicTable
+    :columns="columns"
+    :datas="stock"
+    v-model:selected-datas="selectedDatas"
+    v-model:is-selected-all="isSelectedAll"
+    dataKey="_id"
+    :useOption="true"
+    :options="options"
     @sort="sortTable"
     @set-detail="(item: any) => {
       _id = item._id;

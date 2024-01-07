@@ -11,7 +11,7 @@ import { ref } from 'vue';
 import ScanQR from './components/ScanQR/ScanQRButton.vue';
 import ScanRFID from './components/ScanRFID/ScanRFIDButton.vue';
 import Card from 'primevue/card';
-import DynamicTableUsageExample from './components/DynamicTable/DynamicTableUsageExample.vue';
+import DataTableUsageExample from './components/TSDataTable/DataTableUsageExample.vue';
 import TSConfirmDialogUsageExample from './components/TSConfirmDialog/TSConfirmDialogUsageExample.vue';
 const dateStringified = ref<string>();
 const menus = ref([
@@ -42,7 +42,7 @@ const menus = ref([
   <Card>
     <template #content>
       <TabMenu :model="menus" :exact="false" />
-      <DynamicTableUsageExample />
+      <DataTableUsageExample />
     </template>
   </Card>
   <Card>
@@ -478,3 +478,4 @@ span.ripple {
 }
 
 </style>
+./components/DataTable/DynamicTableUsageExample.vue

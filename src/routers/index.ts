@@ -10,7 +10,7 @@ const router = createRouter({
       children: [
         {
           path: '/home',
-          component: () => import('@/components/DynamicTable/DynamicTableUsageExample.vue'),
+          component: () => import('@/components/TSDataTable/DataTableUsageExample.vue'),
           name: 'Home',
         }
       ]

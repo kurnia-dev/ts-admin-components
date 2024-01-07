@@ -60,6 +60,7 @@ const toggleOptions = (event: any, data: any) => {
     scrollable
     v-model:filters="filters"
     :globalFilterFields="globalFilterFields"
+    class="ts-datatable"
   >
     <template #empty> No data found. </template>
     <Column

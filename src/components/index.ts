@@ -7,7 +7,7 @@ import CustomOverlayPanel from './CustomOverlayPanel/OverlayPanel.vue';
 import CustomTree from './CustomTree/Tree.vue';
 import CustomTreeNode from './CustomTree/TreeNode.vue';
 import DateText from './DateText.vue';
-import DynamicTable from './DynamicTable.vue';
+import TSDataTable from './TSDataTable/DataTable.vue';
 import FilterContainer from './FilterContainer/FilterContainer.vue';
 import GroupNameContainer from './GroupNameContainer.vue';
 import GroupTree from './GroupTree.vue';
@@ -48,7 +48,6 @@ export {
   CustomTree,
   CustomTreeNode,
   DateText,
-  DynamicTable,
   FilterContainer,
   GroupNameContainer,
   GroupTree,
@@ -70,6 +69,7 @@ export {
   TSButtonFilter,
   TSCalendar,
   TSConfirmDialog,
+  TSDataTable,
   TSForm,
   TSInputEmail,
   TSInputNumber,
