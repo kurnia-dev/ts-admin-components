@@ -103,22 +103,23 @@ const onSave = () => {
         type="button"
       />
       <Button
-        label="Clear Field"
         v-if="props.buttonsTemplate?.includes('clear')"
+        label="Clear Field"
         @click="fieldsKey++"
         type="button"
         severity="primary"
         text-only
       />
       <Button
-        label="Save"
         v-if="props.buttonsTemplate?.includes('save')"
+        label="Save"
         outlined
         severity="success"
         type="button"
         @click="onSave"
       />
       <Button
+        v-if="props.buttonsTemplate?.includes('submit')"
         severity="success"
         type="submit"
         label="Submit"

@@ -15,7 +15,7 @@ const props = defineProps<{
   mandatory?: boolean;
   validatorMessage?: string;
   mode: 'single' | 'multi';
-  label: string;
+  label?: string;
   fieldName?: string;
   placeholder?: string;
   closable?: boolean;
@@ -71,7 +71,7 @@ const setOption = (options: TOptionSelection[]) => {
 </script>
 <template>
   <div class="field_wrapper">
-    <label>
+    <label v-if="label">
       {{ label }}
       <span class="text-danger" v-if="mandatory">*</span>
     </label>
