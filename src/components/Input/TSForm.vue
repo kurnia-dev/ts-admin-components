@@ -6,8 +6,12 @@ import ValidatorMessage from './InputValidatorMessage.vue';
 
 const { handleSubmit, values } = useForm();
 
+type FormButton = 'clear' | 'submit' | 'save' | 'cancel';
+type ButtonsTemplate = FormButton[];
+
 const props = defineProps<{
   columnPerRow?: number;
+  buttonsTemplate?: ButtonsTemplate;
 }>();
 
 type FormPayload = {
@@ -84,19 +88,31 @@ const onSave = () => {
       <slot name="fields" :key="fieldsKey" />
     </div>
     <div class="ts-form-stay-checkbox">
-      <label>
-        <Checkbox v-model="stayAfterSubmit" binary />
-        Stay on this form after submitting
-      </label>
+      <div class="ts-form-stay-checkbox-wrapper">
+        <Checkbox inputId="stay-after-submit" v-model="stayAfterSubmit" binary />
+        <label for="stay-after-submit">
+          Stay on this form after submitting
+        </label>
+      </div>
     </div>
     <div class="ts-form-action-buttons">
       <Button
         label="Cancel"
+        v-if="props.buttonsTemplate?.includes('cancel')"
         @click="$emit('cancel')"
         type="button"
       />
       <Button
+        label="Clear Field"
+        v-if="props.buttonsTemplate?.includes('clear')"
+        @click="fieldsKey++"
+        type="button"
+        severity="primary"
+        text-only
+      />
+      <Button
         label="Save"
+        v-if="props.buttonsTemplate?.includes('save')"
         outlined
         severity="success"
         type="button"
@@ -136,7 +152,7 @@ const onSave = () => {
   }
 
   &-stay-checkbox {
-    label {
+    &-wrapper {
       cursor: pointer;
       display: flex;
       gap: 8px;
@@ -148,7 +164,12 @@ const onSave = () => {
         width: max-content;
         height: max-content;
       }
+
+      label {
+        cursor: pointer;
+      }
     }
+
   }
 
   &-action-buttons {

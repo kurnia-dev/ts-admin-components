@@ -23,7 +23,6 @@ const emit = defineEmits<{
 
 onMounted(() => {
   setValidator();
-  setupWatcher();
 });
 
 const field = reactive<FieldValidation>({});
@@ -49,16 +48,12 @@ const setClass = (): void => {
   highlights[highlights.length - 1]?.classList.add('first-and-last');
 };
 
-const setupWatcher = () => {
-  if (props.modelValue) {
-    watch(date, (newDate: string | undefined) => {
-      if (newDate) {
-        const parsed = parseDate(newDate);
-        emit('update:modelValue', parsed);
-      }
-    });
+watch(date, (newDate: string | undefined) => {
+  if (newDate) {
+    const parsed = parseDate(newDate);
+    emit('update:modelValue', parsed);
   }
-};
+});
 
 const setValidator = () => {
   if (props.useValidator) {

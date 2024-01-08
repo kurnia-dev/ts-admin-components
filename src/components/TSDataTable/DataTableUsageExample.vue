@@ -98,6 +98,23 @@ const data = [
     transactionDate: 'transactionDate 5',
     _id: '5',
   },
+  {
+    image: 'https://loremflickr.com/640/480',
+    isDefault: true,
+    isActive: true,
+    name: 'name 5',
+    sku: 'sku 5',
+    category: 'category 5',
+    brand: 'brand 5',
+    model: 'model 5',
+    stock: 83,
+    lastTransaction: 'lastTransaction 5',
+    transactionQty: 27,
+    company: 'company 5',
+    manager: 'manager 5',
+    transactionDate: 'transactionDate 5',
+    _id: '6',
+  },
 ];
 
 const useColumns = (): Ref<TableColumn[]> => {

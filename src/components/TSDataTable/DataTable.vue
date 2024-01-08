@@ -3,10 +3,10 @@ import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import { TableColumn } from '@/types/columns';
 import { MenuOption } from '@/types/options';
 import type Menu from 'primevue/menu';
-import {
+import DataTable, {
   DataTablePageEvent,
   DataTableSelectAllChangeEvent,
-  DataTableSortEvent,
+  DataTableSortEvent
 } from 'primevue/datatable';
 
 type Data = Record<string, any>;
@@ -238,7 +238,7 @@ watch(props, () => {
     :lazy="true"
     :paginator="usePaginator"
     :data-key="dataKey"
-    :rows="props.rows ?? 5"
+    :rows="usePaginator ? props.rows ?? 5 : undefined"
     :rows-per-page-options="rowsPerPageOptions"
     :total-records="totalRecords ?? datas.length"
     :select-all="isSelectedAll"

@@ -122,6 +122,7 @@ const resetCropper = () => {
 
 const reset = () => {
   preview.value = { message: 'File has been deleted' };
+  imageUploadErrorMessage.value = undefined;
   field.value = undefined;
   previewUrl.value = '';
   sendData();

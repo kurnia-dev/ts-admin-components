@@ -17,6 +17,7 @@ const props = defineProps<{
   validatorMessage?: string;
   placeholder?: string;
   size?: 'small' | 'normal' | 'full';
+  showButtons?: boolean;
 }>();
 
 defineEmits<{
@@ -67,7 +68,7 @@ watch(
         @update:modelValue="$emit('update:modelValue', $event)"
         inputId="minmax-buttons"
         mode="decimal"
-        showButtons
+        :showButtons="showButtons"
         :min="0"
         :class="['ts-inputnumber', { full: props.size === 'full' }]"
         :pt="{

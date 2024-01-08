@@ -99,6 +99,9 @@ const setValidatorMessage = (value: Nullable<number>): boolean | string => {
           filter
           option-label="name"
           filter-placeholder="Search"
+          :pt="{
+            panel: { style: 'z-index: 999999'}
+          }"
         >
           <template #value="slotProps">
             <template v-if="slotProps.value">
