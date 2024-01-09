@@ -101,6 +101,11 @@ const toggleMenu = (e: Event): void => {
     }
   }
 
+  .ts-bulkaction-button:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
   .ts-selection-message {
     width: max-content;
     text-transform: capitalize;
