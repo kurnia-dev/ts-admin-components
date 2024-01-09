@@ -31,15 +31,13 @@ const onSubmit = handleSubmit((values) => {
   <form class="d-flex gap-4 align-items-start" @submit="onSubmit">
     <ImageCompressor
       :key="imageCompressorKey"
-      :compressedBlob="imageBlob"
+      image-preview-url="https://assets-a1.kompasiana.com/statics/crawl/552b01886ea83423038b4567.jpeg"
       label="image-1"
       field-name="image-1"
       use-validator
     />
     <ImageCompressor
       image-preview-size="small"
-      :key="imageCompressorKey2"
-      :compressedBlob="imageBlob2"
       label="image-2"
       field-name="image-2"
       use-validator

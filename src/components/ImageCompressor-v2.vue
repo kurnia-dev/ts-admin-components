@@ -22,7 +22,7 @@ const props = defineProps({
     default: false,
   },
   compressedBlob: {
-    type: String,
+    type: String || Blob,
     default: undefined,
   },
   imagePreviewSize: {
@@ -47,14 +47,15 @@ const props = defineProps({
   fieldName: {
     type: String,
   },
+  imagePreviewUrl: {
+    type: String,
+  }
 });
 
 const emit = defineEmits<{ final: [value: any] }>();
 
 onMounted(() => {
-  if (props.compressedBlob) {
-    previewUrl.value = props.compressedBlob;
-  }
+  previewUrl.value = props.compressedBlob ?? props.imagePreviewUrl ?? '';
 
   setField();
 });
@@ -82,7 +83,7 @@ const canvas = ref<any>();
 const scale = ref(60);
 const quality = ref(60);
 const preview = ref<any>({});
-const previewUrl = ref<string>('');
+const previewUrl = ref<string | Blob>('');
 const isError = ref(false);
 const showAdjustPhoto = ref(false);
 const inputKey = ref(0);
