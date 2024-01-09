@@ -8,7 +8,7 @@ const props = withDefaults(
   defineProps<{
     header: string;
     severity: Severity;
-    confirmLabel: string;
+    confirmLabel?: string;
     icon?: string;
     lists?: string[] | object[];
     listLabel?: string;
@@ -65,7 +65,7 @@ const confirm = (): void => {
     <template #footer>
       <slot name="footer">
         <Button @click="closeDialog" label="Cancel" text-only />
-        <Button :severity="severity" :label="confirmLabel" @click="confirm" />
+        <Button :severity="severity" :label="confirmLabel ?? 'Yes, Continue'" @click="confirm" />
       </slot>
     </template>
   </Dialog>

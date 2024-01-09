@@ -49,7 +49,7 @@ const bulkOptions = ref<MenuOption[]>([
     <Button label="TS Button" />
     <Button icon="ri-filter-line" />
     <Button icon="ri-file-text-line" />
-    <Button icon="ri-download-2-line" severity="success" outlined />
+    <Button icon="ri-download-2-line" severity="secondary" outlined />
   </div>
   <div class="d-flex gap-3">
     <ButtonDefault label="Default" />
