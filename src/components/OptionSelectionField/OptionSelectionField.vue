@@ -90,7 +90,7 @@ const setOption = (options: TOptionSelection[]) => {
         aria-describedby="dd-error"
         filter-placeholder="Search"
         option-label="label"
-        option-value="value"
+        :option-value="dropdownOptions?.[0].value ? 'value' : 'label'"
         display="chip"
         class="ts-multiselect"
       />
@@ -103,7 +103,7 @@ const setOption = (options: TOptionSelection[]) => {
         @change="updateFieldValue($event)"
         aria-describedby="dd-error"
         optionLabel="label"
-        optionValue="value"
+        :optionValue="dropdownOptions?.[0].value ? 'value' : 'label'"
         class="ts-dropdown"
       />
       <ValidatorMessage

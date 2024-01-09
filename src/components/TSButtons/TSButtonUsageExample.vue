@@ -64,7 +64,6 @@ const bulkOptions = ref<MenuOption[]>([
     <TSBulkAction
       :selected-datas="[{ id: 'assas' }]"
       :options="bulkOptions"
-      :label="bulkLabel"
       naming="asset"
     />
   </div>

@@ -11,6 +11,10 @@ const props = defineProps<{
   naming?: string;
 }>();
 
+defineEmits<{
+  apply: [];
+}>();
+
 const menu = ref<Menu>();
 const selectedOption = ref<MenuOption>();
 
@@ -66,7 +70,8 @@ const toggleMenu = (e: Event): void => {
       <Button
         @click="
           command?.({ originalEvent: $event, item: selectedOption }),
-            (selectedOption = undefined)
+            (selectedOption = undefined),
+          $emit('apply')
         "
         label="Apply"
         :severity="severity"
