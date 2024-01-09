@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import GroupTree from '../GroupTree.vue';
+import TSButton from '../TSButtons/Button.vue';
 
 const props = defineProps<{
   show: boolean;
@@ -47,21 +48,20 @@ const show = computed(() => props.show);
     />
     <template #footer>
       <template v-if="props.readonly">
-        <Button
+        <TSButton
           label="Close"
-          text
+          text-only
           severity="secondary"
           @click="emit('cancel')"
         />
       </template>
       <template v-else>
-        <Button
+        <TSButton
           label="Cancel"
-          text
-          severity="secondary"
+          text-only
           @click="emit('cancel')"
         />
-        <Button
+        <TSButton
           :label="buttonLabel ?? 'Apply'"
           severity="success"
           :disabled="
