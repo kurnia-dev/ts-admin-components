@@ -56,7 +56,11 @@ const props = defineProps({
   hideInfo: {
     type: Boolean,
     default: false,
-  }
+  },
+  hideValidatorMessage: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits<{ final: [value: any]; delete: [] }>();
@@ -160,7 +164,7 @@ const loadImage = (event: any) => {
       isError.value = true;
       preview.value = { message: 'File size too big! Max. 1 MB' };
       imageUploadErrorMessage.value = preview.value.message;
-      previewUrl.value = '';
+      previewUrl.value = props.compressedBlob ?? props.imagePreviewUrl ?? '';
       sendData();
       return;
     }
@@ -470,7 +474,9 @@ const openCropper = () => {
     <small
       class="validator-message text-left"
       v-show="
-        !preview.compressed && (imageUploadErrorMessage ?? field.errorMessage)
+        !props.hideValidatorMessage &&
+        !preview.compressed &&
+        (imageUploadErrorMessage ?? field.errorMessage)
       "
       >{{ imageUploadErrorMessage ?? field.errorMessage }}</small
     >
