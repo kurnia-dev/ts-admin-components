@@ -32,6 +32,7 @@ type FormPayload = {
 const emit = defineEmits<{
   submit: [values: FormPayload];
   save: [values: FormPayload];
+  clear: [];
   cancel: [];
 }>();
 
@@ -105,7 +106,7 @@ const onSave = () => {
       <Button
         v-if="props.buttonsTemplate?.includes('clear')"
         label="Clear Field"
-        @click="fieldsKey++"
+        @click="fieldsKey++, $emit('clear')"
         type="button"
         severity="primary"
         text-only
