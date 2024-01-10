@@ -81,6 +81,7 @@ const menus = ref([
       </div>
     </template>
   </Card>
+  <Toast position="top-right" />
 </template>
 <style>
 @import '~primevue/resources/themes/lara-light-blue/theme.css';
@@ -261,6 +262,7 @@ const menus = ref([
   @include rfs(11.4px, line-height);
   font-style: normal;
   font-weight: 500;
+  white-space: nowrap;
   transition: 0.1s all ease;
   height: 26px;
 }
@@ -363,13 +365,15 @@ const menus = ref([
   background: $general-label-hover;
 }
 
-.ts-button-filter.ts-button.ts-button-secondary.outlined {
+.ts-button-filter.ts-button.ts-button-secondary.outlined,
+.ts-button.ts-button-secondary.outlined {
   background: $general-bg-white !important;
   color: $general-label !important;
   border: 1px solid $general-body;
 }
 
-.ts-button-filter.ts-button.ts-button-secondary.outlined:hover {
+.ts-button-filter.ts-button.ts-button-secondary.outlined:hover,
+.ts-button.ts-button-secondary.outlined:hover {
   background: $dark-thin !important;
 }
 
