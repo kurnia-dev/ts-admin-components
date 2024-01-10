@@ -23,11 +23,7 @@ const command = computed(() => selectedOption.value?.command);
 const disabled = computed(() => props.disabled);
 
 const severity = computed(() => {
-  return selectedOption.value
-    ? selectedOption.value.danger
-      ? 'danger'
-      : 'primary'
-    : undefined;
+  return selectedOption.value ? 'primary' : undefined;
 });
 
 const toggleMenu = (e: Event): void => {
@@ -74,7 +70,7 @@ const toggleMenu = (e: Event): void => {
           $emit('apply')
         "
         label="Apply"
-        :severity="severity"
+        severity="primary"
       />
     </template>
     <span v-show="selectedDatas.length" class="ts-selection-message">
