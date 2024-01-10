@@ -66,7 +66,7 @@ watch(
 );
 
 const setOption = (options: TOptionSelection[]) => {
-  if (!dropdownOptions.value) dropdownOptions.value = options;
+  dropdownOptions.value = options;
 };
 </script>
 <template>
