@@ -35,8 +35,9 @@ onMounted(() => {
         else return true;
       })
     );
+
+    field.value = props.initialValue ?? 0;
   }
-  field.value = props.initialValue ?? 0;
 });
 
 const setValidatorMessage = (value: Nullable<number>) => {
@@ -66,14 +67,15 @@ watch(
       <InputNumber
         v-model="field.value"
         @update:modelValue="$emit('update:modelValue', $event)"
-        inputId="minmax-buttons"
-        mode="decimal"
         :showButtons="showButtons"
+        :placeholder="placeholder"
         :min="0"
         :class="['ts-inputnumber', { full: props.size === 'full' }]"
         :pt="{
           input: { class: props.size ?? 'small' },
         }"
+        inputId="minmax-buttons"
+        mode="decimal"
       />
       <ValidatorMessage
         v-show="field.errorMessage"
