@@ -49,10 +49,10 @@ const props = defineProps({
   },
   imagePreviewUrl: {
     type: String,
-  }
+  },
 });
 
-const emit = defineEmits<{ final: [value: any] }>();
+const emit = defineEmits<{ final: [value: any]; delete: [] }>();
 
 onMounted(() => {
   previewUrl.value = props.compressedBlob ?? props.imagePreviewUrl ?? '';
@@ -71,6 +71,7 @@ type Image = {
   src: any;
   type: any;
 };
+
 const image = ref<Image>({
   src: null,
   type: null,
@@ -370,7 +371,7 @@ const openCropper = () => {
               style="padding: 0.15rem 0.3rem"
             />
             <Button
-              @click="reset"
+              @click="imagePreviewUrl ? $emit('delete') : reset()"
               icon="ri-delete-bin-6-line"
               label="Delete"
               text
