@@ -96,6 +96,7 @@ watch(
     border: none;
     padding: 6.4px;
     height: 100% !important;
+    width: 100% !important;
   }
 
   .p-inputnumber-button-group {
