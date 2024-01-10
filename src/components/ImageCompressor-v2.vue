@@ -50,6 +50,13 @@ const props = defineProps({
   imagePreviewUrl: {
     type: String,
   },
+  /**
+   * Hide the requirement information section
+   */
+  hideInfo: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const emit = defineEmits<{ final: [value: any]; delete: [] }>();
@@ -397,6 +404,7 @@ const openCropper = () => {
         </div>
 
         <div
+          v-if="!hideInfo"
           class="d-flex"
           :class="{ 'text-danger': isError, 'disabled': props.disabled }"
         >
