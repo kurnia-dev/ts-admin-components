@@ -43,10 +43,10 @@ const confirm = (): void => {
     header: { class: 'ts-dialog-header' },
   }" @update:visible="emit('update:visible', $event)" class="ts-dialog" modal>
     <template #header>
-      <i :class="[
+      <i v-if="icon" :class="[
         severity === 'danger' ? 'text-danger' : '',
         severity === 'success' ? 'text-success' : '',
-        icon ? icon : 'ri-error-warning-line',
+        icon,
         'fs-4 ts-dialog-title-icon',
       ]"></i>
       <span class="ts-dialog-title">{{ header }}</span>
