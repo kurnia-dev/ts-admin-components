@@ -3,6 +3,8 @@ import { computed, ref, watch } from 'vue';
 import { isObjectEmpty } from '@/utils';
 import SelectGroupDialog from './SelectGroupDialog.vue';
 import QuotaExceededDialog from './QuotaExceededDialog.vue';
+import TSButton from '../TSButtons/Button.vue';
+import NameContainer from '../NameContainer.vue';
 
 /**
  * Define the props for the Vue component
@@ -17,7 +19,7 @@ import QuotaExceededDialog from './QuotaExceededDialog.vue';
 const props = defineProps<{
   dialogHeader?: string;
   dialogFooterButtonLabel?: string;
-  modelValue: number[];
+  modelValue?: number[];
   selectionMode: 'checkbox' | 'single';
   params?: object;
   checkQuota?: boolean;
@@ -27,12 +29,15 @@ const props = defineProps<{
   btnStyle?: object | string;
   btnPassThrough?: object;
   disabled?: boolean;
+  hideButton?: boolean;
+  showDialog?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', keys: number[]): void;
-  (e: 'update:exceeded', data: boolean): void;
-  (e: 'applySingleMode', group: any): void;
+  'update:modelValue': [keys: number[]];
+  'update:exceeded': [data: boolean];
+  'applySingleMode': [group: any];
+  'update:showDialog': [state: boolean];
 }>();
 
 const showGroups = ref(false);
@@ -128,6 +133,12 @@ watch(showGroups, (val) => {
     singleSelectedGroupTemp.value = singleSelectedGroup.value;
     setActiveGroup(singleSelectedGroup.value);
   }
+
+  if (props.showDialog !== undefined) {
+    emit('update:showDialog', val);
+    groupTemp.value = {};
+    singleSelectedGroupTemp.value = {};
+  }
 });
 
 watch(singleSelectedGroupTemp, (val) => {
@@ -135,49 +146,57 @@ watch(singleSelectedGroupTemp, (val) => {
     setActiveGroup(val);
   }
 });
+
+watch(() => props.showDialog, (state: boolean | undefined) => {
+  if (state !== undefined) showGroups.value = state;
+});
 </script>
 
 <template>
-  <template v-if="props.selectionMode === 'single'">
-    <Button
-      v-if="isObjectEmpty(groupTemp)"
-      :label="buttonLabel"
-      @click="showGroupDialog"
-      :disabled="disabled"
-      :class="btnClass"
-      :style="btnStyle"
-      :pt="btnPassThrough"
-    />
-    <div v-else class="d-flex align-item-center gap-1">
-      <NameContainer
-        :name="singleSelectedGroup?.name || props.singleSelectedGroupName"
-      />
-      <Button
+  <template v-if="!props.hideButton">
+    <template v-if="props.selectionMode === 'single'">
+      <TSButton
+        v-if="isObjectEmpty(groupTemp)"
+        :label="buttonLabel"
         @click="showGroupDialog"
         :disabled="disabled"
+        :class="btnClass"
+        :style="btnStyle"
+        :pt="btnPassThrough"
         severity="primary"
-        class="edit-group"
-        text
-        rounded
-      >
-        <i class="ri-edit-2-line" />
-      </Button>
-      <span v-if="showExceededLabel" class="ms-1 text-danger"
-        >Group Quota Exceeded</span
-      >
-    </div>
+        type="button"
+      />
+      <div v-else class="d-flex align-item-center gap-1">
+        <NameContainer
+          :name="singleSelectedGroup?.name || props.singleSelectedGroupName"
+        />
+        <Button
+          @click="showGroupDialog"
+          :disabled="disabled"
+          severity="primary"
+          class="edit-group"
+          text
+          rounded
+          type="button"
+        >
+          <i class="ri-edit-2-line" />
+        </Button>
+        <span v-if="showExceededLabel" class="ms-1 text-danger"
+          >Group Quota Exceeded</span
+        >
+      </div>
+    </template>
+    <TSButton
+      v-else
+      :label="buttonLabel"
+      @click="showGroupDialog"
+      class="d-block w-100"
+      :disabled="disabled"
+      :class="btnClass"
+      severity="primary"
+      type="button"
+    />
   </template>
-  <Button
-    v-else
-    :label="buttonLabel"
-    @click="showGroupDialog"
-    class="d-block w-100"
-    :disabled="disabled"
-    :class="btnClass"
-    :style="btnStyle || { padding: '0.2rem 0.75rem' }"
-    :pt="btnPassThrough || { label: { style: 'font-size: 11.2px' } }"
-  />
-
   <SelectGroupDialog
     :header="dialogHeader"
     :button-label="dialogFooterButtonLabel"

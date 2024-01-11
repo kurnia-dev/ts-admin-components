@@ -5,7 +5,7 @@ import TSButton from '../TSButtons/Button.vue';
 
 const props = defineProps<{
   show: boolean;
-  destination: object;
+  destination?: object;
   selectionMode: 'checkbox' | 'single';
   header?: string;
   buttonLabel?: string;
