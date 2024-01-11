@@ -18,6 +18,8 @@ const props = defineProps<{
   placeholder?: string;
   size?: 'small' | 'normal' | 'full';
   showButtons?: boolean;
+  mode?: 'decimal' | 'currency'
+  useGrouping?: boolean;
 }>();
 
 defineEmits<{
@@ -75,7 +77,8 @@ watch(
           input: { class: props.size ?? 'small' },
         }"
         inputId="minmax-buttons"
-        mode="decimal"
+        :mode="props.mode"
+        :useGrouping="props.useGrouping"
       />
       <ValidatorMessage
         v-show="field.errorMessage"
