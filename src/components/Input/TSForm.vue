@@ -12,6 +12,8 @@ type ButtonsTemplate = FormButton[];
 const props = defineProps<{
   columnPerRow?: number;
   buttonsTemplate?: ButtonsTemplate;
+  hideStayCheckbox?: boolean;
+  stickyButtons?: boolean;
 }>();
 
 type FormPayload = {
@@ -52,14 +54,23 @@ onMounted(() => {
       rowPos++;
     }
   }
+
+  setMarginBottom();
 });
 
 const showValidator = ref<boolean>(false);
 const validated = ref<boolean>(false);
 const fieldsKey = ref<number>(0);
+const footer = ref<HTMLDivElement>();
 
 const fieldsWrapper = ref<HTMLDivElement | null>(null);
 const stayAfterSubmit = ref<boolean>(false);
+
+const setMarginBottom = () => {
+  const footerHeight = footer.value?.offsetHeight;
+  if (fieldsWrapper.value)
+    fieldsWrapper.value.style.marginBottom = (footerHeight ?? 0) + 24 + 'px';
+};
 
 const onSubmit = handleSubmit((formValues) => {
   validated.value = true;
@@ -84,52 +95,64 @@ const onSave = () => {
 };
 </script>
 <template>
-  <form @submit="onSubmit" class="ts-form" @input="showValidator = false">
-    <div ref="fieldsWrapper" class="ts-form-fields">
-      <slot name="fields" :key="fieldsKey" />
-    </div>
-    <div class="ts-form-stay-checkbox">
-      <div class="ts-form-stay-checkbox-wrapper">
-        <Checkbox inputId="stay-after-submit" v-model="stayAfterSubmit" binary />
-        <label for="stay-after-submit">
-          Stay on this form after submitting
-        </label>
+  <form
+    @submit="onSubmit"
+    :class="['ts-form', { 'sticky-buttons': props.stickyButtons }]"
+    @input="showValidator = false"
+  >
+    <div class="ts-form-fields-outer-wrapper">
+      <div ref="fieldsWrapper" class="ts-form-fields">
+        <slot name="fields" :key="fieldsKey" />
       </div>
     </div>
-    <div class="ts-form-action-buttons">
-      <Button
-        label="Cancel"
-        v-if="props.buttonsTemplate?.includes('cancel')"
-        @click="$emit('cancel')"
-        type="button"
-      />
-      <Button
-        v-if="props.buttonsTemplate?.includes('clear')"
-        label="Clear Field"
-        @click="fieldsKey++, $emit('clear')"
-        type="button"
-        severity="primary"
-        text-only
-      />
-      <Button
-        v-if="props.buttonsTemplate?.includes('save')"
-        label="Save"
-        outlined
-        severity="success"
-        type="button"
-        @click="onSave"
-      />
-      <Button
-        v-if="props.buttonsTemplate?.includes('submit')"
-        severity="success"
-        type="submit"
-        label="Submit"
-        @click="!validated && (showValidator = true)"
-      />
-      <ValidatorMessage
-        v-show="showValidator"
-        message="Please input all required field!"
-      />
+    <div class="ts-form-footer" ref="footer">
+      <div class="ts-form-stay-checkbox" v-if="!hideStayCheckbox">
+        <div class="ts-form-stay-checkbox-wrapper">
+          <Checkbox
+            inputId="stay-after-submit"
+            v-model="stayAfterSubmit"
+            binary
+          />
+          <label for="stay-after-submit">
+            Stay on this form after submitting
+          </label>
+        </div>
+      </div>
+      <div class="ts-form-action-buttons">
+        <Button
+          label="Cancel"
+          v-if="props.buttonsTemplate?.includes('cancel')"
+          @click="$emit('cancel')"
+          type="button"
+        />
+        <Button
+          v-if="props.buttonsTemplate?.includes('clear')"
+          label="Clear Field"
+          @click="fieldsKey++, $emit('clear')"
+          type="button"
+          severity="primary"
+          text-only
+        />
+        <Button
+          v-if="props.buttonsTemplate?.includes('save')"
+          label="Save"
+          outlined
+          severity="success"
+          type="button"
+          @click="onSave"
+        />
+        <Button
+          v-if="props.buttonsTemplate?.includes('submit')"
+          severity="success"
+          type="submit"
+          label="Submit"
+          @click="!validated && (showValidator = true)"
+        />
+        <ValidatorMessage
+          v-show="showValidator"
+          message="Please input all required field!"
+        />
+      </div>
     </div>
   </form>
 </template>
@@ -149,7 +172,7 @@ const onSave = () => {
 
   &-fields {
     display: grid;
-    gap: 12px 24px;
+    gap: 20px 24px;
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -171,7 +194,12 @@ const onSave = () => {
         cursor: pointer;
       }
     }
+  }
 
+  .ts-form-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   &-action-buttons {
@@ -180,6 +208,31 @@ const onSave = () => {
     justify-content: flex-end;
     gap: 12px;
     position: relative;
+  }
+}
+
+.ts-form.sticky-buttons {
+  height: 100%;
+  position: relative;
+
+  .ts-form-fields-outer-wrapper {
+    height: 100%;
+    overflow: auto;
+    margin-right: -12px;
+    padding-right: 12px;
+  }
+
+  .ts-form-fields {
+    height: 100%;
+    box-sizing: content-box;
+  }
+
+  .ts-form-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: $general-bg-white;
+    padding-top: 12px;
   }
 }
 </style>
