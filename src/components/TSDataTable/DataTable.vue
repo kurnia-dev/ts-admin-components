@@ -78,9 +78,9 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  'setDetail': [data: any];
-  'selectDatas': [data: any];
-  'rowSelect': [data: any];
+  'setDetail': [data: Data];
+  'selectDatas': [data: Data[]];
+  'rowSelect': [data: Data];
   /**
    * Event emitted when the `isSelectedAll` property is updated.
    *
@@ -165,7 +165,7 @@ const selectedDatas = computed({
     const filtered = filterSelectedDatas(newSelectedDatas);
     emit('selectDatas', filtered);
     emit('update:selectedDatas', filtered);
-    const total = props.totalRecords ?? props.datas.length;
+    const total = props.totalRecords ?? props.datas?.length ?? 0;
     const checked = total == filtered.length + disabledRows.value.length;
     emit('update:isSelectedAll', checked);
   },
@@ -195,7 +195,7 @@ const selectColumn = (cols: TableColumn[]) => {
 
 const checkboxClass = ref<string>('');
 const disabledRows = computed(() => {
-  return props.datas
+  return [props.datas ?? []]
     .filter((data: any) => data[props.selectionKey ?? 'isDefault'])
     .map((data: any) => data[props.dataKey]);
 });
@@ -206,7 +206,7 @@ const disableCheckbox = () => {
 
   nextTick(() => {
     disabledRows.value.forEach((row) => {
-      const index = props.datas.findIndex(
+      const index = [props.datas ?? []].findIndex(
         (data: any) => data[props.dataKey] == row
       );
 
@@ -224,7 +224,7 @@ onMounted(() => {
 });
 
 watch(props, () => {
-  if (props.datas.length) {
+  if (props.datas?.length) {
     setTimeout(disableCheckbox, 500);
   }
 });
@@ -233,14 +233,14 @@ watch(props, () => {
 <template>
   <DataTable
     v-model:selection="selectedDatas"
-    :value="props.datas"
+    :value="props.datas ?? []"
     :loading="loading"
     :lazy="true"
     :paginator="usePaginator"
     :data-key="dataKey"
     :rows="usePaginator ? props.rows ?? 5 : undefined"
     :rows-per-page-options="rowsPerPageOptions"
-    :total-records="totalRecords ?? datas.length"
+    :total-records="totalRecords ?? datas?.length ?? 0"
     :select-all="isSelectedAll"
     :selection-mode="props.singleSelect ? 'single' : undefined"
     @row-click="onRowClick"
@@ -443,6 +443,7 @@ watch(props, () => {
       td {
         border: none !important;
         padding: 6px 9.6px !important;
+        white-space: nowrap;
       }
 
       .p-frozen-column {
@@ -504,7 +505,7 @@ watch(props, () => {
 
     .p-paginator-rpp-options,
     .p-paginator-page-input input {
-      border-radius: 7px;
+      border-radius: 7px !important;
       border: 1px solid $general-body;
       width: max-content;
       height: 26.2px;
