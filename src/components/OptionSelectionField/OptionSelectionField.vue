@@ -10,7 +10,7 @@ import { DropdownChangeEvent } from 'primevue/dropdown';
 
 const props = defineProps<{
   modelValue?: string | string[];
-  options: TOptionSelection[];
+  options?: TOptionSelection[];
   useValidator?: boolean;
   mandatory?: boolean;
   validatorMessage?: string;
@@ -65,9 +65,14 @@ watch(
   (options) => setOption(options)
 );
 
-const setOption = (options: TOptionSelection[]) => {
+const setOption = (options?: TOptionSelection[]) => {
   dropdownOptions.value = options;
 };
+
+const optionValue = computed<'label' | 'value'>(() => {
+  const value = dropdownOptions.value?.[0]?.value;
+  return value != null ? 'value' : 'label'
+})
 </script>
 <template>
   <div class="field_wrapper">
@@ -90,7 +95,7 @@ const setOption = (options: TOptionSelection[]) => {
         aria-describedby="dd-error"
         filter-placeholder="Search"
         option-label="label"
-        :option-value="dropdownOptions?.[0]?.value ? 'value' : 'label'"
+        :option-value="optionValue"
         display="chip"
         class="ts-multiselect"
       />
@@ -103,7 +108,7 @@ const setOption = (options: TOptionSelection[]) => {
         @change="updateFieldValue($event)"
         aria-describedby="dd-error"
         optionLabel="label"
-        :optionValue="dropdownOptions?.[0]?.value ? 'value' : 'label'"
+        :optionValue="optionValue"
         class="ts-dropdown"
       />
       <ValidatorMessage
