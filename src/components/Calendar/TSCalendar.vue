@@ -8,7 +8,7 @@ import { FieldValidation } from '@/types/fieldValidation.type';
 const date = ref<string>();
 
 const props = defineProps<{
-  modelValue?: string;
+  modelValue?: number | number[];
   label?: string;
   mode?: 'range' | 'single';
   fieldName?: string;
@@ -18,7 +18,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  'update:modelValue': [date: string];
+  'update:modelValue': [date: number | number[]];
 }>();
 
 onMounted(() => {
@@ -32,12 +32,12 @@ const getGMTTime = (date: string) => {
 };
 
 const parseDate = (date: string | string[]) => {
-  if (typeof date === 'string') return JSON.stringify(getGMTTime(date));
+  if (typeof date === 'string') return getGMTTime(date);
   else
-    return JSON.stringify([
+    return [
       getGMTTime(date[0]),
       getGMTTime(date[1] ?? date[0]),
-    ]);
+    ];
 };
 
 const setClass = (): void => {
@@ -138,6 +138,7 @@ const setValidatorMessage = (value: string) => {
     .p-icon {
       width: 14px;
       height: 14px;
+      flex-shrink: 0;
     }
   }
 
