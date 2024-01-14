@@ -404,8 +404,15 @@ watch(props, () => {
     }
 
     th.p-sortable-column:hover,
-    th.p-frozen-column:hover {
+    th.p-frozen-column:hover,
+    th.p-sortable-column.p-highlight {
       background: $primary-bg-strong;
+    }
+
+    th.p-sortable-column.p-highlight {
+      .p-sortable-column-icon {
+        color: $primary;
+      }
     }
 
     .p-column-header-content {
