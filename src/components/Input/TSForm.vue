@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import { useForm } from 'vee-validate';
 import Button from '../TSButtons/Button.vue';
-import { onMounted, ref } from 'vue';
 import ValidatorMessage from './InputValidatorMessage.vue';
+import { FormPayload } from '@/types/tsForm.type';
 
 const { handleSubmit, values } = useForm();
 
@@ -15,21 +16,6 @@ const props = defineProps<{
   hideStayCheckbox?: boolean;
   stickyButtons?: boolean;
 }>();
-
-type FormPayload = {
-  stayAfterSubmit: boolean;
-  formValues: Record<
-    string,
-    | string
-    | string[]
-    | number
-    | number[]
-    | boolean
-    | boolean[]
-    | object
-    | object[]
-  >;
-};
 
 const emit = defineEmits<{
   submit: [values: FormPayload];
@@ -55,7 +41,8 @@ onMounted(() => {
     }
   }
 
-  setMarginBottom();
+  setOuterFieldsWrapperHeight();
+  if (props.stickyButtons) setDialogClass();
 });
 
 const showValidator = ref<boolean>(false);
@@ -64,12 +51,20 @@ const fieldsKey = ref<number>(0);
 const footer = ref<HTMLDivElement>();
 
 const fieldsWrapper = ref<HTMLDivElement | null>(null);
+const outerFieldsWrapper = ref<HTMLDivElement | null>(null);
 const stayAfterSubmit = ref<boolean>(false);
 
-const setMarginBottom = () => {
+const setOuterFieldsWrapperHeight = () => {
   const footerHeight = footer.value?.offsetHeight;
-  if (fieldsWrapper.value)
-    fieldsWrapper.value.style.marginBottom = (footerHeight ?? 0) + 24 + 'px';
+  if (outerFieldsWrapper.value)
+    outerFieldsWrapper.value.style.height = `calc(100% + ${
+      (footerHeight ?? 0) + 20
+    }px)`;
+};
+
+const setDialogClass = (): void => {
+  const dialog = document.querySelector('.p-dialog') as HTMLDivElement;
+  if (dialog) dialog.classList.add('form-dialog-sticky-buttons');
 };
 
 const onSubmit = handleSubmit((formValues) => {
@@ -100,7 +95,7 @@ const onSave = () => {
     :class="['ts-form', { 'sticky-buttons': props.stickyButtons }]"
     @input="showValidator = false"
   >
-    <div class="ts-form-fields-outer-wrapper">
+    <div ref="outerFieldsWrapper" class="ts-form-fields-outer-wrapper">
       <div ref="fieldsWrapper" class="ts-form-fields">
         <slot name="fields" :key="fieldsKey" />
       </div>
@@ -233,6 +228,19 @@ const onSave = () => {
     width: 100%;
     background: $general-bg-white;
     padding-top: 12px;
+  }
+}
+
+.p-dialog.form-dialog-sticky-buttons {
+  height: 100% !important;
+  box-shadow: none;
+
+  .p-dialog-header {
+    margin-top: auto;
+  }
+
+  .p-dialog-content {
+    margin-bottom: auto;
   }
 }
 </style>
