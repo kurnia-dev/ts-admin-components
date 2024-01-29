@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Button from './Button.vue';
 import Menu from 'primevue/menu';
 import { MenuOption } from '@/types/options';
@@ -29,6 +29,12 @@ const severity = computed(() => {
 const toggleMenu = (e: Event): void => {
   menu.value?.toggle(e);
 };
+
+watch(() => props.selectedDatas, (datas) => {
+  if (!datas.length) {
+    selectedOption.value = undefined;
+  }
+})
 </script>
 
 <template>
@@ -85,7 +91,7 @@ const toggleMenu = (e: Event): void => {
 .ts-bulkaction {
   display: flex;
   gap: 8px;
-  align-items: baseline;
+  align-items: center;
   color: $general-body;
 
   .ts-bulkaction-button {
