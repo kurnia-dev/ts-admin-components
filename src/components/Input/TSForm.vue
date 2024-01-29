@@ -57,7 +57,7 @@ const stayAfterSubmit = ref<boolean>(false);
 const setOuterFieldsWrapperHeight = () => {
   const footerHeight = footer.value?.offsetHeight;
   if (outerFieldsWrapper.value)
-    outerFieldsWrapper.value.style.height = `calc(100% + ${
+    outerFieldsWrapper.value.style.height = `calc(100% - ${
       (footerHeight ?? 0) + 20
     }px)`;
 };
@@ -114,37 +114,40 @@ const onSave = () => {
         </div>
       </div>
       <div class="ts-form-action-buttons">
-        <Button
-          label="Cancel"
-          v-if="props.buttonsTemplate?.includes('cancel')"
-          @click="$emit('cancel')"
-          type="button"
-        />
-        <Button
-          v-if="props.buttonsTemplate?.includes('clear')"
-          label="Clear Field"
-          @click="fieldsKey++, $emit('clear')"
-          type="button"
-          severity="primary"
-          text-only
-        />
-        <Button
-          v-if="props.buttonsTemplate?.includes('save')"
-          label="Save"
-          outlined
-          severity="success"
-          type="button"
-          @click="onSave"
-        />
-        <Button
-          v-if="props.buttonsTemplate?.includes('submit')"
-          severity="success"
-          type="submit"
-          label="Submit"
-          @click="!validated && (showValidator = true)"
-        />
+        <div class="button-wrapper">
+          <Button
+            label="Cancel"
+            v-if="props.buttonsTemplate?.includes('cancel')"
+            @click="$emit('cancel')"
+            type="button"
+          />
+          <Button
+            v-if="props.buttonsTemplate?.includes('clear')"
+            label="Clear Field"
+            @click="fieldsKey++, $emit('clear')"
+            type="button"
+            severity="primary"
+            text-only
+          />
+          <Button
+            v-if="props.buttonsTemplate?.includes('save')"
+            label="Save"
+            outlined
+            severity="success"
+            type="button"
+            @click="onSave"
+          />
+          <Button
+            v-if="props.buttonsTemplate?.includes('submit')"
+            severity="success"
+            type="submit"
+            label="Submit"
+            @click="!validated && (showValidator = true)"
+          />
+        </div>
         <ValidatorMessage
           v-show="showValidator"
+          class="ts-form-validator-message"
           message="Please input all required field!"
         />
       </div>
@@ -198,11 +201,19 @@ const onSave = () => {
   }
 
   &-action-buttons {
+    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
-    gap: 12px;
-    position: relative;
+    gap: 4px;
+
+    .button-wrapper {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      gap: 12px;
+    }
   }
 }
 
@@ -242,5 +253,10 @@ const onSave = () => {
   .p-dialog-content {
     margin-bottom: auto;
   }
+}
+
+.ts-form-validator-message {
+  position: static;
+  width: max-content;
 }
 </style>
