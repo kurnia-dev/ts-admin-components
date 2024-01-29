@@ -185,7 +185,7 @@ const optionValue = computed<'label' | 'value'>(() => {
     padding: 4px !important;
     margin-right: 0 !important;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
     gap: 2px !important;
     border-radius: 4px !important;
     border: 1px solid;
