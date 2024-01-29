@@ -5,6 +5,7 @@ import { ref } from 'vue';
 defineProps<{
   thumbnail?: string;
   preview?: string;
+  type?: 'circle' | 'rounded';
   size: 'small' | 'normal';
 }>();
 
@@ -32,11 +33,14 @@ const imgFallback = ref(
         <img
           :src="thumbnail || imgFallback"
           alt="image"
-          class="image"
-          :class="{
-            'image-small': size === 'small',
-            'image-normal': size === 'normal',
-          }"
+          :class="[
+            'image',
+            type,
+            {
+              'image-small': size === 'small',
+              'image-normal': size === 'normal',
+            },
+          ]"
         />
       </template>
       <template #preview>
@@ -59,7 +63,6 @@ const imgFallback = ref(
 </template>
 
 <style scoped>
-
 .image {
   border: 1px solid #a0a3bd;
 }
@@ -76,6 +79,10 @@ const imgFallback = ref(
   width: 125px;
   border-radius: 10px;
   object-fit: cover;
+}
+
+.circle {
+  border-radius: 50% !important;
 }
 </style>
 

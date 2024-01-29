@@ -61,6 +61,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  imagePreviewType: {
+    type: String as () => 'circle' | 'rounded',
+    default: 'rounded',
+  },
 });
 
 const emit = defineEmits<{ final: [value: any]; delete: [] }>();
@@ -349,9 +353,10 @@ const openCropper = () => {
               'object-fit:cover; border-radius:8px;' +
               (props.imagePreviewSize === 'small'
                 ? 'height:80px; width:80px;'
-                : 'height:125px; width:125px;')
+                : 'height:125px; width:125px;') +
+              (props.imagePreviewType === 'circle' ? 'border-radius:50%;' : '')
             "
-            class="image img-preview-md"
+            :class="['image', 'img-preview-md', imagePreviewType]"
             :pt="{
               mask: { style: 'z-index: 99999999' },
               rotateRightButton: { class: 'd-none' },
@@ -499,6 +504,10 @@ const openCropper = () => {
   width: max-content;
   height: max-content;
   border-radius: 8px;
+}
+
+.circle {
+  border-radius: 50%;
 }
 
 .input-trigger {
