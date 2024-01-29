@@ -668,4 +668,8 @@ watch(props, () => {
     background: $primary-weak !important;
   }
 }
+
+.p-dropdown-panel {
+  z-index: 9999 !important;
+}
 </style>
