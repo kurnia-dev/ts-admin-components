@@ -57,6 +57,7 @@ const emit = defineEmits<{
   (e: 'connect', data?: any): void;
   (e: 'connected', data?: any): void;
   (e: 'scan', rfid: string): void;
+  (e: 'stop'): void;
 }>();
 
 const isConnected = ref(false);
@@ -205,8 +206,9 @@ const stopScan = async () => {
     toast.removeGroup('rfidScanning');
     isButtonDisabled.value = false;
     controller.value.abort();
+    emit('stop');
   } catch (error: any) {
-    console.error(error.code);
+    console.error(error.code, error);
   }
 };
 
