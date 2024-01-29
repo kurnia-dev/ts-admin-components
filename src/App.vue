@@ -7,13 +7,16 @@ import SelectGroupUsageTest from './components/SelectGroup/SelectGroupUsageTest.
 import TSButtonUsageExample from './components/TSButtons/TSButtonUsageExample.vue';
 import TSCalendar from '@/components/Calendar/TSCalendar.vue';
 import HelloWorld from './components/HelloWorld.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import ScanQR from './components/ScanQR/ScanQRButton.vue';
 import ScanRFID from './components/ScanRFID/ScanRFIDButton.vue';
 import Card from 'primevue/card';
 import DataTableUsageExample from './components/TSDataTable/DataTableUsageExample.vue';
 import TSConfirmDialogUsageExample from './components/TSConfirmDialog/TSConfirmDialogUsageExample.vue';
-const dateStringified = ref<string>();
+import { handleSuccess } from './utils/toast.util';
+import Toast from 'primevue/toast';
+const dateRange = ref<number[]>();
+
 const menus = ref([
   {
     label: 'Stock',
@@ -24,9 +27,14 @@ const menus = ref([
     to: '/reader/transaction-history',
   },
 ]);
+
+onMounted(() => {
+  handleSuccess({ activity: 'success' });
+});
 </script>
 
 <template>
+  <Toast position="bottom-right" />
   <div style="margin-bottom: 50px">
     <div>
       <a href="https://vitejs.dev" target="_blank">
@@ -54,7 +62,7 @@ const menus = ref([
         <div class="row">
           <div class="col-3">
             <TSCalendar
-              v-model="dateStringified"
+              v-model="dateRange"
               label="Single Select"
               mode="range"
               mandatory
@@ -65,9 +73,9 @@ const menus = ref([
             <TSCalendar label="Range Select" />
           </div>
           <div class="col-6 d-flex gap-2">
-            <ScanRFID />
-            <ScanRFID label-only label="Start Scan" />
-            <ScanQR />
+            <ScanRFID disabled />
+            <ScanRFID label-only label="Start Scan" @scan="console.log($event)" />
+            <ScanQR disabled />
             <ScanQR label-only label="Start Scan" />
           </div>
         </div>
@@ -239,6 +247,11 @@ const menus = ref([
     position: absolute;
     left: 2px;
     top: 2px;
+  }
+
+  &:disabled {
+    background: $general-grey;
+    pointer-events: none;
   }
 }
 
@@ -469,7 +482,7 @@ span.ripple {
   border: 1px solid $general-body !important;
   background: $general-bg-white;
   height: 32px !important;
-  
+
   .p-multiselect-filter-icon,
   .p-dropdown-filter-icon {
     width: 12px !important;
@@ -481,5 +494,8 @@ span.ripple {
   }
 }
 
+.p-dialog {
+  height: max-content !important;
+  max-height: 90vh !important;
+}
 </style>
-./components/DataTable/DynamicTableUsageExample.vue
