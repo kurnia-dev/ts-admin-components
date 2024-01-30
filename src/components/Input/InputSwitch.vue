@@ -15,9 +15,11 @@ defineEmits<{
     <input
       :checked="modelValue"
       :disabled="disabled"
-      @change="
-        $emit('update:modelValue', ($event.target as HTMLInputElement)?.checked)
-      "
+      @change="(event) => {
+        const checked = (event.target as HTMLInputElement)?.checked
+        $emit('update:modelValue', checked);
+        $emit('change', checked);
+      }"
       class="hidden-input"
       type="checkbox"
     />

@@ -12,16 +12,19 @@ import Button from './Button.vue';
 import InputSwitch from '@/components/Input/InputSwitch.vue';
 import TSBulkAction from './TSBulkAction.vue';
 import { MenuOption } from '@/types/options';
+import SelectGroup from '../SelectGroup/SelectGroup.vue';
 const isOn = ref<boolean>(true);
 watch(isOn, (on) => console.log(on));
 
 const bulkLabel = ref<string>('Bulk action');
+const showGroupDialog = ref(false);
+const groups = ref<number[]>([]);
 const bulkOptions = ref<MenuOption[]>([
   {
     label: 'Assign Group',
     icon: 'ri-group-line',
     command: (): void => {
-      console.log('Assign Group')
+      showGroupDialog.value = true;
     },
   },
   {
@@ -36,7 +39,7 @@ const bulkOptions = ref<MenuOption[]>([
 </script>
 <template>
   <label style="text-align: left">Tag Samurai Button with Riple Effect</label>
-  <div class="d-flex gap-3">
+  <div class="preview">
     <Button label="TS Button" severity="primary" />
     <Button label="TS Button" severity="danger" />
     <Button label="TS Button" severity="success" />
@@ -48,6 +51,7 @@ const bulkOptions = ref<MenuOption[]>([
     <Button label="TS Button" severity="success" text-only />
     <Button label="TS Button" />
     <Button icon="ri-filter-line" />
+    <Button icon="ri-filter-line" label="Filter" severity="success" />
     <Button icon="ri-file-text-line" />
     <Button icon="ri-download-2-line" severity="secondary" outlined />
   </div>
@@ -60,11 +64,18 @@ const bulkOptions = ref<MenuOption[]>([
     <ButtonPrimaryOutline label="Primary" />
     <ButtonDangerOutline label="Danger" />
     <ButtonSuccessOutline label="Success" />
-    <InputSwitch v-model="isOn" />
+    <InputSwitch v-model="isOn" @change="console.log('change', $event)" @update:model-value="console.log('update', $event)"/>
     <TSBulkAction
       :selected-datas="[{ id: 'assas' }]"
       :options="bulkOptions"
       naming="asset"
+    />
+    <SelectGroup
+      v-model="groups"
+      v-model:show-dialog="showGroupDialog"
+      selection-mode="checkbox"
+      hide-button
+      @update:model-value="console.log($event)"
     />
   </div>
 </template>
