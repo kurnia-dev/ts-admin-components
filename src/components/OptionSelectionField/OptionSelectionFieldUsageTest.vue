@@ -9,6 +9,7 @@ import TSCalendar from '../Calendar/TSCalendar.vue';
 import InputPhone from '../Input/InputPhone.vue';
 import TSForm from '@/components/Input/TSForm.vue';
 import Dialog from 'primevue/dialog';
+import SelectGroup from '../SelectGroup/SelectGroup.vue';
 
 const value3 = ref<any>();
 
@@ -26,12 +27,25 @@ setTimeout(() => {
   initial.value = 0;
 }, 2000);
 const showDialog = ref<boolean>(true);
+type Group = {
+  name?: string;
+}
+
+const selectedGroupKeys = ref<number[]>([])
+const selectedGroup = ref<Group>({});
+const dateSingle = ref<number>(+new Date());
 </script>
 
 <template>
-  <Dialog v-model:visible="showDialog" header="Testing Dialog" closable>
-    <TSForm @save="console.log($event)" :buttons-template="['clear', 'submit']">
+  <Dialog v-model:visible="showDialog" header="Testing Dialog" closable modal>
+    <TSForm
+      @save="console.log($event)"
+      :buttons-template="['clear', 'save']"
+      @clear="console.log('clear')"
+      sticky-buttons
+    >
       <template #fields>
+        <TSCalendar field-name="dateSingle" label="Single Select" v-model="dateSingle" use-validator mandatory />
         <TextField
           mandatory
           use-validator
@@ -60,12 +74,7 @@ const showDialog = ref<boolean>(true);
           field-name="notMandatory"
           use-validator
         />
-        <InputEmail
-          label="Email"
-          field-name="email"
-          use-validator
-          mandatory
-        />
+        <InputEmail label="Email" field-name="email" use-validator mandatory />
         <InputTextarea
           label="Text area"
           field-name="textarea"
@@ -80,6 +89,7 @@ const showDialog = ref<boolean>(true);
           mandatory
           field-name="number"
           size="full"
+          placeholder="input"
         />
         <InputPhone
           :max="10"
@@ -94,6 +104,15 @@ const showDialog = ref<boolean>(true);
           mode="range"
           mandatory
           use-validator
+        />
+        <SelectGroup
+          selectionMode="single"
+          v-model="selectedGroupKeys"
+          :single-selected-group-name="selectedGroup.name"
+          @apply-single-mode="(event) => {
+            selectedGroup = event;
+            console.log(selectedGroup);
+          }"
         />
       </template>
     </TSForm>

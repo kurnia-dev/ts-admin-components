@@ -1,21 +1,44 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, watch } from 'vue';
 import { useField } from 'vee-validate';
-import ValidatorMessage from '../Input/InputValidatorMessage.vue';
 import { formatVowelSoundLabel } from '@/utils/textFormater.util';
 import { FieldValidation } from '@/types/fieldValidation.type';
+import ValidatorMessage from '../Input/InputValidatorMessage.vue';
 
-const date = ref<string>();
-
-const props = defineProps<{
+interface TSCalendarProps {
+  /**
+   * TSCalendar modelValue is date timestamp: 1706423635731
+   */
   modelValue?: number | number[];
+  /**
+   * Display label on top of Date Input.
+   */
   label?: string;
+  /**
+   * Whether single date or date range model value.
+   */
   mode?: 'range' | 'single';
-  fieldName?: string;
-  mandatory?: boolean;
+  /**
+   * Enable Validator using vee-validate. Combine with TSForm that handle form validation.
+   */
   useValidator?: boolean;
+  /**
+   * When used as field in From Validation using TSForm,
+   * specify the unique field name, match with your needs for API request.
+   */
+  fieldName?: string;
+  /**
+   * Whether this field should be filled or not.
+   */
+  mandatory?: boolean;
+  /**
+   * Set the custom validator message.
+   * By default each field has preserved with its validator message, you don't need to worrying about the message.
+   */
   validatorMessage?: string;
-}>();
+}
+
+const props = defineProps<TSCalendarProps>();
 
 const emit = defineEmits<{
   'update:modelValue': [date: number | number[]];
@@ -27,17 +50,43 @@ onMounted(() => {
 
 const field = reactive<FieldValidation>({});
 
-const getGMTTime = (date: string) => {
-  return new Date(new Date(date).toUTCString()).getTime();
+const date = ref<string | string[]>();
+
+watch(
+  () => props.modelValue,
+  () => {
+    date.value = parseDateFromProps();
+  }
+);
+
+onMounted(() => {
+  date.value = parseDateFromProps();
+})
+
+const getGMTTime = (dateString: string): number => {
+  return new Date(new Date(dateString).toUTCString()).getTime();
 };
 
-const parseDate = (date: string | string[]) => {
-  if (typeof date === 'string') return getGMTTime(date);
-  else
-    return [
-      getGMTTime(date[0]),
-      getGMTTime(date[1] ?? date[0]),
-    ];
+const getLocalTime = (timeStamp?: number): string => {
+  if (timeStamp) {
+    return new Date(timeStamp).toLocaleDateString();
+  }
+
+  return '';
+};
+
+const parseDateFromProps = (): string | string[] => {
+  if (!Array.isArray(props.modelValue)) return getLocalTime(props.modelValue);
+  return props.modelValue.map((timeStamp) => getLocalTime(timeStamp)).join('-');
+};
+
+const parseDate = (dateToParse: string | string[]): number | number[] => {
+  if (!Array.isArray(dateToParse)) return getGMTTime(dateToParse);
+
+  return [
+    getGMTTime(dateToParse[0]),
+    getGMTTime(dateToParse[1] ?? dateToParse[0]),
+  ];
 };
 
 const setClass = (): void => {
@@ -48,62 +97,58 @@ const setClass = (): void => {
   highlights[highlights.length - 1]?.classList.add('first-and-last');
 };
 
-watch(date, (newDate: string | undefined) => {
-  if (newDate) {
-    const parsed = parseDate(newDate);
-    emit('update:modelValue', parsed);
-  }
-});
-
-const setValidator = () => {
+const setValidator = (): void => {
   if (props.useValidator) {
     Object.assign(
       field,
       useField(props.fieldName ?? '', (value: string) => {
         if (props.mandatory) return setValidatorMessage(value);
-        else return true;
+        return true;
       })
     );
+
+    field.value = props.modelValue;
   }
 };
 
-const setValidatorMessage = (value: string) => {
+const setValidatorMessage = (value: string): boolean | string => {
   if (!value) {
     return (
       props.validatorMessage ??
       `Please pick ${formatVowelSoundLabel(props.label)} date!`
     );
-  } else {
-    return true;
   }
+
+  return true;
 };
 </script>
 
 <template>
   <div class="field_wrapper">
-    <label v-if="label">
+    <label v-if="label" data-test="label">
       {{ label }}
-      <span class="text-danger" v-if="mandatory">*</span>
+      <span v-if="mandatory" class="text-danger" data-test="mandatory">*</span>
     </label>
     <div class="input_wrapper">
       <Calendar
         v-model="date"
-        @update:model-value="field.value = parseDate($event)"
-        showIcon
-        iconDisplay="input"
-        :selection-mode="mode ?? 'single'"
-        hide-on-range-selection
-        placeholder="Select date"
-        @update:modelValue="setClass"
-        @show="setClass"
         :pt="{
           root: { class: 'ts-calendar' },
           panel: { class: 'ts-datepicker' },
+          input: { class: 'ts-dateinput' },
         }"
+        :selection-mode="mode ?? 'single'"
+        @show="setClass"
+        @update:model-value="(field.value = parseDate($event)), setClass()"
+        hide-on-range-selection
+        icon-display="input"
+        placeholder="Select date"
+        show-icon
       />
       <ValidatorMessage
         v-show="field.errorMessage"
         :message="field.errorMessage"
+        data-test="ts-calendar-validator-message"
       />
     </div>
   </div>
