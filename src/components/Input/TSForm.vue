@@ -7,7 +7,7 @@ import { FormPayload } from '@/types/tsForm.type';
 
 const { handleSubmit, values } = useForm();
 
-type FormButton = 'clear' | 'submit' | 'save' | 'cancel';
+type FormButton = 'clear' | 'submit' | 'save' | 'save-outlined' | 'cancel';
 type ButtonsTemplate = FormButton[];
 
 const props = defineProps<{
@@ -25,24 +25,26 @@ const emit = defineEmits<{
 }>();
 
 onMounted(() => {
-  const chilren = fieldsWrapper.value!.children;
-  const childCount = fieldsWrapper.value!.childElementCount;
-  const colCount = props.columnPerRow ?? 2;
+  if (fieldsWrapper.value) {
+    const chilren = fieldsWrapper.value.children;
+    const childCount = fieldsWrapper.value.childElementCount;
+    const colCount = props.columnPerRow ?? 2;
 
-  fieldsWrapper.value!.style.gridTemplateColumns = `repeat(${colCount}, 1fr)`;
+    fieldsWrapper.value.style.gridTemplateColumns = `repeat(${colCount}, 1fr)`;
 
-  let [rowPos, colPos] = [1, 1];
-  for (const i in Array.from({ length: childCount })) {
-    chilren[i].setAttribute('style', `grid-area: ${rowPos}/${colPos}`);
+    let [rowPos, colPos] = [1, 1];
+    for (const i in Array.from({ length: childCount })) {
+      chilren[i].setAttribute('style', `grid-area: ${rowPos}/${colPos}`);
 
-    if (++colPos > colCount) {
-      colPos = 1;
-      rowPos++;
+      if (++colPos > colCount) {
+        colPos = 1;
+        rowPos++;
+      }
     }
-  }
 
-  setOuterFieldsWrapperHeight();
-  if (props.stickyButtons) setDialogClass();
+    setOuterFieldsWrapperHeight();
+    if (props.stickyButtons) setDialogClass();
+  }
 });
 
 const showValidator = ref<boolean>(false);
@@ -54,10 +56,10 @@ const fieldsWrapper = ref<HTMLDivElement | null>(null);
 const outerFieldsWrapper = ref<HTMLDivElement | null>(null);
 const stayAfterSubmit = ref<boolean>(false);
 
-const setOuterFieldsWrapperHeight = () => {
+const setOuterFieldsWrapperHeight = (): void => {
   const footerHeight = footer.value?.offsetHeight;
   if (outerFieldsWrapper.value)
-    outerFieldsWrapper.value.style.height = `calc(100% - ${
+    outerFieldsWrapper.value.style.height = `calc(100% + ${
       (footerHeight ?? 0) + 20
     }px)`;
 };
@@ -65,6 +67,10 @@ const setOuterFieldsWrapperHeight = () => {
 const setDialogClass = (): void => {
   const dialog = document.querySelector('.p-dialog') as HTMLDivElement;
   if (dialog) dialog.classList.add('form-dialog-sticky-buttons');
+};
+
+const onSubmitClicked = (): void => {
+  if (!validated.value) showValidator.value = true;
 };
 
 const onSubmit = handleSubmit((formValues) => {
@@ -77,9 +83,10 @@ const onSubmit = handleSubmit((formValues) => {
   };
 
   emit('submit', payload);
+  showValidator.value = false;
 });
 
-const onSave = () => {
+const onSave = (): void => {
   const formValues = values;
   const payload: FormPayload = {
     stayAfterSubmit: stayAfterSubmit.value,
@@ -91,22 +98,22 @@ const onSave = () => {
 </script>
 <template>
   <form
-    @submit="onSubmit"
     :class="['ts-form', { 'sticky-buttons': props.stickyButtons }]"
     @input="showValidator = false"
+    @submit.prevent="onSubmit"
   >
     <div ref="outerFieldsWrapper" class="ts-form-fields-outer-wrapper">
       <div ref="fieldsWrapper" class="ts-form-fields">
-        <slot name="fields" :key="fieldsKey" />
+        <slot :key="fieldsKey" name="fields" />
       </div>
     </div>
-    <div class="ts-form-footer" ref="footer">
-      <div class="ts-form-stay-checkbox" v-if="!hideStayCheckbox">
+    <div ref="footer" class="ts-form-footer">
+      <div v-if="!hideStayCheckbox" class="ts-form-stay-checkbox">
         <div class="ts-form-stay-checkbox-wrapper">
           <Checkbox
-            inputId="stay-after-submit"
             v-model="stayAfterSubmit"
             binary
+            input-id="stay-after-submit"
           />
           <label for="stay-after-submit">
             Stay on this form after submitting
@@ -116,33 +123,40 @@ const onSave = () => {
       <div class="ts-form-action-buttons">
         <div class="button-wrapper">
           <Button
-            label="Cancel"
             v-if="props.buttonsTemplate?.includes('cancel')"
             @click="$emit('cancel')"
+            label="Cancel"
             type="button"
           />
           <Button
             v-if="props.buttonsTemplate?.includes('clear')"
-            label="Clear Field"
             @click="fieldsKey++, $emit('clear')"
-            type="button"
+            label="Clear Field"
             severity="primary"
             text-only
+            type="button"
           />
           <Button
-            v-if="props.buttonsTemplate?.includes('save')"
+            v-if="props.buttonsTemplate?.includes('save-outlined')"
+            @click="onSave"
             label="Save"
             outlined
             severity="success"
             type="button"
+          />
+          <Button
+            v-if="props.buttonsTemplate?.includes('save')"
             @click="onSave"
+            label="Save"
+            severity="success"
+            type="button"
           />
           <Button
             v-if="props.buttonsTemplate?.includes('submit')"
+            @click="onSubmitClicked"
+            label="Submit"
             severity="success"
             type="submit"
-            label="Submit"
-            @click="!validated && (showValidator = true)"
           />
         </div>
         <ValidatorMessage
