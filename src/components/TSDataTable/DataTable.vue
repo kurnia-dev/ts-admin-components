@@ -6,7 +6,8 @@ import type Menu from 'primevue/menu';
 import DataTable, {
   DataTablePageEvent,
   DataTableSelectAllChangeEvent,
-  DataTableSortEvent
+  DataTableSortEvent,
+  DataTableFilterMeta
 } from 'primevue/datatable';
 
 type Data = Record<string, any>;
@@ -75,6 +76,11 @@ const props = defineProps<{
    * Wether display pagination under the table or not.
    */
   usePaginator?: boolean;
+  filters?: DataTableFilterMeta;
+  /**
+   * To add data-test attribute to the table.
+   */
+  dataTest?: string;
 }>();
 
 const emit = defineEmits<{
@@ -233,6 +239,7 @@ watch(props, () => {
 <template>
   <DataTable
     v-model:selection="selectedDatas"
+    :filters="props.filters"
     :value="props.datas ?? []"
     :loading="loading"
     :lazy="true"
@@ -255,6 +262,7 @@ watch(props, () => {
     current-page-report-template="Showing {first} to {last} of {totalRecords}"
     scrollable
     class="ts-datatable"
+    :data-test="props.dataTest"
   >
     <template #empty> No data found. </template>
     <Column
