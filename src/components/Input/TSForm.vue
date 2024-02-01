@@ -15,6 +15,7 @@ const props = defineProps<{
   buttonsTemplate?: ButtonsTemplate;
   hideStayCheckbox?: boolean;
   stickyButtons?: boolean;
+  submitButtonLabel?: string;
 }>();
 
 const emit = defineEmits<{
@@ -154,7 +155,7 @@ const onSave = (): void => {
           <Button
             v-if="props.buttonsTemplate?.includes('submit')"
             @click="onSubmitClicked"
-            label="Submit"
+            :label="props.submitButtonLabel ?? 'Submit'"
             severity="success"
             type="submit"
           />
