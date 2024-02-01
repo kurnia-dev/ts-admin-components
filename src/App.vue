@@ -185,6 +185,18 @@ body {
   color: $warning-strong !important;
 }
 
+.text-success {
+  color: $success !important;
+}
+
+.text-primary {
+  color: $primary !important;
+}
+
+.text-dark {
+  color: $dark !important;
+}
+
 .text-danger {
   color: $danger !important;
 }
