@@ -8,7 +8,7 @@ import ValidatorMessage from '@/components/Input/InputValidatorMessage.vue';
 import InputNumber from 'primevue/inputnumber';
 import Dropdown from 'primevue/dropdown';
 
-type Country = { "name": string, "code": number, "flag": string } 
+type Country = { name: string; code: number; flag: string };
 
 const countryData = ref<Country[]>([]);
 
@@ -27,15 +27,38 @@ defineEmits<{
 }>();
 
 const field = reactive<FieldValidation>({});
+const numberInput = ref<number>();
 const selectedCountry = ref<Country>();
 
-const countryCode = computed<number | undefined>(() => selectedCountry.value?.code)
-const fullPhoneNumber = computed<number>(() => Number(`${countryCode.value}${field.value ?? ''}`))
+const countryCode = computed<number | undefined>(
+  () => selectedCountry.value?.code
+);
+const fullPhoneNumber = computed<number>(() =>
+  Number(`${countryCode.value}${numberInput.value ?? ''}`)
+);
 
-onMounted(() => {
+onMounted(async () => {
   setValidator();
-  fetchCountry();
+  await fetchCountry();
+  parsePhoneNumber();
 });
+
+const parsePhoneNumber = () => {
+  if (props.phoneNumber) {
+    const phoneNumberStr = props.phoneNumber.toString();
+    const foundCountry = countryData.value.find((country) =>
+      phoneNumberStr.startsWith(country.code.toString())
+    );
+
+    if (foundCountry) {
+      selectedCountry.value = foundCountry;
+      numberInput.value = Number(
+        phoneNumberStr.slice(foundCountry.code.toString().length)
+      );
+      field.value = fullPhoneNumber.value;
+    }
+  }
+};
 
 const setValidator = (): void => {
   if (props.useValidator) {
@@ -52,19 +75,20 @@ const setValidator = (): void => {
 const fetchCountry = async (): Promise<void> => {
   try {
     const { data } = await axios.get('https://restcountries.com/v3.1/all');
-    countryData.value = data.flatMap((country: any) => 
-      country.idd.suffixes ? 
-        country.idd.suffixes.map((suffix: string) => ({
-          name: country.name.common,
-          code: Number(`${country.idd.root}${suffix}`),
-          flag: country.flags.svg,
-        })) 
-        : 
-        [{
-          name: country.name.common,
-          code: Number(`${country.idd.root}`),
-          flag: country.flags.svg,
-        }]
+    countryData.value = data.flatMap((country: any) =>
+      country.idd.suffixes
+        ? country.idd.suffixes.map((suffix: string) => ({
+            name: country.name.common,
+            code: Number(`${country.idd.root}${suffix}`),
+            flag: country.flags.svg,
+          }))
+        : [
+            {
+              name: country.name.common,
+              code: Number(`${country.idd.root}`),
+              flag: country.flags.svg,
+            },
+          ]
     );
   } catch (error) {
     console.error(error);
@@ -107,7 +131,7 @@ const setValidatorMessage = (value: Nullable<number>): boolean | string => {
                 :alt="slotProps.value.name"
                 :src="slotProps.value.flag"
                 class="mr-2"
-                style="height: 12px; border: 1px solid #0a0a0a68;"
+                style="height: 12px; border: 1px solid #0a0a0a68"
               />
               <label class="phone-code">(+{{ slotProps.value.code }})</label>
             </template>
@@ -128,12 +152,16 @@ const setValidatorMessage = (value: Nullable<number>): boolean | string => {
             <i class="pi pi-search p-dropdown-filter-icon" />
           </template>
         </Dropdown>
-  
+
         <InputNumber
-          :modelValue="field.value"
+          :model-value="numberInput"
           :useGrouping="false"
           :disabled="!selectedCountry"
-          @input="field.value = $event.value, $emit('update:phoneNumber', fullPhoneNumber)"
+          @input="
+            (numberInput = $event.value as number),
+              (field.value = fullPhoneNumber),
+              $emit('update:phoneNumber', fullPhoneNumber)
+          "
           class="ts-inputnumber"
           placeholder="Phone Number"
         />
@@ -163,6 +191,10 @@ const setValidatorMessage = (value: Nullable<number>): boolean | string => {
     border-width: 1px 1px 1px 0 !important;
     border-radius: 0 4px 4px 0 !important;
     width: 100%;
+
+    input:disabled {
+      background: none;
+    }
   }
 }
 
