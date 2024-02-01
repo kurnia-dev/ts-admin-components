@@ -542,6 +542,7 @@ span.ripple {
   border-radius: 4px !important;
   @include font-size(11.2px);
   font-weight: 300;
+  height: 26px !important;
 }
 
 .p-inputgroup-addon {
