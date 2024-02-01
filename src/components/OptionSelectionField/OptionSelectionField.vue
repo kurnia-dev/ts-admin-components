@@ -19,6 +19,7 @@ const props = defineProps<{
   fieldName?: string;
   placeholder?: string;
   closable?: boolean;
+  loading?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -84,9 +85,10 @@ const optionValue = computed<'label' | 'value'>(() => {
       <MultiSelect
         v-if="mode === 'multi'"
         v-model="field.value"
+        :loading="props.loading"
         :filter="true"
         :options="dropdownOptions"
-        :placeholder="placeholder ?? `Select ${label}`"
+        :placeholder="loading ? 'Loading...' :  placeholder ?? `Select ${label}`"
         :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
         :pt="{
           closeButton: { style: !closable && 'display: none' },
@@ -102,8 +104,9 @@ const optionValue = computed<'label' | 'value'>(() => {
       <Dropdown
         v-else
         v-model="field.value"
+        :loading="props.loading"
         :options="dropdownOptions"
-        :placeholder="placeholder ?? `Select ${label}`"
+        :placeholder="loading ? 'Loading...' : placeholder ?? `Select ${label}`"
         :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
         @change="updateFieldValue($event)"
         aria-describedby="dd-error"
