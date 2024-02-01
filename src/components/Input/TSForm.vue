@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useForm } from 'vee-validate';
 import Button from '../TSButtons/Button.vue';
 import ValidatorMessage from './InputValidatorMessage.vue';
@@ -46,6 +46,8 @@ onMounted(() => {
     setOuterFieldsWrapperHeight();
     if (props.stickyButtons) setDialogClass();
   }
+
+  showValidator.value = false;
 });
 
 const showValidator = ref<boolean>(false);
@@ -96,6 +98,10 @@ const onSave = (): void => {
 
   emit('save', payload);
 };
+
+watch(values, () => {
+  showValidator.value = false;
+});
 </script>
 <template>
   <form
@@ -271,7 +277,8 @@ const onSave = (): void => {
 }
 
 .ts-form-validator-message {
-  position: static;
+  position: static !important;
   width: max-content;
+  transform: none !important;
 }
 </style>
