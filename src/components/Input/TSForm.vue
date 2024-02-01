@@ -62,8 +62,8 @@ const stayAfterSubmit = ref<boolean>(false);
 const setOuterFieldsWrapperHeight = (): void => {
   const footerHeight = footer.value?.offsetHeight;
   if (outerFieldsWrapper.value)
-    outerFieldsWrapper.value.style.height = `calc(100% + ${
-      (footerHeight ?? 0) + 20
+    outerFieldsWrapper.value.style.height = `calc(100% - ${
+      (footerHeight ?? 0) + 30
     }px)`;
 };
 
