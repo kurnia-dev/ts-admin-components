@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, computed } from 'vue';
+import { onMounted, reactive, ref, computed, watch } from 'vue';
 import { useField } from 'vee-validate';
 import axios from 'axios';
 import { Nullable } from 'primevue/ts-helpers';
@@ -49,7 +49,7 @@ const parsePhoneNumber = () => {
     const foundCountry = countryData.value.find((country) =>
       phoneNumberStr.startsWith(country.code.toString())
     );
-
+    
     if (foundCountry) {
       selectedCountry.value = foundCountry;
       numberInput.value = Number(
@@ -106,6 +106,22 @@ const setValidatorMessage = (value: Nullable<number>): boolean | string => {
     return true;
   }
 };
+
+
+/**
+ * Watch for changes in phoneNumber prop.
+ * This watcher is triggered only when phoneNumber changes for the first time.
+ * It is necessary when phoneNumber is waiting for the fetch process to complete.
+ */
+ watch(
+  () => props.phoneNumber,
+  (newVal, oldVal) => {
+    if (!oldVal && newVal) {
+      parsePhoneNumber();
+    }
+  },
+  { immediate: true }
+);
 </script>
 <template>
   <div class="field_wrapper" :class="$attrs.class">
