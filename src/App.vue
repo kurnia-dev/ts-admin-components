@@ -15,7 +15,8 @@ import DataTableUsageExample from './components/TSDataTable/DataTableUsageExampl
 import TSConfirmDialogUsageExample from './components/TSConfirmDialog/TSConfirmDialogUsageExample.vue';
 import { handleSuccess } from './utils/toast.util';
 import Toast from 'primevue/toast';
-const dateRange = ref<number[]>();
+const dateRange = ref<number[]>([+new Date(), +new Date()]);
+const dateSingle = ref<number>(+new Date());
 
 const menus = ref([
   {
@@ -63,17 +64,17 @@ onMounted(() => {
           <div class="col-3">
             <TSCalendar
               v-model="dateRange"
-              label="Single Select"
+              label="Range Select"
               mode="range"
               mandatory
               @update:model-value="console.log($event)"
             />
           </div>
           <div class="col-3">
-            <TSCalendar label="Range Select" />
+            <TSCalendar label="Range Select" v-model="dateSingle" />
           </div>
           <div class="col-6 d-flex gap-2">
-            <ScanRFID disabled />
+            <ScanRFID bulk @scan="console.log($event)"/>
             <ScanRFID label-only label="Start Scan" @scan="console.log($event)" />
             <ScanQR disabled />
             <ScanQR label-only label="Start Scan" />
@@ -95,7 +96,109 @@ onMounted(() => {
 @import '~primevue/resources/themes/lara-light-blue/theme.css';
 </style>
 <style lang="scss">
-@import 'scss/index';
+// index scss
+@import 'scss/var.scss';
+@import '~rfs/scss';
+@import 'scss/button.scss';
+@import 'scss/calendar.scss';
+@import 'scss/checkbox.scss';
+@import 'scss/tabmenu.scss';
+@import 'scss/tabview.scss';
+@import 'scss/image.scss';
+@import 'scss/inputswitch.scss';
+@import 'scss/dialog.scss';
+@import 'scss/multiselect.scss';
+@import 'scss/dropdown.scss';
+@import 'scss/tooltip.scss';
+
+h1 {
+  @include font-size(56px !important);
+  font-weight: 700 !important;
+}
+h2 {
+  @include font-size(38px !important);
+  font-weight: 700 !important;
+}
+h3 {
+  @include font-size(32px !important);
+  font-weight: 700 !important;
+}
+h4 {
+  @include font-size(26px !important);
+  font-weight: 700 !important;
+}
+h5 {
+  @include font-size(22px !important);
+  font-weight: 700 !important;
+}
+
+body {
+  background: $canvas !important;
+  @include font-size(11.2px);
+  max-width: 100vw;
+}
+
+.form-group {
+  @include margin-bottom(16px);
+  label {
+    @include margin-bottom(4px);
+    font-weight: 500;
+  }
+  small {
+    @include font-size(11.2px);
+    font-weight: 300;
+    @include margin-top(2px);
+  }
+}
+
+.p-component {
+  @include font-size(11.2px);
+  font-weight: 500;
+}
+
+.custom-active-btn {
+  background: #4e4b66 !important;
+  color: #fff !important;
+}
+
+.bg-primary-weak {
+  background: $primary-weak;
+}
+
+.bg-success-weak {
+  background: $success-weak;
+}
+
+.bg-danger-weak {
+  background: $danger-weak;
+}
+
+.bg-warning-weak {
+  background: $warning-weak;
+}
+
+.bg-dark-weak {
+  background: $dark-weak;
+}
+
+.text-warning {
+  color: $warning-strong !important;
+}
+
+.text-danger {
+  color: $danger !important;
+}
+
+.fs-body {
+  @include font-size(11.2px !important);
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -425,7 +528,14 @@ span.ripple {
 .p-inputtext {
   color: $general-body !important;
   border-radius: 4px !important;
+  @include font-size(11.2px);
+  font-weight: 300;
 }
+
+.p-inputgroup-addon {
+  padding: 0px;
+}
+
 
 .ts-inputtext,
 .ts-textarea {
