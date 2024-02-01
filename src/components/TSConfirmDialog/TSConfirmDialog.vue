@@ -116,6 +116,13 @@ const confirm = (): void => {
     font-weight: 500;
     line-height: 16.8px;
     padding: 0 24px 12px;
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+
+    > * {
+      margin-bottom: 0 !important;
+    }
   }
 
   .p-dialog-footer {
