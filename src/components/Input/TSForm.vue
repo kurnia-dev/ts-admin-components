@@ -137,7 +137,7 @@ watch(values, () => {
           />
           <Button
             v-if="props.buttonsTemplate?.includes('clear')"
-            @click="fieldsKey++, $emit('clear')"
+            @click="fieldsKey++, $emit('clear'), values = {}"
             label="Clear Field"
             severity="primary"
             text-only
