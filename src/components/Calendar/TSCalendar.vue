@@ -139,7 +139,12 @@ const setValidatorMessage = (value: string): boolean | string => {
         }"
         :selection-mode="mode ?? 'single'"
         @show="setClass"
-        @update:model-value="(field.value = parseDate($event)), setClass()"
+        @update:model-value="(event: string | string[]) => {
+          const parsedDate = parseDate(event);
+          emit('update:modelValue', parsedDate);
+          field.value = parsedDate;
+          setClass();
+        }"
         hide-on-range-selection
         icon-display="input"
         placeholder="Select date"
