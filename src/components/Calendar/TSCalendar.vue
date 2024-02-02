@@ -52,10 +52,11 @@ const field = reactive<FieldValidation>({});
 
 const date = ref<string | string[]>();
 
-watch(
+const unwatch = watch(
   () => props.modelValue,
   () => {
     date.value = parseDateFromProps();
+    unwatch();
   }
 );
 
