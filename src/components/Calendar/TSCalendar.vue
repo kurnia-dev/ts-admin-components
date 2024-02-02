@@ -11,6 +11,10 @@ interface TSCalendarProps {
    */
   modelValue?: number | number[];
   /**
+   * To display the initial date value, used in edit form, taht sometime need to display the already inputed date.
+   */
+  dateValue?: number | number[];
+  /**
    * Display label on top of Date Input.
    */
   label?: string;
@@ -53,15 +57,19 @@ const field = reactive<FieldValidation>({});
 const date = ref<string | string[]>();
 
 const unwatch = watch(
-  () => props.modelValue,
+  () => props.dateValue,
   () => {
     date.value = parseDateFromProps();
+    field.value = props.dateValue;
     unwatch();
   }
 );
 
 onMounted(() => {
   date.value = parseDateFromProps();
+  if (props.dateValue && props.useValidator) {
+    field.value = props.dateValue;
+  }
 })
 
 const getGMTTime = (dateString: string): number => {
@@ -76,9 +84,12 @@ const getLocalTime = (timeStamp?: number): string => {
   return '';
 };
 
+/**
+ * This function will parse the date number/timestamp into date string that can be displayed on date input.
+ */
 const parseDateFromProps = (): string | string[] => {
-  if (!Array.isArray(props.modelValue)) return getLocalTime(props.modelValue);
-  return props.modelValue.map((timeStamp) => getLocalTime(timeStamp)).join('-');
+  if (!Array.isArray(props.dateValue)) return getLocalTime(props.dateValue);
+  return props.dateValue.map((timeStamp) => getLocalTime(timeStamp)).join('-');
 };
 
 const parseDate = (dateToParse: string | string[]): number | number[] => {
