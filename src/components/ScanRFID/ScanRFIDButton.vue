@@ -4,6 +4,7 @@ import { useToast } from 'primevue/usetoast';
 import Toast from 'primevue/toast';
 import ScanAPIs from '@/services/scanner.service';
 import ErrorDialog from './ScanRFIDErrorDialog.vue';
+import { faker } from '@faker-js/faker';
 
 const toast = useToast();
 
@@ -72,6 +73,11 @@ const socket = ref<WebSocket>();
 const scanner = ref<any>(null);
 
 const start = async () => {
+  if (window.Cypress) {
+    emit('scan', faker.string.uuid())
+    return;
+  }
+
   try {
     toast.add({
       severity: 'info',
