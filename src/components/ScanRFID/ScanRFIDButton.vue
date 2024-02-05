@@ -72,12 +72,41 @@ const controller = ref(new AbortController());
 const socket = ref<WebSocket>();
 const scanner = ref<any>(null);
 
-const start = async () => {
+const onBeforeStartScan = () => {
   if (window.Cypress) {
-    emit('scan', faker.string.uuid())
-    return;
+    startScanForTest();
+  } else {
+    start()
   }
+};
 
+const startScanForTest = () => {
+  toast.add({
+    severity: 'info',
+    detail: 'Connecting RFID...',
+    group: 'rfidConnecting',
+    life: 3000,
+  });
+
+  setTimeout(() => {
+    emit('connect');
+    toast.add({
+      severity: 'info',
+      group: 'rfidScanning',
+      closable: false,
+    });
+    emit('connected', faker.string.uuid());
+
+    if (props.bulk) {
+      emit('scan', faker.string.uuid());
+    } else {
+      emit('update:modelValue', faker.string.uuid());
+      stopScan();
+    }
+  }, 3000);
+};
+
+const start = async () => {
   try {
     toast.add({
       severity: 'info',
@@ -208,10 +237,13 @@ const closeSocketConnection = () => socket.value?.close();
 
 const stopScan = async () => {
   try {
-    await ScanAPIs.stopScan();
-    toast.removeGroup('rfidScanning');
+    if (!window.Cypress) {
+      await ScanAPIs.stopScan();
+      controller.value.abort();
+    }
+
     isButtonDisabled.value = false;
-    controller.value.abort();
+    toast.removeGroup('rfidScanning');
     emit('stop');
   } catch (error: any) {
     console.error(error.code, error);
@@ -234,7 +266,7 @@ defineExpose({
     :style="btnStyle"
     :disabled="props.disabled || isButtonDisabled"
     :id="props.id || 'rfidScanBtn'"
-    @click="start"
+    @click="onBeforeStartScan"
     class="ts-button ts-rfid-button ts-button-primary"
     type="button"
   >
