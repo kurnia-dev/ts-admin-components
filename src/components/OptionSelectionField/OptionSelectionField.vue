@@ -24,6 +24,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:modelValue': [value: string | string[]];
+  'show': [];
 }>();
 
 onMounted(() => {
@@ -57,7 +58,10 @@ const setValidator = () => {
 
 const updateFieldValue = (event: DropdownChangeEvent | MultiSelectChangeEvent) => {
   const { value } = event;
-  !value?.length && (field.value = undefined);
+  if (props.mode === 'multi') {
+    !value?.length && (field.value = undefined);
+  }
+
   emit('update:modelValue', value);
 };
 
@@ -94,6 +98,7 @@ const optionValue = computed<'label' | 'value'>(() => {
           closeButton: { style: !closable && 'display: none' },
         }"
         @change="updateFieldValue($event)"
+        @show="emit('show')"
         aria-describedby="dd-error"
         filter-placeholder="Search"
         option-label="label"
@@ -109,6 +114,7 @@ const optionValue = computed<'label' | 'value'>(() => {
         :placeholder="loading ? 'Loading...' : placeholder ?? `Select ${label}`"
         :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
         @change="updateFieldValue($event)"
+        @show="emit('show')"
         aria-describedby="dd-error"
         optionLabel="label"
         :optionValue="optionValue"
