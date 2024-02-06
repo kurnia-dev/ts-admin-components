@@ -45,18 +45,27 @@ const setValidator = () => {
   if (props.useValidator) {
     Object.assign(
       field,
-      useField(props.fieldName ?? '', (value: string | string[]) => {
-        if (!value?.length && props.mandatory) {
-          return props.validatorMessage ?? defaultMessage.value;
-        }
+      useField(
+        props.fieldName ?? '',
+        (value: string | string[] | number | number[]) => {
+          const hasValue =
+            (value != null && value !== '') ||
+            (Array.isArray(value) && value.length);
 
-        return true;
-      })
+          if (!hasValue && props.mandatory) {
+            return props.validatorMessage ?? defaultMessage.value;
+          }
+
+          return true;
+        }
+      )
     );
   }
 };
 
-const updateFieldValue = (event: DropdownChangeEvent | MultiSelectChangeEvent) => {
+const updateFieldValue = (
+  event: DropdownChangeEvent | MultiSelectChangeEvent
+) => {
   const { value } = event;
   if (props.mode === 'multi') {
     !value?.length && (field.value = undefined);
@@ -76,8 +85,8 @@ const setOption = (options?: TOptionSelection[]) => {
 
 const optionValue = computed<'label' | 'value'>(() => {
   const value = dropdownOptions.value?.[0]?.value;
-  return value != null ? 'value' : 'label'
-})
+  return value != null ? 'value' : 'label';
+});
 </script>
 <template>
   <div class="field_wrapper">
@@ -92,7 +101,7 @@ const optionValue = computed<'label' | 'value'>(() => {
         :loading="props.loading"
         :filter="true"
         :options="dropdownOptions"
-        :placeholder="loading ? 'Loading...' :  placeholder ?? `Select ${label}`"
+        :placeholder="loading ? 'Loading...' : placeholder ?? `Select ${label}`"
         :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
         :pt="{
           closeButton: { style: !closable && 'display: none' },
