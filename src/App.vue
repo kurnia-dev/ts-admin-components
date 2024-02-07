@@ -224,6 +224,10 @@ body {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
 
+* {
+  font-family: 'Manrope', sans-serif;
+}
+
 *:focus {
   box-shadow: none !important;
 }
@@ -264,6 +268,7 @@ body {
     font-weight: 500;
     color: $general-placeholder;
     width: max-content;
+    letter-spacing: 0.336px;
   }
 }
 
@@ -540,7 +545,7 @@ span.ripple {
 .p-inputtext {
   color: $general-body !important;
   border-radius: 4px !important;
-  @include font-size(11.2px);
+  @include font-size(11.2px !important);
   font-weight: 300;
   height: 26px !important;
 }

@@ -13,8 +13,8 @@ const lastIndex = computed(() => props.menus.length - 1);
 <template>
   <div class="d-flex align-items-baseline breadcrumb">
     <div
-      v-for="(menu, index) in props.menus"
       :key="index"
+      v-for="(menu, index) in props.menus"
       class="d-flex align-items-baseline"
     >
       <div v-if="index !== lastIndex" class="d-flex align-items-end">
@@ -22,8 +22,7 @@ const lastIndex = computed(() => props.menus.length - 1);
           v-if="menu.route"
           :href="menu.route"
           @click="navigateToUrl(menu.route!)"
-          class="text-decoration-none breadcrumb-label"
-          style="cursor: pointer"
+          class="text-decoration-none breadcrumb-label cursor-pointer"
         >
           {{ menu.name }}
         </a>
@@ -33,7 +32,7 @@ const lastIndex = computed(() => props.menus.length - 1);
         >
           {{ menu.name }}
         </div>
-        <i class="ri-arrow-right-s-line breadcrumb-separator" />
+        <span class="breadcrumb-separator">></span>
       </div>
       <div v-else class="no-route breadcrumb-label">
         {{ menu.name }}
@@ -52,8 +51,13 @@ const lastIndex = computed(() => props.menus.length - 1);
 .breadcrumb-label {
   @include font-size(12px);
   font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 0.24px;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
 .first-menu-no-route {
   color: $primary-strong;
   font-weight: 600;
@@ -62,16 +66,20 @@ const lastIndex = computed(() => props.menus.length - 1);
 
 .no-route {
   color: $general-label;
-  font-weight: 600;
+  font-weight: 700;
   cursor: default;
 }
 
 .breadcrumb-separator {
+  color: $general-header-weak;
   @include font-size(14px);
   font-weight: 500;
   margin-left: 5px;
   margin-right: 5px;
-  line-height: 1.1;
-  color: $general-header-weak;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.28px;
 }
 </style>
