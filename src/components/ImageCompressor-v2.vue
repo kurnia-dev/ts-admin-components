@@ -345,7 +345,7 @@ const openCropper = () => {
     </label>
     <div class="image-compressor">
       <template v-if="props.showInput">
-        <div v-if="previewUrl.length" class="">
+        <div v-if="previewUrl" class="">
           <ImagePreview
             :src="previewUrl"
             :preview="true"

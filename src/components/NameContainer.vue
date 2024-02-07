@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import StringUtils from '@/utils/string.util';
+import { formatUserName } from '@/utils';
 
 type TSeverity = 'success' | 'danger' | 'warning' | 'dark' | 'primary';
 type TType = 'user' | 'status';
@@ -39,7 +39,7 @@ const formattedText = computed(() => {
       return props.name;
     }
     if (props.type === 'user') {
-      return StringUtils.formatUserName(props.name);
+      return formatUserName(props.name);
     }
     if (props.name.length > 12) {
       const firstWord = props.name.slice(0, 5);

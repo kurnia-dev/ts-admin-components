@@ -11,18 +11,17 @@ interface ErrorResponse {
 
 type ErrorToastParams = ToastParams & { error: AxiosError<ErrorResponse> };
 
-const handleError = (params: ErrorToastParams): void => {
+const handleError = ({ activity, error }: ErrorToastParams): void => {
   const toast = useToast();
-  const isNetworkError =
-    params.error.isAxiosError && params.error.code === 'ERR_NETWORK';
+  const isNetworkError = error.isAxiosError && error.code === 'ERR_NETWORK';
 
   const additionalMsg = isNetworkError
     ? 'Please check your connection and try again'
     : '';
 
-  let message = `Error, failed to ${params.activity}. ${additionalMsg}.`;
-  if (params.error.response?.status === 400) {
-    message = params.error.response.data.message;
+  let message = `Error, failed to ${activity}. ${additionalMsg}.`;
+  if (error.response?.status === 400) {
+    message = error.response.data.message;
   }
 
   toast.add({
@@ -32,10 +31,10 @@ const handleError = (params: ErrorToastParams): void => {
   });
 };
 
-const handleSuccess = (params: ToastParams) => {
+const handleSuccess = ({ activity }: ToastParams) => {
   const toast = useToast();
 
-  const message = `Success, ${params.activity}`;
+  const message = `Success, ${activity}`;
   toast.add({
     severity: 'success',
     detail: message,

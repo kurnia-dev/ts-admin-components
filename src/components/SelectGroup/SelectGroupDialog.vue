@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import GroupTree from '../GroupTree.vue';
 import TSButton from '../TSButtons/Button.vue';
 
 const props = defineProps<{
   show: boolean;
-  destination?: object;
+  selectedGroups?: object;
   selectionMode: 'checkbox' | 'single';
   header?: string;
   buttonLabel?: string;
@@ -19,9 +19,12 @@ const emit = defineEmits<{
   (e: 'keyChange', data: any): void;
 }>();
 
-const destinationTemp = ref<any>({});
+const selectedGroupsTemp = ref<any>({});
 
 const show = computed(() => props.show);
+watch(() => props.selectedGroups, (val) => {
+  if (show.value) selectedGroupsTemp.value = val;
+})
 </script>
 
 <template>
@@ -31,8 +34,7 @@ const show = computed(() => props.show);
     style="width: 400px"
     :draggable="false"
     :header="header ?? props.readonly ? 'Selected Group' : 'Select Group'"
-    @show="() => (destinationTemp = props.destination ? props.destination : {})"
-    @hide="() => (destinationTemp = {})"
+    @hide="() => (selectedGroupsTemp = {})"
     :base-z-index="99999999"
     closable
     @update:visible="!$event && emit('cancel')"
@@ -43,7 +45,7 @@ const show = computed(() => props.show);
       filterPlaceholder="Search"
       :selection-mode="props.selectionMode"
       :readonly="props.readonly"
-      v-model:selected-keys="destinationTemp"
+      v-model:selected-keys="selectedGroupsTemp"
       @key-change="emit('keyChange', $event)"
     />
     <template #footer>
@@ -65,9 +67,9 @@ const show = computed(() => props.show);
           :label="buttonLabel ?? 'Apply'"
           severity="success"
           :disabled="
-            selectionMode === 'single' && !Object.keys(destinationTemp).length
+            selectionMode === 'single' && !Object.keys(selectedGroupsTemp).length
           "
-          @click="emit('apply', destinationTemp)"
+          @click="emit('apply', selectedGroupsTemp), console.log('apply', selectedGroupsTemp)"
         />
       </template>
     </template>

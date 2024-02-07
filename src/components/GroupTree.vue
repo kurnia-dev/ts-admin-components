@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { isObjectEmpty } from '@/utils';
 import { ref, computed, onMounted, onBeforeMount, watch, useAttrs } from 'vue';
-// import GroupAPIs from '@/services/group.service';
 import Tree, { TreeState } from 'primevue/tree';
+import Menu from 'primevue/menu';
 
 const attrs: any = useAttrs();
 
@@ -115,6 +115,22 @@ const onFilterKeydown = (event: KeyboardEvent) => {
     event.preventDefault();
   }
 };
+
+const menu = ref<Menu>();
+const items = [
+  {
+    label: 'Refresh',
+    icon: 'pi pi-refresh',
+  },
+  {
+    label: 'Export',
+    icon: 'pi pi-upload',
+  },
+];
+
+const toggle = (event: any) => {
+    menu.value?.toggle(event);
+};
 </script>
 
 <template>
@@ -122,7 +138,7 @@ const onFilterKeydown = (event: KeyboardEvent) => {
     <div class="p-tree-filter-container">
       <div class="tree-search-bar">
         <span class="w-100 p-input-icon-left flex-fill">
-          <Icon width="14" height="14" icon="ri-search-2-line" />
+          <i width="14" height="14" class="ri-search-2-line" />
           <InputText
             v-model="treeFilterValue"
             @update:model-value="tree && (tree.filterValue = treeFilterValue)"
@@ -132,11 +148,12 @@ const onFilterKeydown = (event: KeyboardEvent) => {
             @keydown="onFilterKeydown"
           />
         </span>
-        <Icon
-          class="reset-filter"
+        <i
+          class="reset-filter ri-close-line"
           v-show="treeFilterValue"
-          icon="ri:close-line"
-          @click="treeFilterValue = '', tree && (tree.filterValue = treeFilterValue)"
+          @click="
+            (treeFilterValue = ''), tree && (tree.filterValue = treeFilterValue)
+          "
         />
       </div>
     </div>
@@ -151,7 +168,18 @@ const onFilterKeydown = (event: KeyboardEvent) => {
       class="ts-tree"
       @node-select="onNodeChange"
       @node-unselect="onNodeChange"
-    />
+    >
+      <template #togglericon>
+        <i class="p-togglericon pi pi-chevron-right" />
+      </template>
+      <template #default="slotProps">
+        {{ slotProps.node.label }}
+        <template v-if="false">
+          <i class="ri-more-2-line" @click="toggle" />
+          <Menu ref="menu" :model="items" :popup="true" />
+        </template>
+      </template>
+    </Tree>
   </div>
 </template>
 <style lang="scss">
@@ -162,15 +190,14 @@ const onFilterKeydown = (event: KeyboardEvent) => {
   display: flex;
   flex-direction: column;
   gap: 12px;
-
 }
 
 .ts-tree {
   border: none !important;
   padding: 0 !important;
-  
+
   .p-treenode {
-    padding: 5px 0 0!important;
+    padding: 5px 0 0 !important;
 
     .p-treenode-content {
       padding: 4.6px 9.6px !important;
@@ -187,6 +214,10 @@ const onFilterKeydown = (event: KeyboardEvent) => {
       .p-tree-toggler.p-link {
         width: 12.8px !important;
         height: 12.8px !important;
+
+        .p-togglericon {
+          font-size: 9px;
+        }
       }
 
       .p-tree-toggler.p-link:hover {
@@ -210,6 +241,36 @@ const onFilterKeydown = (event: KeyboardEvent) => {
       font-weight: 500;
       line-height: 16.8px;
       letter-spacing: 0.224px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      i {
+        visibility: hidden;
+        background-color: white;
+        width: 20px;
+        height: 20px;
+        border-radius: 7px;
+        position: relative;
+      }
+
+      i::before {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        left: 50%;
+      }
+    }
+
+    .p-treenode-label:hover i {
+      visibility: visible;
+    }
+  }
+
+  .p-treenode[aria-expanded="true"] {
+    > .p-treenode-content .p-tree-toggler .p-togglericon {
+      rotate: 90deg;
     }
   }
 }
@@ -237,7 +298,8 @@ const onFilterKeydown = (event: KeyboardEvent) => {
       letter-spacing: 0.224px;
     }
 
-    .p-input-icon-left > svg:first-of-type, .p-input-icon-left > i:first-of-type {
+    .p-input-icon-left > svg:first-of-type,
+    .p-input-icon-left > i:first-of-type {
       left: 8px;
     }
 

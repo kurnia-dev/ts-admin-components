@@ -96,6 +96,7 @@ const startScanForTest = () => {
       closable: false,
     });
     emit('connected', faker.string.uuid());
+    console.log('bulk mode:', props.bulk);
 
     if (props.bulk) {
       emit('scan', faker.string.uuid());
@@ -251,6 +252,7 @@ const stopScan = async () => {
 };
 
 const stop = async () => {
+  console.log('Stop Scann Called')
   closeSocketConnection();
   await stopScan();
 };

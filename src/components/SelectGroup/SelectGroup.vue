@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import { isObjectEmpty } from '@/utils';
 import SelectGroupDialog from './SelectGroupDialog.vue';
 import QuotaExceededDialog from './QuotaExceededDialog.vue';
@@ -59,6 +59,7 @@ const buttonLabel = computed(() => {
 
 const showGroupDialog = () => {
   showGroups.value = true;
+  console.log('grouupTemp', groupTemp.value);
 };
 
 const filterSelectedTreeKeys = (keys: any) => {
@@ -150,13 +151,26 @@ watch(singleSelectedGroupTemp, (val) => {
 watch(() => props.showDialog, (state: boolean | undefined) => {
   if (state !== undefined) showGroups.value = state;
 });
+
+// watchEffect(() => {
+//   console.log('showGroups:', showGroups.value);
+//   console.log('showExceededDialog:', showExceededDialog.value);
+//   console.log('showExceededLabel:', showExceededLabel.value);
+//   console.log('groupTemp:', groupTemp.value);
+//   console.log('singleSelectedGroupTemp:', singleSelectedGroupTemp.value);
+//   console.log('singleSelectedGroup:', singleSelectedGroup.value);
+//   console.log('modelValue:', modelValue.value);
+//   console.log('groupKeysCount:', groupKeysCount.value);
+//   console.log('buttonLabel:', buttonLabel.value);
+//   console.log('singleActiveGroup:', singleActiveGroup.value);
+// });
 </script>
 
 <template>
   <template v-if="!props.hideButton">
     <template v-if="props.selectionMode === 'single'">
       <TSButton
-        v-if="isObjectEmpty(groupTemp)"
+        v-if="isObjectEmpty(singleActiveGroup)"
         :label="buttonLabel"
         @click="showGroupDialog"
         :disabled="disabled"
@@ -201,7 +215,7 @@ watch(() => props.showDialog, (state: boolean | undefined) => {
     :header="dialogHeader"
     :button-label="dialogFooterButtonLabel"
     :show="showGroups"
-    :destination="
+    :selectedGroups="
       props.selectionMode === 'checkbox' ? groupTemp : singleActiveGroup
     "
     :params="props.params"

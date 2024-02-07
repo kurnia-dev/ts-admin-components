@@ -11,6 +11,7 @@ import InputSwitch from '../Input/InputSwitch.vue';
 import TSCalendar from '../Calendar/TSCalendar.vue';
 import ButtonFilter from '../TSButtons/ButtonFilter.vue';
 import SearchButton from '@/components/SearchButton.vue';
+import InputNumber from '../Input/InputNumber.vue';
 
 const data = [
   {
@@ -353,6 +354,7 @@ const showFilter = ref<boolean>(false);
         mode="multi"
         label="Company"
       />
+      <InputNumber placeholder="Input" size="full" label="Number" />
     </template>
   </FilterContainer>
   <DynamicTable

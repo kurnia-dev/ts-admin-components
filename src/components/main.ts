@@ -42,10 +42,6 @@ import {
   TSTextarea,
 } from '@/components';
 
-import DateUtils from '@/utils/date.util';
-import StringUtils from '@/utils/string.util';
-import { handleError, handleSuccess } from '@/utils/toast.util';
-
 export default {
   install: (app: App) => {
     app.use(PrimeVue);
@@ -94,10 +90,6 @@ export default {
 
 export {
   CToastService,
-  DateUtils,
-  StringUtils,
-  handleError,
-  handleSuccess,
   ButtonCopy,
   ButtonScanQR,
   CategoryTree,

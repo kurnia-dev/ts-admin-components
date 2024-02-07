@@ -70,7 +70,7 @@ const setValidatorMessage = (value: string): boolean | string => {
   </div>
 </template>
 <style lang="scss">
-@import 'var';
+@import 'scss/var';
 
 .p-inputtext:disabled {
   background-color: $general-input;

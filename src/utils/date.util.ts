@@ -1,4 +1,4 @@
-const formatDate = (date: string, useTime?: boolean) => {
+export const formatDate = (date: string, useTime?: boolean) => {
   let dateFormat: DateFormat, timeFormat, timeZone;
   interface DateFormat {
     locale: string;
@@ -52,7 +52,3 @@ const formatDate = (date: string, useTime?: boolean) => {
 
   return new Date(date).toLocaleString(dateFormat.locale, options);
 };
-
-const DateUtils = { formatDate };
-
-export default DateUtils;

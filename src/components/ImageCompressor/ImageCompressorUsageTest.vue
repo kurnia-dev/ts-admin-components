@@ -26,20 +26,25 @@ const onSubmit = handleSubmit((values) => {
   // it will executed only if all required field has filled 
   console.log(values);
 });
+
+const previewUrl = ref<string | undefined>('https://assets-a1.kompasiana.com/statics/crawl/552b01886ea83423038b4567.jpeg')
 </script>
 <template>
   <form class="d-flex gap-4 align-items-start" @submit="onSubmit">
     <ImageCompressor
       :key="imageCompressorKey"
-      image-preview-url="https://assets-a1.kompasiana.com/statics/crawl/552b01886ea83423038b4567.jpeg"
+      :image-preview-url="previewUrl"
       label="image-1"
       field-name="image-1"
-      use-validator
+      hide-validator-message
+      hide-info
+      @delete="imageCompressorKey++, previewUrl = undefined, console.log(previewUrl)"
     />
     <ImageCompressor
       image-preview-size="small"
       label="image-2"
       field-name="image-2"
+      image-preview-type="circle"
       use-validator
       mandatory
     />

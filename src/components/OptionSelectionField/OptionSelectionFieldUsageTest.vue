@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import DropdownOption from './OptionSelectionField.vue';
 import TextField from '../TextField/TextField.vue';
 import InputTextarea from '@/components/Input/InputTextarea.vue';
@@ -14,11 +14,19 @@ import SelectGroup from '../SelectGroup/SelectGroup.vue';
 const value3 = ref<any>();
 
 const cities = ref([
-  { label: 'New York', value: 'NY' },
-  { label: 'Rome', value: 'RM' },
-  { label: 'London', value: 'LDN' },
-  { label: 'Istanbul', value: 'IST' },
-  { label: 'Paris', value: 'PRS' },
+  { label: 're', value: 72 },
+  { label: 'brand category iot', value: 71 },
+  { label: 'brand dikit category', value: 70 },
+  { label: 'new brandd', value: 69 },
+  { label: 'tambah brand lagi', value: 67 },
+  { label: 'Biar brand lebih dari 10', value: 66 },
+  { label: 'Brand Baru lagii', value: 65 },
+  { label: 'Brand Neww', value: 64 },
+  { label: 'Test model', value: 63 },
+  { label: 'tes', value: 61 },
+  { label: 'Regular', value: 60 },
+  { label: 'Ming', value: 59 },
+  { label: 'brand baru', value: 50 },
 ]);
 
 const initial = ref<number>(0);
@@ -29,29 +37,43 @@ setTimeout(() => {
 const showDialog = ref<boolean>(true);
 type Group = {
   name?: string;
-}
+};
 
-const selectedGroupKeys = ref<number[]>([])
+const selectedGroupKeys = ref<number[]>([]);
 const selectedGroup = ref<Group>({});
 const dateSingle = ref<number>(+new Date());
+const phoneNumber = ref<number>();
+
+onMounted(() => {
+  // setTimeout(() => {
+  //   phoneNumber.value = 255678672423;
+  // }, 3000);
+});
 </script>
 
 <template>
   <Dialog v-model:visible="showDialog" header="Testing Dialog" closable modal>
     <TSForm
       @save="console.log($event)"
-      :buttons-template="['clear', 'save']"
+      :buttons-template="['clear', 'save', 'submit']"
       @clear="console.log('clear')"
-      sticky-buttons
     >
       <template #fields>
-        <TSCalendar field-name="dateSingle" label="Single Select" v-model="dateSingle" use-validator mandatory />
+        <InputPhone
+          :max="10"
+          :phone-number="phoneNumber"
+          label="Phone input"
+          use-validator
+          mandatory
+          field-name="phone"
+        />
+        <!-- <TSCalendar field-name="dateSingle" label="Single Select" v-model="dateSingle" use-validator mandatory />
         <TextField
           mandatory
           use-validator
           label="Text field"
           field-name="textField"
-        />
+        /> -->
         <DropdownOption
           :options="cities"
           label="option"
@@ -69,7 +91,7 @@ const dateSingle = ref<number>(+new Date());
           mandatory
           use-validator
         />
-        <TextField
+        <!-- <TextField
           label="Not mandatory"
           field-name="notMandatory"
           use-validator
@@ -91,13 +113,6 @@ const dateSingle = ref<number>(+new Date());
           size="full"
           placeholder="input"
         />
-        <InputPhone
-          :max="10"
-          label="Phone input"
-          use-validator
-          mandatory
-          field-name="phone"
-        />
         <TSCalendar
           label="Range Select"
           field-name="rangeDate"
@@ -113,7 +128,7 @@ const dateSingle = ref<number>(+new Date());
             selectedGroup = event;
             console.log(selectedGroup);
           }"
-        />
+        /> -->
       </template>
     </TSForm>
   </Dialog>
