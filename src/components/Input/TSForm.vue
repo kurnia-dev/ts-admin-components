@@ -7,7 +7,13 @@ import { FormPayload } from '@/types/tsForm.type';
 
 const { handleSubmit, values } = useForm();
 
-type FormButton = 'clear' | 'submit' | 'save' | 'save-outlined' | 'cancel';
+type FormButton =
+  | 'clear'
+  | 'submit'
+  | 'save'
+  | 'save-outlined'
+  | 'cancel'
+  | 'edit';
 type ButtonsTemplate = FormButton[];
 
 const props = defineProps<{
@@ -23,6 +29,7 @@ const emit = defineEmits<{
   save: [values: FormPayload];
   clear: [];
   cancel: [];
+  edit: [];
 }>();
 
 onMounted(() => {
@@ -137,10 +144,17 @@ watch(values, () => {
           />
           <Button
             v-if="props.buttonsTemplate?.includes('clear')"
-            @click="fieldsKey++, $emit('clear'), values = {}"
+            @click="fieldsKey++, $emit('clear'), (values = {})"
             label="Clear Field"
             severity="primary"
             text-only
+            type="button"
+          />
+          <Button
+            v-if="props.buttonsTemplate?.includes('edit')"
+            @click="fieldsKey++, $emit('edit'), (values = {})"
+            label="Edit"
+            severity="primary"
             type="button"
           />
           <Button
