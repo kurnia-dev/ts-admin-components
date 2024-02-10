@@ -1,6 +1,6 @@
 {
   "name": "ts-admin-components-dev",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "Global reusable components for micro frontend",
   "author": "kurnia-dev",
   "scripts": {
