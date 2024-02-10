@@ -10,6 +10,7 @@ const props = defineProps<{
   modelValue?: number;
   initialValue?: number;
   label?: string;
+  addonLabel?: string;
   max?: number;
   fieldName?: string;
   mandatory?: boolean;
@@ -18,7 +19,7 @@ const props = defineProps<{
   placeholder?: string;
   size?: 'small' | 'normal' | 'full';
   showButtons?: boolean;
-  mode?: 'decimal' | 'currency'
+  mode?: 'decimal' | 'currency';
   useGrouping?: boolean;
 }>();
 
@@ -65,7 +66,12 @@ watch(
       {{ label }}
       <span class="text-danger" v-if="mandatory">*</span>
     </label>
-    <div class="input_wrapper">
+    <div
+      :class="[
+        'input_wrapper d-flex',
+        { 'input-addon-wrapper': props.addonLabel },
+      ]"
+    >
       <InputNumber
         v-model="field.value"
         @update:modelValue="$emit('update:modelValue', $event)"
@@ -80,6 +86,9 @@ watch(
         :mode="props.mode"
         :useGrouping="props.useGrouping"
       />
+      <span v-if="props.addonLabel" class="p-inputgroup-addon">{{
+        addonLabel
+      }}</span>
       <ValidatorMessage
         v-show="field.errorMessage"
         :message="field.errorMessage ?? ''"
@@ -126,6 +135,24 @@ watch(
     .p-inputnumber-button-down {
       align-items: flex-end;
     }
+  }
+}
+
+.input-addon-wrapper {
+  .ts-inputnumber {
+    border-radius: 4px 0 0 4px;
+  }
+  .p-inputgroup-addon {
+    border: 1px solid $general-body;
+    border-left: 0px;
+    border-radius: 0 4px 4px 0;
+    color: $general-body;
+    height: 26px;
+    width: max-content;
+    font-size: 11.2px;
+    font-weight: 500;
+    line-height: 16.8px;
+    letter-spacing: 2%;
   }
 }
 
