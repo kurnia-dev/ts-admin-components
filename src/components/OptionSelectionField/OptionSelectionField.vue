@@ -9,7 +9,7 @@ import { MultiSelectChangeEvent } from 'primevue/multiselect';
 import { DropdownChangeEvent } from 'primevue/dropdown';
 
 const props = defineProps<{
-  modelValue?: string | string[];
+  modelValue?: string | number | (string | number)[];
   options?: TOptionSelection[];
   useValidator?: boolean;
   mandatory?: boolean;
@@ -23,7 +23,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  'update:modelValue': [value: string | string[]];
+  'update:modelValue': [value: string | string[] | number | number[]];
   'show': [];
 }>();
 
