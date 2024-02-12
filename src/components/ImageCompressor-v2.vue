@@ -387,7 +387,7 @@ const openCropper = () => {
               style="padding: 0.15rem 0.3rem"
             />
             <Button
-              @click="imagePreviewUrl ? $emit('delete') : reset()"
+              @click="reset()"
               icon="ri-delete-bin-6-line"
               label="Delete"
               text
