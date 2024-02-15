@@ -6,6 +6,7 @@ import { FieldValidation } from '@/types/fieldValidation.type';
 const props = defineProps<{
   modelValue?: string;
   label?: string;
+  max?: number;
   fieldName?: string;
   mandatory?: boolean;
   useValidator?: boolean;
@@ -28,7 +29,7 @@ onMounted(() => {
       useField(props.fieldName ?? '', (value: string) => {
         if (props.mandatory) return setValidatorMessage(value);
         return true;
-      }),
+      })
     );
   }
 });
@@ -36,8 +37,8 @@ onMounted(() => {
 const setValidatorMessage = (value: string): boolean | string => {
   if (!value) {
     return props.validatorMessage ?? `${props.label} must not be empty!`;
-  } else if (value.length > 30) {
-    return 'Max. 30 characters!';
+  } else if (props.max && value.length > props.max) {
+    return `Max. ${props.max} characters!`;
   } else if (props.type === 'email') {
     const emailRegexp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
     return emailRegexp.test(value) ? true : 'Email format is incorrect!';
