@@ -128,7 +128,16 @@ const optionValue = computed<'label' | 'value'>(() => {
         optionLabel="label"
         :optionValue="optionValue"
         class="ts-dropdown"
-      />
+      >
+        <template #option="optionProps">
+          <span
+            :class="
+              optionProps.option.visible === false ? 'p-dropdown-invisible' : ''
+            "
+            >{{ optionProps.option.label }}</span
+          >
+        </template>
+      </Dropdown>
       <ValidatorMessage
         v-show="field.errorMessage"
         :message="field.errorMessage"
@@ -242,6 +251,10 @@ const optionValue = computed<'label' | 'value'>(() => {
     @include font-size(11.2px);
     color: $general-body;
     line-height: 1rem;
+  }
+
+  li.p-dropdown-item:has(.p-dropdown-invisible) {
+    display: none;
   }
 }
 .p-multiselect-panel {
