@@ -34,8 +34,7 @@ onMounted(() => {
     Object.assign(
       field,
       useField(props.fieldName ?? '', (value: Nullable<number>) => {
-        if (props.mandatory) return setValidatorMessage(value);
-        else return true;
+        return setValidatorMessage(value);
       })
     );
 
@@ -44,9 +43,9 @@ onMounted(() => {
 });
 
 const setValidatorMessage = (value: Nullable<number>) => {
-  if (!value) {
+  if (!value && props.mandatory) {
     return props.validatorMessage ?? 'Must not be empty!';
-  } else if (props.max && value > props.max) {
+  } else if (props.max && value && value > props.max) {
     return `Exceed ${props.label} stock!`;
   } else {
     return true;

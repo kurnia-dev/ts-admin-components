@@ -3,7 +3,7 @@ import { onMounted, reactive } from 'vue';
 import { useField } from 'vee-validate';
 import { FieldValidation } from '@/types/fieldValidation.type';
 
-const props = withDefaults(defineProps<{
+interface InputTextProps {
   modelValue?: string;
   label?: string;
   maxLength?: number;
@@ -14,15 +14,11 @@ const props = withDefaults(defineProps<{
   placeholder?: string;
   type?: 'email' | 'text';
   disabled?: boolean;
-}>(), {
+}
+
+const props = withDefaults(defineProps<InputTextProps>(), {
   maxLength: 30,
   fieldName: 'inputText',
-  mandatory: false,
-  useValidator: false,
-  validatorMessage: undefined,
-  placeholder: undefined,
-  type: 'text',
-  disabled: false,
 });
 
 defineEmits<{
@@ -36,15 +32,14 @@ onMounted(() => {
     Object.assign(
       field,
       useField(props.fieldName, (value: string) => {
-        if (props.mandatory) return setValidatorMessage(value);
-        return true;
+        return setValidatorMessage(value);
       })
     );
   }
 });
 
 const setValidatorMessage = (value: string): boolean | string => {
-  if (!value) {
+  if (!value && props.mandatory) {
     return props.validatorMessage ?? `${props.label} must not be empty!`;
   } else if (value.length > props.maxLength) {
     return `Max. ${props.maxLength} characters!`;

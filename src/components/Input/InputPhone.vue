@@ -49,7 +49,7 @@ const parsePhoneNumber = () => {
     const foundCountry = countryData.value.find((country) =>
       phoneNumberStr.startsWith(country.code.toString())
     );
-    
+
     if (foundCountry) {
       selectedCountry.value = foundCountry;
       numberInput.value = Number(
@@ -65,8 +65,7 @@ const setValidator = (): void => {
     Object.assign(
       field,
       useField(props.fieldName ?? '', (value: Nullable<number>) => {
-        if (props.mandatory) return setValidatorMessage(value);
-        else return true;
+        return setValidatorMessage(value);
       })
     );
   }
@@ -96,7 +95,7 @@ const fetchCountry = async (): Promise<void> => {
 };
 
 const setValidatorMessage = (value: Nullable<number>): boolean | string => {
-  if (!value && !countryCode.value) {
+  if (!value && !countryCode.value && props.mandatory) {
     return props.validatorMessage ?? props.label + ' must not be empty!';
   } else if (fullPhoneNumber.value.toString().length > 15) {
     return `Max. 15 characters!`;
@@ -107,13 +106,12 @@ const setValidatorMessage = (value: Nullable<number>): boolean | string => {
   }
 };
 
-
 /**
  * Watch for changes in phoneNumber prop.
  * This watcher is triggered only when phoneNumber changes for the first time.
  * It is necessary when phoneNumber is waiting for the fetch process to complete.
  */
- watch(
+watch(
   () => props.phoneNumber,
   (newVal, oldVal) => {
     if (!oldVal && newVal) {
