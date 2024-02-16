@@ -25,15 +25,14 @@ onMounted(() => {
     Object.assign(
       field,
       useField(props.fieldName ?? '', (value: string) => {
-        if (props.mandatory) return setValidatorMessage(value);
-        else return true;
+        return setValidatorMessage(value);
       })
     );
   }
 });
 
 const setValidatorMessage = (value: string) => {
-  if (!value) {
+  if (!value && props.mandatory) {
     return props.validatorMessage ?? props.label + ' must not be empty';
   } else if (value.length > 120) {
     return 'Max. 120 characters';
@@ -49,16 +48,19 @@ const setValidatorMessage = (value: string) => {
       <span class="text-danger" v-if="mandatory">*</span>
     </label>
     <div class="input_wrapper">
-    <Textarea
-      v-model="field.value"
-      @update:modelValue="$emit('update:modelValue', $event)"
-      :placeholder="placeholder ?? `Input ${label.toLowerCase()}`"
-      :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
-      class="ts-textarea"
-    />
-    <small class="validator-message" id="dd-error" v-if="field.errorMessage">{{
-      field.errorMessage
-    }}</small>
+      <Textarea
+        v-model="field.value"
+        @update:modelValue="$emit('update:modelValue', $event)"
+        :placeholder="placeholder ?? `Input ${label.toLowerCase()}`"
+        :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
+        class="ts-textarea"
+      />
+      <small
+        class="validator-message"
+        id="dd-error"
+        v-if="field.errorMessage"
+        >{{ field.errorMessage }}</small
+      >
     </div>
   </div>
 </template>

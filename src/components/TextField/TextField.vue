@@ -27,15 +27,14 @@ onMounted(() => {
     Object.assign(
       field,
       useField(props.fieldName ?? '', (value: string) => {
-        if (props.mandatory) return setValidatorMessage(value);
-        return true;
+        return setValidatorMessage(value);
       })
     );
   }
 });
 
 const setValidatorMessage = (value: string): boolean | string => {
-  if (!value) {
+  if (!value && props.mandatory) {
     return props.validatorMessage ?? `${props.label} must not be empty!`;
   } else if (props.max && value.length > props.max) {
     return `Max. ${props.max} characters!`;
