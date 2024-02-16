@@ -14,7 +14,7 @@ import SelectGroup from '../SelectGroup/SelectGroup.vue';
 const value3 = ref<any>();
 
 const cities = ref([
-  { label: 're', value: 72 },
+  { label: 're', value: 72, visible: false },
   { label: 'brand category iot', value: 71 },
   { label: 'brand dikit category', value: 70 },
   { label: 'new brandd', value: 69 },
