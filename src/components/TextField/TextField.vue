@@ -3,10 +3,10 @@ import { onMounted, reactive } from 'vue';
 import { useField } from 'vee-validate';
 import { FieldValidation } from '@/types/fieldValidation.type';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   modelValue?: string;
   label?: string;
-  max?: number;
+  maxLength?: number;
   fieldName?: string;
   mandatory?: boolean;
   useValidator?: boolean;
@@ -14,7 +14,16 @@ const props = defineProps<{
   placeholder?: string;
   type?: 'email' | 'text';
   disabled?: boolean;
-}>();
+}>(), {
+  maxLength: 30,
+  fieldName: 'inputText',
+  mandatory: false,
+  useValidator: false,
+  validatorMessage: undefined,
+  placeholder: undefined,
+  type: 'text',
+  disabled: false,
+});
 
 defineEmits<{
   'update:modelValue': [value?: string];
@@ -26,7 +35,7 @@ onMounted(() => {
   if (props.useValidator) {
     Object.assign(
       field,
-      useField(props.fieldName ?? '', (value: string) => {
+      useField(props.fieldName, (value: string) => {
         if (props.mandatory) return setValidatorMessage(value);
         return true;
       })
@@ -37,8 +46,8 @@ onMounted(() => {
 const setValidatorMessage = (value: string): boolean | string => {
   if (!value) {
     return props.validatorMessage ?? `${props.label} must not be empty!`;
-  } else if (props.max && value.length > props.max) {
-    return `Max. ${props.max} characters!`;
+  } else if (value.length > props.maxLength) {
+    return `Max. ${props.maxLength} characters!`;
   } else if (props.type === 'email') {
     const emailRegexp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
     return emailRegexp.test(value) ? true : 'Email format is incorrect!';
