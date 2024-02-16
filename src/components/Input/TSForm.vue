@@ -96,15 +96,17 @@ const onSubmit = handleSubmit((formValues) => {
   showValidator.value = false;
 });
 
-const onSave = (): void => {
-  const formValues = values;
+const onSave = handleSubmit((formValues) => {
+  validated.value = true;
+
   const payload: FormPayload = {
     stayAfterSubmit: stayAfterSubmit.value,
     formValues,
   };
 
   emit('save', payload);
-};
+  showValidator.value = false;
+});
 
 watch(values, () => {
   showValidator.value = false;
