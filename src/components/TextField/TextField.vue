@@ -3,7 +3,7 @@ import { onMounted, reactive } from 'vue';
 import { useField } from 'vee-validate';
 import { FieldValidation } from '@/types/fieldValidation.type';
 
-type PropsType = {
+interface InputTextProps {
   modelValue?: string;
   label?: string;
   maxLength?: number;
@@ -14,10 +14,11 @@ type PropsType = {
   placeholder?: string;
   type?: 'email' | 'text';
   disabled?: boolean;
-};
+}
 
-const props = withDefaults(defineProps<PropsType>(), {
+const props = withDefaults(defineProps<InputTextProps>(), {
   maxLength: 30,
+  fieldName: 'inputText',
 });
 
 defineEmits<{
@@ -30,7 +31,7 @@ onMounted(() => {
   if (props.useValidator) {
     Object.assign(
       field,
-      useField(props.fieldName ?? '', (value: string) => {
+      useField(props.fieldName, (value: string) => {
         return setValidatorMessage(value);
       })
     );
