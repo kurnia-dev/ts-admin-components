@@ -1,6 +1,6 @@
 {
   "name": "ts-admin-components-dev",
-  "version": "1.9.94",
+  "version": "1.9.95",
   "description": "Global reusable components for micro frontend",
   "author": "kurnia-dev",
   "scripts": {
@@ -19,6 +19,7 @@
     "dist",
     "src/assets/scss/var.scss",
     "src/utils",
+    "src/types",
     ".eslintrc.js"
   ],
   "dependencies": {
