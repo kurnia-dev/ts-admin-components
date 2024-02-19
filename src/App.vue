@@ -74,8 +74,12 @@ onMounted(() => {
             <TSCalendar label="Range Select" v-model="dateSingle" />
           </div>
           <div class="col-6 d-flex gap-2">
-            <ScanRFID bulk @scan="console.log($event)"/>
-            <ScanRFID label-only label="Start Scan" @scan="console.log($event)" />
+            <ScanRFID bulk @scan="console.log($event)" />
+            <ScanRFID
+              label-only
+              label="Start Scan"
+              @scan="console.log($event)"
+            />
             <ScanQR disabled />
             <ScanQR label-only label="Start Scan" />
           </div>
@@ -375,6 +379,10 @@ body {
   }
 }
 
+.ts-button:disabled {
+  pointer-events: none;
+}
+
 .ts-button {
   all: unset;
   box-sizing: border-box;
@@ -553,7 +561,6 @@ span.ripple {
 .p-inputgroup-addon {
   padding: 0px;
 }
-
 
 .ts-inputtext,
 .ts-textarea {
