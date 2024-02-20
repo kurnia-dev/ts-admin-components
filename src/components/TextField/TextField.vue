@@ -39,7 +39,6 @@ onMounted(() => {
 });
 
 const setValidatorMessage = (value: string): boolean | string => {
-  console.log(value, props.mandatory);
   if (!value && props.mandatory) {
     return props.validatorMessage ?? `${props.label} must not be empty!`;
   } else if (value && value.length > props.maxLength) {

@@ -3,6 +3,7 @@ import exportToExcel from './exportToExcel.util';
 import { formatDate } from './date.util';
 import { formatUserName, formatVowelSoundLabel } from './textFormater.util';
 import { ToastServiceMethods } from 'primevue/toastservice';
+import updateFilterOptions from './updateFilterOptions.util';
 
 const isObjectEmpty = (obj: object) => {
   if (!obj) return true;
@@ -78,4 +79,5 @@ export {
   formatVowelSoundLabel,
   handleError,
   handleSuccess,
+  updateFilterOptions
 };
