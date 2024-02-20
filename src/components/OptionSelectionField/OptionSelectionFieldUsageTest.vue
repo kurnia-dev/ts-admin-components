@@ -81,6 +81,7 @@ onMounted(() => {
           mode="single"
           use-validator
           mandatory
+          filter
           validator-message="You must select an option"
         />
         <DropdownOption
