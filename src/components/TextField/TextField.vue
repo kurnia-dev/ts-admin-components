@@ -14,6 +14,7 @@ interface InputTextProps {
   placeholder?: string;
   type?: 'email' | 'text';
   disabled?: boolean;
+  invalid?: boolean;
 }
 
 const props = withDefaults(defineProps<InputTextProps>(), {
@@ -60,7 +61,7 @@ const setValidatorMessage = (value: string): boolean | string => {
     <div class="input_wrapper">
       <InputText
         v-model="field.value"
-        :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
+        :class="[{ 'p-invalid': field.errorMessage || props.invalid }, 'w-100']"
         :disabled="disabled"
         :placeholder="
           placeholder ?? `Input ${label ? label.toLowerCase() : 'text'}`
