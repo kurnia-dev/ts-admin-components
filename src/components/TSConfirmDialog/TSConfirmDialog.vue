@@ -98,6 +98,10 @@ const confirm = (): void => {
       margin-left: auto !important;
     }
 
+    .ts-dialog-title-icon {
+      margin-right: 0px !important;
+    }
+
     .p-dialog-header-close {
       width: 24px !important;
       height: 24px !important;

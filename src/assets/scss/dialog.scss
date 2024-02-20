@@ -6,7 +6,6 @@
     padding: 24px 24px 12px 24px;
     i {
       @include font-size(20px);
-      @include margin-right(10px);
     }
     .p-dialog-title {
       @include font-size(14px);
