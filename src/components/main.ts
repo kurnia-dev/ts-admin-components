@@ -41,11 +41,13 @@ import {
   TSSelectOption,
   TSTextarea,
 } from '@/components';
+import Tooltip from 'primevue/tooltip';
 
 export default {
   install: (app: App) => {
     app.use(PrimeVue);
     app.use(CToastService);
+    app.directive('tooltip', Tooltip);
 
     app.component('ButtonCopy', ButtonCopy);
     app.component('ButtonScanQR', ButtonScanQR);

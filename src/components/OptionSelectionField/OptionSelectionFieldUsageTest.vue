@@ -92,6 +92,8 @@ onMounted(() => {
           mandatory
           use-validator
         />
+        <InputEmail label="Email" mandatory tooltip="Hi" />
+        <TextField label="Name" mandatory tooltip="Hi" />
         <!-- <TextField
           label="Not mandatory"
           field-name="notMandatory"

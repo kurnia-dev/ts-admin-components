@@ -15,6 +15,7 @@ interface InputTextProps {
   type?: 'email' | 'text';
   disabled?: boolean;
   invalid?: boolean;
+  tooltip?: string;
 }
 
 const props = withDefaults(defineProps<InputTextProps>(), {
@@ -54,9 +55,14 @@ const setValidatorMessage = (value: string): boolean | string => {
 </script>
 <template>
   <div class="field_wrapper">
-    <label>
+    <label class="input_label">
       {{ label }}
       <span v-if="mandatory" class="text-danger">*</span>
+      <i
+        v-if="tooltip"
+        v-tooltip="tooltip"
+        class="pi pi-info-circle info-tooltip"
+      />
     </label>
     <div class="input_wrapper">
       <InputText
@@ -81,5 +87,20 @@ const setValidatorMessage = (value: string): boolean | string => {
 .p-inputtext:disabled {
   background-color: $general-input;
   border-color: $general-body;
+}
+
+.input_label {
+  position: relative;
+}
+
+.info-tooltip {
+  right: -4px;
+  top: -4px;
+  position: relative;
+  color: $primary !important;
+  font-size: 10px !important;
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>
