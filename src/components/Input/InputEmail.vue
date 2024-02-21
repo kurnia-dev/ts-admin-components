@@ -9,6 +9,7 @@ defineProps<{
   useValidator?: boolean;
   validatorMessage?: string;
   placeholder?: string;
+  tooltip?: string;
 }>();
 
 defineEmits<{
@@ -26,5 +27,6 @@ defineEmits<{
     :validator-message="validatorMessage"
     :placeholder="placeholder"
     type="email"
+    :tooltip="tooltip"
   />
 </template>
