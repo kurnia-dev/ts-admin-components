@@ -23,6 +23,7 @@ import Menu from 'primevue/menu';
 import Checkbox from 'primevue/checkbox';
 import TabMenu from 'primevue/tabmenu';
 import TabPanel from 'primevue/tabpanel';
+import Tooltip from 'primevue/tooltip';
 
 // Vue Router
 import router from './routers';
@@ -32,6 +33,7 @@ const app = createApp(App);
 // Init PrimeVue and its components
 app.use(PrimeVue);
 app.use(CToastService);
+app.directive('tooltip', Tooltip);
 
 // Init Vue Router
 app.use(router);
