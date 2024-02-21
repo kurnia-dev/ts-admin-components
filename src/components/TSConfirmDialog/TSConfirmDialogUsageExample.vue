@@ -9,6 +9,8 @@ const showDialog = ref(false);
   <TSConfirmDialog
     v-model:visible="showDialog"
     header="Confirm Dialog"
+    :lists="['List']"
+    icon="ri-error-warning-line"
     severity="danger"
     confirm-label="Continue"
     body="Are you sure want to continue?"

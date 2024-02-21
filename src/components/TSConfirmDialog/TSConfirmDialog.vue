@@ -130,13 +130,18 @@ const confirm = (): void => {
     > * {
       margin-bottom: 0 !important;
     }
+
+    ul {
+      margin-bottom: 0 !important;
+      padding-left: 16px;
+    }
   }
 
   .p-dialog-footer {
     display: flex;
     align-items: end;
     justify-content: end;
-    gap: 12px;
+    gap: 12px !important;
   }
 }
 </style>
