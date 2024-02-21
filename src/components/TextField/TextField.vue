@@ -3,7 +3,7 @@ import { onMounted, reactive } from 'vue';
 import { useField } from 'vee-validate';
 import { FieldValidation } from '@/types/fieldValidation.type';
 
-type PropsType = {
+interface InputTextProps {
   modelValue?: string;
   label?: string;
   maxLength?: number;
@@ -14,10 +14,11 @@ type PropsType = {
   placeholder?: string;
   type?: 'email' | 'text';
   disabled?: boolean;
-};
+}
 
-const props = withDefaults(defineProps<PropsType>(), {
+const props = withDefaults(defineProps<InputTextProps>(), {
   maxLength: 30,
+  fieldName: 'inputText',
 });
 
 defineEmits<{
@@ -30,7 +31,7 @@ onMounted(() => {
   if (props.useValidator) {
     Object.assign(
       field,
-      useField(props.fieldName ?? '', (value: string) => {
+      useField(props.fieldName, (value: string) => {
         return setValidatorMessage(value);
       })
     );
@@ -40,7 +41,7 @@ onMounted(() => {
 const setValidatorMessage = (value: string): boolean | string => {
   if (!value && props.mandatory) {
     return props.validatorMessage ?? `${props.label} must not be empty!`;
-  } else if (value.length > props.maxLength) {
+  } else if (value && value.length > props.maxLength) {
     return `Max. ${props.maxLength} characters!`;
   } else if (props.type === 'email') {
     const emailRegexp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;

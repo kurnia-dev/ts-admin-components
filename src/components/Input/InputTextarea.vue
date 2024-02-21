@@ -34,7 +34,7 @@ onMounted(() => {
 const setValidatorMessage = (value: string) => {
   if (!value && props.mandatory) {
     return props.validatorMessage ?? props.label + ' must not be empty';
-  } else if (value.length > 120) {
+  } else if (value && value.length > 120) {
     return 'Max. 120 characters';
   }
 
