@@ -20,6 +20,7 @@ const props = defineProps<{
   placeholder?: string;
   closable?: boolean;
   loading?: boolean;
+  filter?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -118,6 +119,8 @@ const optionValue = computed<'label' | 'value'>(() => {
       <Dropdown
         v-else
         v-model="field.value"
+        :filter="filter"
+        filter-placeholder="Search"
         :loading="props.loading"
         :options="dropdownOptions"
         :placeholder="loading ? 'Loading...' : placeholder ?? `Select ${label}`"
