@@ -8,7 +8,7 @@ import ValidatorMessage from '../Input/InputValidatorMessage.vue';
 import { MultiSelectChangeEvent } from 'primevue/multiselect';
 import { DropdownChangeEvent } from 'primevue/dropdown';
 
-const props = defineProps<{
+interface SelectOptionsProps {
   modelValue?: string | number | boolean | (string | number | boolean)[];
   options?: TOptionSelection[];
   useValidator?: boolean;
@@ -21,7 +21,11 @@ const props = defineProps<{
   closable?: boolean;
   loading?: boolean;
   filter?: boolean;
-}>();
+}
+
+const props = withDefaults(defineProps<SelectOptionsProps>(), {
+  modelValue: undefined,
+});
 
 const emit = defineEmits<{
   'update:modelValue': [value: string | string[] | number | number[]];
@@ -43,6 +47,7 @@ const defaultMessage = computed(() => {
 });
 
 const setValidator = () => {
+  console.log('start', props.label, field.value, props.modelValue);
   if (props.useValidator) {
     Object.assign(
       field,
@@ -62,6 +67,7 @@ const setValidator = () => {
       )
     );
     field.value = props.modelValue;
+    console.log('end', props.label, field.value, props.modelValue);
   }
 };
 
@@ -118,7 +124,9 @@ const optionValue = computed<'label' | 'value'>(() => {
         class="ts-multiselect"
       >
         <template #filtericon>
-          <i class="ri-search-2-line p-icon p-multiselect-filter-icon filter-icon" />
+          <i
+            class="ri-search-2-line p-icon p-multiselect-filter-icon filter-icon"
+          />
         </template>
       </MultiSelect>
       <Dropdown
