@@ -116,6 +116,8 @@ watch(() => props.selectedDatas, (datas) => {
 }
 
 .ts-bulkaction-menu {
+  z-index: 3000 !important;
+
   .p-menuitem-content {
     padding: 0 !important;
 

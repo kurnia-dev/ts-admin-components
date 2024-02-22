@@ -14,6 +14,8 @@ interface InputTextProps {
   placeholder?: string;
   type?: 'email' | 'text';
   disabled?: boolean;
+  invalid?: boolean;
+  tooltip?: string;
 }
 
 const props = withDefaults(defineProps<InputTextProps>(), {
@@ -39,7 +41,6 @@ onMounted(() => {
 });
 
 const setValidatorMessage = (value: string): boolean | string => {
-  console.log(value, props.mandatory);
   if (!value && props.mandatory) {
     return props.validatorMessage ?? `${props.label} must not be empty!`;
   } else if (value && value.length > props.maxLength) {
@@ -54,14 +55,19 @@ const setValidatorMessage = (value: string): boolean | string => {
 </script>
 <template>
   <div class="field_wrapper">
-    <label>
+    <label class="input_label">
       {{ label }}
       <span v-if="mandatory" class="text-danger">*</span>
+      <i
+        v-if="tooltip"
+        v-tooltip="tooltip"
+        class="pi pi-info-circle info-tooltip"
+      />
     </label>
     <div class="input_wrapper">
       <InputText
         v-model="field.value"
-        :class="[{ 'p-invalid': field.errorMessage }, 'w-100']"
+        :class="[{ 'p-invalid': field.errorMessage || props.invalid }, 'w-100']"
         :disabled="disabled"
         :placeholder="
           placeholder ?? `Input ${label ? label.toLowerCase() : 'text'}`
@@ -81,5 +87,20 @@ const setValidatorMessage = (value: string): boolean | string => {
 .p-inputtext:disabled {
   background-color: $general-input;
   border-color: $general-body;
+}
+
+.input_label {
+  position: relative;
+}
+
+.info-tooltip {
+  right: -4px;
+  top: -4px;
+  position: relative;
+  color: $primary !important;
+  font-size: 10px !important;
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>

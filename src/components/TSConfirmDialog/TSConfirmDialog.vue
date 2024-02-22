@@ -8,15 +8,18 @@ const props = withDefaults(
   defineProps<{
     header: string;
     severity: Severity;
-    confirmLabel?: string;
     icon?: string;
     lists?: string[] | object[];
     listLabel?: string;
     body?: string;
     closeAfterConfirm?: boolean;
     closable?: boolean;
+    confirmLabel?: string;
+    cancelLabel?: string;
   }>(),
   {
+    cancelLabel: 'Cancel',
+    confirmLabel: 'Yes, Continue',
     closeAfterConfirm: true,
     closable: true,
   }
@@ -64,8 +67,8 @@ const confirm = (): void => {
     </slot>
     <template #footer>
       <slot name="footer">
-        <Button @click="closeDialog" label="Cancel" text-only />
-        <Button :severity="severity" :label="confirmLabel ?? 'Yes, Continue'" @click="confirm" />
+        <Button @click="closeDialog" :label="cancelLabel" text-only />
+        <Button :severity="severity" :label="confirmLabel" @click="confirm" />
       </slot>
     </template>
   </Dialog>
@@ -98,6 +101,10 @@ const confirm = (): void => {
       margin-left: auto !important;
     }
 
+    .ts-dialog-title-icon {
+      margin-right: 0px !important;
+    }
+
     .p-dialog-header-close {
       width: 24px !important;
       height: 24px !important;
@@ -123,13 +130,18 @@ const confirm = (): void => {
     > * {
       margin-bottom: 0 !important;
     }
+
+    ul {
+      margin-bottom: 0 !important;
+      padding-left: 16px;
+    }
   }
 
   .p-dialog-footer {
     display: flex;
     align-items: end;
     justify-content: end;
-    gap: 12px;
+    gap: 12px !important;
   }
 }
 </style>

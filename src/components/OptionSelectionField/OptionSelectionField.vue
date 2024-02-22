@@ -20,6 +20,7 @@ const props = defineProps<{
   placeholder?: string;
   closable?: boolean;
   loading?: boolean;
+  filter?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -115,7 +116,11 @@ const optionValue = computed<'label' | 'value'>(() => {
         :option-value="optionValue"
         display="chip"
         class="ts-multiselect"
-      />
+      >
+        <template #filtericon>
+          <i class="ri-search-2-line p-icon p-multiselect-filter-icon filter-icon" />
+        </template>
+      </MultiSelect>
       <Dropdown
         v-else
         v-model="field.value"
@@ -128,6 +133,8 @@ const optionValue = computed<'label' | 'value'>(() => {
         aria-describedby="dd-error"
         optionLabel="label"
         :optionValue="optionValue"
+        :filter="filter"
+        filter-placeholder="Search"
         class="ts-dropdown"
       >
         <template #option="optionProps">
@@ -137,6 +144,9 @@ const optionValue = computed<'label' | 'value'>(() => {
             "
             >{{ optionProps.option.label }}</span
           >
+        </template>
+        <template #filtericon>
+          <i class="ri-search-2-line filter-icon" />
         </template>
       </Dropdown>
       <ValidatorMessage
@@ -287,5 +297,10 @@ const optionValue = computed<'label' | 'value'>(() => {
       margin-right: 0 !important;
     }
   }
+}
+
+.filter-icon {
+  font-size: 12px;
+  color: $general-body;
 }
 </style>

@@ -38,7 +38,7 @@ onMounted(() => {
       })
     );
 
-    field.value = props.initialValue ?? 0;
+    field.value = props.initialValue;
   }
 });
 
