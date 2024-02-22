@@ -34,7 +34,7 @@ onMounted(() => {
 
 const dropdownOptions = ref<TOptionSelection[]>();
 
-const field = reactive<FieldValidation>({ value: '' });
+const field = reactive<FieldValidation>({ value: undefined });
 const defaultMessage = computed(() => {
   return props.mode == 'single'
     ? 'You must pick ' + formatVowelSoundLabel(props.label)
@@ -60,6 +60,7 @@ const setValidator = () => {
         }
       )
     );
+    field.value = props.modelValue;
   }
 };
 
