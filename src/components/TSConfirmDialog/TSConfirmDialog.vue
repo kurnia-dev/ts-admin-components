@@ -42,9 +42,9 @@ const confirm = (): void => {
 
 <template>
   <Dialog ref="dialog" :header="header" :draggable="false" :closable="closable" :pt="{
-    root: { class: 'ts-confirm-dialog' },
+    root: { class: 'ts-dialog ts-confirm-dialog' },
     header: { class: 'ts-dialog-header' },
-  }" @update:visible="emit('update:visible', $event)" class="ts-dialog" modal>
+  }" @update:visible="emit('update:visible', $event)" modal>
     <template #header>
       <i v-if="icon" :class="[
         severity === 'danger' ? 'text-danger' : '',
