@@ -264,7 +264,7 @@ watch(props, () => {
     class="ts-datatable"
     :data-test="props.dataTest"
   >
-    <template #empty> No data found. </template>
+    <template #empty> No Records Found </template>
     <Column
       v-if="useSelection"
       selection-mode="multiple"
