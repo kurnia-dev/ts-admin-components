@@ -50,6 +50,8 @@ const timeZone = ref<string>();
 const userStr = localStorage.getItem('user');
 
 const formatedDate = computed(() => {
+  if (!props.date) return '-';
+
   let options: Record<string, any> = {
     year: dateFormat.value.year,
     month: dateFormat.value.month,
