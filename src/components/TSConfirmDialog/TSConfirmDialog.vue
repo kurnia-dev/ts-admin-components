@@ -42,7 +42,7 @@ const confirm = (): void => {
 
 <template>
   <Dialog ref="dialog" :header="header" :draggable="false" :closable="closable" :pt="{
-    root: { style: 'width: 400px' },
+    root: { class: 'ts-confirm-dialog' },
     header: { class: 'ts-dialog-header' },
   }" @update:visible="emit('update:visible', $event)" class="ts-dialog" modal>
     <template #header>
@@ -76,6 +76,11 @@ const confirm = (): void => {
 <style lang="scss">
 @import 'scss/var';
 @import '~rfs/scss';
+
+.ts-confirm-dialog {
+  background: $general-bg-white;
+  width: 400px;
+}
 
 .ts-dialog {
   .ts-dialog-header {
