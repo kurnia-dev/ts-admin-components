@@ -5,6 +5,7 @@ import { formatUserName, formatVowelSoundLabel } from './textFormater.util';
 import { ToastServiceMethods } from 'primevue/toastservice';
 import updateFilterOptions from './updateFilterOptions.util';
 import listenSidebarChanges from './listenSidebarChanges.util';
+import handleTokenExpiration from './handleTokenExpiration.util';
 
 const isObjectEmpty = (obj: object) => {
   if (!obj) return true;
@@ -81,5 +82,6 @@ export {
   handleError,
   handleSuccess,
   updateFilterOptions,
-  listenSidebarChanges
+  listenSidebarChanges,
+  handleTokenExpiration
 };
