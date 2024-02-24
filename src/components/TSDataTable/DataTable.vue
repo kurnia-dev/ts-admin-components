@@ -199,22 +199,14 @@ const selectColumn = (cols: TableColumn[]) => {
   );
 };
 
-const checkboxClass = ref<string>('');
-const disabledRows = computed(() => {
-  return [props.datas ?? []]
-    .filter((data: any) => data[props.selectionKey ?? 'isDefault'])
-    .map((data: any) => data[props.dataKey]);
-});
+const disabledRows = computed(() => (props.datas ?? []).filter((data) => data[props.selectionKey ?? 'isDefault']).map((data) => data[props.dataKey]));
 
 const disableCheckbox = () => {
-  checkboxClass.value = 'checkbox' + +new Date();
-  const checkboxes = document.getElementsByClassName(checkboxClass.value);
+  const checkboxes = document.getElementsByClassName('p-selection-column');
 
   nextTick(() => {
-    disabledRows.value.forEach((row) => {
-      const index = [props.datas ?? []].findIndex(
-        (data: any) => data[props.dataKey] == row
-      );
+    disabledRows.value.forEach((rowID) => {
+      const index = props.datas.findIndex((data) => data[props.dataKey] == rowID);
 
       if (index !== -1) {
         checkboxes[index]?.classList.add('disabled');
@@ -268,7 +260,6 @@ watch(props, () => {
     <Column
       v-if="useSelection"
       selection-mode="multiple"
-      :body-class="checkboxClass"
     />
     <Column
       v-for="col of selectedColumns"
