@@ -12,6 +12,7 @@ import TSCalendar from '../Calendar/TSCalendar.vue';
 import ButtonFilter from '../TSButtons/ButtonFilter.vue';
 import SearchButton from '@/components/SearchButton.vue';
 import InputNumber from '../Input/InputNumber.vue';
+import StaticTable from '../StaticTable.vue';
 
 const data = [
   {
@@ -383,7 +384,23 @@ const inputNumber = ref<number>();
     use-selection
     @select-all-change="selectedDatas = $event.checked ? data : []"
   />
+  <StaticTable
+    :columns="columns"
+    :datas="stock"
+    v-model:selected-datas="selectedDatas"
+    v-model:is-selected-all="isSelectedAll"
+    dataKey="_id"
+    :useOption="true"
+    :options="options"
+    @sort="sortTable"
+    @set-detail="(item: any) => {
+      _id = item._id;
+    }"
+    use-selection
+    @select-all-change="selectedDatas = $event.checked ? data : []"
+  />
   <DynamicTable
+    static-table
     :columns="columns"
     :datas="stock"
     v-model:selected-datas="selectedDatas"
