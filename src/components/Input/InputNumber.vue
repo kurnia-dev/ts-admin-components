@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, watch } from 'vue';
 import { useField } from 'vee-validate';
-import InputNumber from 'primevue/inputnumber';
+import InputNumber, { InputNumberInputEvent } from 'primevue/inputnumber';
 import { FieldValidation } from '@/types/fieldValidation.type';
 import { Nullable } from 'primevue/ts-helpers';
 import ValidatorMessage from '@/components/Input/InputValidatorMessage.vue';
@@ -23,7 +23,7 @@ const props = defineProps<{
   useGrouping?: boolean;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   'update:modelValue': [value?: number];
 }>();
 
@@ -52,6 +52,12 @@ const setValidatorMessage = (value: Nullable<number>) => {
   }
 };
 
+const onInput = (e: InputNumberInputEvent) => {
+  const value = e.value as number | undefined;
+  emit('update:modelValue', value);
+  field.value = value;
+};
+
 watch(
   () => props.initialValue,
   (value) => {
@@ -72,11 +78,11 @@ watch(
       ]"
     >
       <InputNumber
-        v-model="field.value"
-        @update:modelValue="$emit('update:modelValue', $event)"
+        :model-value="field.value"
+        @input="onInput"
         :showButtons="showButtons"
         :placeholder="placeholder"
-        :min="0"
+        :min="undefined"
         :class="['ts-inputnumber', { full: props.size === 'full' }]"
         :pt="{
           input: { class: props.size ?? 'small' },
