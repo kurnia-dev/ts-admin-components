@@ -6,7 +6,7 @@ import CustomMultiSelect from './CustomOverlayPanel/MultiSelect.vue';
 import CustomOverlayPanel from './CustomOverlayPanel/OverlayPanel.vue';
 import CustomTree from './CustomTree/Tree.vue';
 import CustomTreeNode from './CustomTree/TreeNode.vue';
-import DateText from './datetext/DateText.vue';
+import DateText from './DateText.vue';
 import TSDataTable from './TSDataTable/DataTable.vue';
 import FilterContainer from './FilterContainer/FilterContainer.vue';
 import GroupNameContainer from './GroupNameContainer.vue';

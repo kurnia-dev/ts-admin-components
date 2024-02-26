@@ -70,7 +70,7 @@ const formatedDate = computed(() => {
     };
   }
 
-  return new Date(props.date).toLocaleString(dateFormat.value.locale, options);
+  return new Date(props.date).toLocaleString(dateFormat.value.locale || 'en-gb', options);
 });
 </script>
 
