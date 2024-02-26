@@ -14,6 +14,10 @@ type Data = Record<string, any>;
 
 interface TSDataTableProps {
   /**
+   * Wether the datas to be shown is static or not.
+   */
+  staticTable?: boolean;
+  /**
    * An array of table columns to display.
    * 
    * @default true
@@ -153,6 +157,21 @@ const tableOffsetTop = ref<number>(0);
 const rowsPerPageOptions = ref([5, 10, 20, 50]);
 const selectedColumns = ref<TableColumn[]>(props.columns);
 
+/**
+ * To determine wether thee table is static or not.
+ * Checkss the length of datas and the total record can be used to determine it.
+ * 
+ * !Still need refactor!
+ */
+const isStaticTable = computed(() => {
+  if (!props.totalRecords) {
+    return true
+  }
+
+  const datasLength = props.datas.length;
+  return datasLength === (props.totalRecords ?? datasLength);
+})
+
 const isSelectedAll = computed({
   get() {
     return props.isSelectedAll;
@@ -242,7 +261,7 @@ watch(props, () => {
     :filters="props.filters"
     :value="props.datas ?? []"
     :loading="loading"
-    :lazy="true"
+    :lazy="!props.staticTable"
     :paginator="usePaginator"
     :data-key="dataKey"
     :rows="usePaginator ? props.rows ?? 5 : undefined"
