@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { ref, computed, watch, onMounted, nextTick, withDefaults } from 'vue';
 import { TableColumn } from '@/types/columns';
 import { MenuOption } from '@/types/options';
 import type Menu from 'primevue/menu';
@@ -12,11 +12,17 @@ import DataTable, {
 
 type Data = Record<string, any>;
 
-const props = defineProps<{
+interface TSDataTableProps {
   /**
    * An array of table columns to display.
+   * 
+   * @default true
    */
   columns: TableColumn[];
+  /**
+   * Wether use custom column or not.
+   */
+  customColumn?: boolean;
   /**
    * An array of objects to display in the table.
    */
@@ -81,7 +87,9 @@ const props = defineProps<{
    * To add data-test attribute to the table.
    */
   dataTest?: string;
-}>();
+}
+
+const props = withDefaults(defineProps<TSDataTableProps>(), { customColumn: true } );
 
 const emit = defineEmits<{
   'setDetail': [data: Data];
@@ -297,8 +305,14 @@ watch(props, () => {
         {{ col.bodyTemplate && col.bodyTemplate(data) }}
       </template>
     </Column>
-    <Column v-if="useOption" style="width: 35px" frozen alignFrozen="right">
-      <template #header>
+    <Column
+      v-if="useOption"
+      :pt="{ headerCell: { class: { 'no-custom-column': !props.customColumn } }}"
+      style="width: 35px"
+      frozen
+      alignFrozen="right"
+    >
+      <template #header v-if="props.customColumn">
         <i class="ri-more-fill" @click="toggleCustomColumn" />
       </template>
       <template #body="{ data }">
@@ -406,6 +420,10 @@ watch(props, () => {
     th.p-frozen-column:hover,
     th.p-sortable-column.p-highlight {
       background: $primary-bg-strong;
+    }
+
+    th.p-frozen-column.no-custom-column:hover {
+      background: $primary-weak;
     }
 
     th.p-sortable-column.p-highlight {

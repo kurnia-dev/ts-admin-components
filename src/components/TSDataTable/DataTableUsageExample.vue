@@ -328,6 +328,7 @@ const clear = () => {
 };
 
 const showFilter = ref<boolean>(false);
+const inputNumber = ref<number>();
 </script>
 <template>
   <div class="d-flex gap-2 justify-content-end">
@@ -354,11 +355,12 @@ const showFilter = ref<boolean>(false);
         mode="multi"
         label="Company"
       />
-      <InputNumber placeholder="Input" size="full" label="Number" />
+      <InputNumber v-model="inputNumber" @update:model-value="console.log($event)" placeholder="Input" size="full" label="Number" />
     </template>
   </FilterContainer>
   <DynamicTable
     :columns="columns"
+    :custom-column="false"
     :datas="stock"
     v-model:selected-datas="selectedDatas"
     v-model:is-selected-all="isSelectedAll"
