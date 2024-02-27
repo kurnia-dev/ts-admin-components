@@ -23,10 +23,15 @@ interface TSFormProps {
   stickyButtons?: boolean;
   submitButtonLabel?: string;
   validatorMessage?: string;
+  /**
+   * Custom validator condition.
+   */
+  invalid?: boolean;
 };
 
 const props = withDefaults(defineProps<TSFormProps>(), {
   validatorMessage: 'Please input all required field!',
+  invalid: false,
 });
 
 const emit = defineEmits<{
@@ -90,15 +95,20 @@ const onSubmitClicked = (): void => {
 
 const onSubmit = handleSubmit((formValues) => {
   validated.value = true;
-  fieldsKey.value += 1;
 
   const payload: FormPayload = {
     stayAfterSubmit: stayAfterSubmit.value,
     formValues,
   };
 
-  emit('submit', payload);
-  showValidator.value = false;
+  if (!props.invalid) {
+    fieldsKey.value += 1;
+    emit('submit', payload);
+  }
+
+  showValidator.value = props.invalid;
+
+  console.log(showValidator.value, props.validatorMessage);
 });
 
 const onSave = handleSubmit((formValues) => {
@@ -109,8 +119,11 @@ const onSave = handleSubmit((formValues) => {
     formValues,
   };
 
-  emit('save', payload);
-  showValidator.value = false;
+  if (!props.invalid) {
+    emit('save', payload);
+  }
+  
+  showValidator.value = props.invalid;
 });
 
 watch(values, () => {
