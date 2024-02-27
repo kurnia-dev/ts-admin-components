@@ -16,13 +16,18 @@ type FormButton =
   | 'edit';
 type ButtonsTemplate = FormButton[];
 
-const props = defineProps<{
+interface TSFormProps {
   columnPerRow?: number;
   buttonsTemplate?: ButtonsTemplate;
   hideStayCheckbox?: boolean;
   stickyButtons?: boolean;
   submitButtonLabel?: string;
-}>();
+  validatorMessage?: string;
+};
+
+const props = withDefaults(defineProps<TSFormProps>(), {
+  validatorMessage: 'Please input all required field!',
+});
 
 const emit = defineEmits<{
   submit: [values: FormPayload];
@@ -185,7 +190,7 @@ watch(values, () => {
         <ValidatorMessage
           v-show="showValidator"
           class="ts-form-validator-message"
-          message="Please input all required field!"
+          :message="props.validatorMessage"
         />
       </div>
     </div>
