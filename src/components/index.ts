@@ -21,7 +21,7 @@ import ScanQR from './ScanQR/ScanQRButton.vue';
 import ScanRFID from './ScanRFID/ScanRFIDButton.vue';
 import TSSearchbox from './SearchButton.vue';
 import SelectCategory from './SelectCategory/SelectCategory.vue';
-import SelectGroup from './SelectGroup/SelectGroup.vue';
+import SelectGroup from './ts-components/selectgroup/SelectGroup.vue';
 import StaticTable from './StaticTable.vue';
 import TagTypeIdentifier from './TagTypeIdentifier.vue';
 import TSBreadcrumb from './Breadcrumb/Breadcrumb.vue';

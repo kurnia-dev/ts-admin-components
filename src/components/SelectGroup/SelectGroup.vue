@@ -151,19 +151,6 @@ watch(singleSelectedGroupTemp, (val) => {
 watch(() => props.showDialog, (state: boolean | undefined) => {
   if (state !== undefined) showGroups.value = state;
 });
-
-// watchEffect(() => {
-//   console.log('showGroups:', showGroups.value);
-//   console.log('showExceededDialog:', showExceededDialog.value);
-//   console.log('showExceededLabel:', showExceededLabel.value);
-//   console.log('groupTemp:', groupTemp.value);
-//   console.log('singleSelectedGroupTemp:', singleSelectedGroupTemp.value);
-//   console.log('singleSelectedGroup:', singleSelectedGroup.value);
-//   console.log('modelValue:', modelValue.value);
-//   console.log('groupKeysCount:', groupKeysCount.value);
-//   console.log('buttonLabel:', buttonLabel.value);
-//   console.log('singleActiveGroup:', singleActiveGroup.value);
-// });
 </script>
 
 <template>

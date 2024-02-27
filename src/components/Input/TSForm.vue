@@ -107,8 +107,6 @@ const onSubmit = handleSubmit((formValues) => {
   }
 
   showValidator.value = props.invalid;
-
-  console.log(showValidator.value, props.validatorMessage);
 });
 
 const onSave = handleSubmit((formValues) => {

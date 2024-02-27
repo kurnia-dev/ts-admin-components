@@ -15,6 +15,11 @@ import DataTableUsageExample from './components/TSDataTable/DataTableUsageExampl
 import TSConfirmDialogUsageExample from './components/TSConfirmDialog/TSConfirmDialogUsageExample.vue';
 import { handleSuccess } from './utils/toast.util';
 import Toast from 'primevue/toast';
+import SelectGroup from '@/components/ts-components/selectgroup/SelectGroup.vue';
+import { TreeNode } from 'primevue/tree';
+import Button from 'primevue/button';
+import SelectGroupDialog from './components/ts-components/selectgroupdialog/SelectGroupDialog.vue';
+
 const dateRange = ref<number[]>([+new Date(), +new Date()]);
 const dateSingle = ref<number>(+new Date());
 
@@ -32,9 +37,20 @@ const menus = ref([
 onMounted(() => {
   handleSuccess({ activity: 'success' });
 });
+
+const showGroupSelect = ref<boolean>(false);
+const selectedKey = ref<number[]>();
+const selectedGroup = ref<TreeNode>();
 </script>
 
 <template>
+  <Button @click="showGroupSelect = true" label="Show Group" />
+  <SelectGroup v-model:show-dialog="showGroupSelect" hide-button v-model:single-value="selectedGroup" selection-mode="single" />
+  <Button @click="showGroupSelect = true" label="Show Group Multi" />
+  <SelectGroup v-model:show-dialog="showGroupSelect" hide-button v-model:group-keys="selectedKey" selection-mode="checkbox" />
+
+  <SelectGroup v-model:single-value="selectedGroup" selection-mode="single" />
+  <SelectGroup v-model:group-keys="selectedKey" selection-mode="checkbox" @apply="console.log($event)" />
   <Toast position="bottom-right" />
   <div style="margin-bottom: 50px">
     <div>
