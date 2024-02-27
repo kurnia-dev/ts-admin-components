@@ -21,6 +21,11 @@ interface SelectOptionsProps {
   closable?: boolean;
   loading?: boolean;
   filter?: boolean;
+  optionLabel?: string;
+  /**
+   * Weether the options value is the option object itself.
+   */
+  optionValueObject?: boolean;
 }
 
 const props = withDefaults(defineProps<SelectOptionsProps>(), {
@@ -92,7 +97,9 @@ const setOption = (options?: TOptionSelection[]) => {
   dropdownOptions.value = options;
 };
 
-const optionValue = computed<'label' | 'value'>(() => {
+const optionValue = computed<'label' | 'value' | undefined>(() => {
+  if(props.optionValueObject) return undefined;
+
   const value = dropdownOptions.value?.[0]?.value;
   return value != null ? 'value' : 'label';
 });
