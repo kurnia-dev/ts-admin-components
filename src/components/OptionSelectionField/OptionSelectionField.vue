@@ -8,8 +8,10 @@ import ValidatorMessage from '../Input/InputValidatorMessage.vue';
 import { MultiSelectChangeEvent } from 'primevue/multiselect';
 import { DropdownChangeEvent } from 'primevue/dropdown';
 
+type SelectOptionsValue = string | number | boolean | object | (string | number | boolean | object)[];
+
 interface SelectOptionsProps {
-  modelValue?: string | number | boolean | (string | number | boolean)[];
+  modelValue?: SelectOptionsValue;
   options?: TOptionSelection[];
   useValidator?: boolean;
   mandatory?: boolean;
@@ -33,7 +35,7 @@ const props = withDefaults(defineProps<SelectOptionsProps>(), {
 });
 
 const emit = defineEmits<{
-  'update:modelValue': [value: string | string[] | number | number[]];
+  'update:modelValue': [value: SelectOptionsValue];
   'show': [];
 }>();
 
