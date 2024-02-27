@@ -110,7 +110,6 @@ watch(() => props.selectedDatas, (datas) => {
 
   .ts-selection-message {
     width: max-content;
-    text-transform: capitalize;
     font-size: 11.2px;
   }
 }
