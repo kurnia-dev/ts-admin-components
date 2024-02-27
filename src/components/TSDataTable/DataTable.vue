@@ -154,7 +154,7 @@ const emit = defineEmits<{
   'update:selectedDatas': [datas: Data[]];
 }>();
 
-const tableId = ref<string>('ts-data-table-' + faker.string.uuid())
+const tableId = ref<string>('')
 const tableOptions = ref<Menu | null>(null);
 const customColumn = ref<Menu | null>(null);
 const tableOffsetTop = ref<number>(0);
@@ -232,11 +232,14 @@ const selectColumn = (cols: TableColumn[]) => {
 
 const disabledRows = computed(() => (props.datas ?? []).filter((data) => data[props.selectionKey ?? 'isDefault']).map((data) => data[props.dataKey]));
 
-const disableCheckbox = () => {
-  const dataTable = document.getElementById(tableId.value) as HTMLDivElement;
-  const checkboxes = dataTable.getElementsByClassName('p-selection-column');
-
+const disableCheckbox = async () => {
+  tableId.value = 'ts-data-table-' + faker.string.uuid();
+  
   nextTick(() => {
+    /** Wait untill the tableId changed on the element. */
+    const dataTable = document.getElementById(tableId.value) as HTMLDivElement; 
+    const checkboxes = dataTable?.getElementsByClassName('p-selection-column');
+
     disabledRows.value.forEach((rowID) => {
       const index = props.datas.findIndex((data) => data[props.dataKey] == rowID);
 
@@ -255,7 +258,7 @@ onMounted(() => {
 
 watch(props, () => {
   if (props.datas?.length) {
-    setTimeout(disableCheckbox, 500);
+    disableCheckbox();
   }
 });
 </script>
@@ -289,7 +292,7 @@ watch(props, () => {
     class="ts-datatable"
     :data-test="props.dataTest"
   >
-    <template #empty> No Records Found </template>
+    <template #empty> No Records Found. </template>
     <Column
       v-if="useSelection"
       selection-mode="multiple"
