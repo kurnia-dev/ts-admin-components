@@ -3,12 +3,15 @@ import { ref, computed, watch, onMounted, nextTick, withDefaults } from 'vue';
 import { TableColumn } from '@/types/columns';
 import { MenuOption } from '@/types/options';
 import type Menu from 'primevue/menu';
+
 import DataTable, {
   DataTablePageEvent,
   DataTableSelectAllChangeEvent,
   DataTableSortEvent,
   DataTableFilterMeta
 } from 'primevue/datatable';
+
+import { faker } from '@faker-js/faker';
 
 type Data = Record<string, any>;
 
@@ -151,6 +154,7 @@ const emit = defineEmits<{
   'update:selectedDatas': [datas: Data[]];
 }>();
 
+const tableId = ref<string>('ts-data-table-' + faker.string.uuid())
 const tableOptions = ref<Menu | null>(null);
 const customColumn = ref<Menu | null>(null);
 const tableOffsetTop = ref<number>(0);
@@ -229,7 +233,8 @@ const selectColumn = (cols: TableColumn[]) => {
 const disabledRows = computed(() => (props.datas ?? []).filter((data) => data[props.selectionKey ?? 'isDefault']).map((data) => data[props.dataKey]));
 
 const disableCheckbox = () => {
-  const checkboxes = document.getElementsByClassName('p-selection-column');
+  const dataTable = document.getElementById(tableId.value) as HTMLDivElement;
+  const checkboxes = dataTable.getElementsByClassName('p-selection-column');
 
   nextTick(() => {
     disabledRows.value.forEach((rowID) => {
@@ -259,6 +264,7 @@ watch(props, () => {
   <DataTable
     v-model:selection="selectedDatas"
     :filters="props.filters"
+    :id="tableId"
     :value="props.datas ?? []"
     :loading="loading"
     :lazy="!props.staticTable"
