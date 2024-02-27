@@ -48,6 +48,8 @@ const setValidatorMessage = (value: string): boolean | string => {
   } else if (props.type === 'email') {
     const emailRegexp = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
     return emailRegexp.test(value) ? true : 'Email format is incorrect!';
+  } else if (props.validatorMessage) {
+    return props.validatorMessage;
   }
 
   return true;
