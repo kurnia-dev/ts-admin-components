@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<InputTextProps>(), {
 
 defineEmits<{
   'update:modelValue': [value?: string];
+  'input': [value?: string];
 }>();
 
 const field = reactive<FieldValidation>({ value: props.modelValue });
@@ -75,6 +76,7 @@ const setValidatorMessage = (value: string): boolean | string => {
           placeholder ?? `Input ${label ? label.toLowerCase() : 'text'}`
         "
         @update:model-value="$emit('update:modelValue', $event)"
+        @input="$emit('input', ($event.target as HTMLInputElement).value)"
         class="ts-inputtext"
       />
       <small id="dd-error" v-if="field.errorMessage" class="validator-message">
