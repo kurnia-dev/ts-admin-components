@@ -4,6 +4,7 @@ import { useToast } from 'primevue/usetoast';
 import Toast from 'primevue/toast';
 import ScanAPIs from '@/services/scanner.service';
 import ErrorDialog from './ScanQRErrorDialog.vue';
+import { faker } from '@faker-js/faker';
 
 const toast = useToast();
 
@@ -179,6 +180,41 @@ const stopScan = async () => {
   }
 };
 
+const onBeforeStartScan = () => {
+  if (window.Cypress) {
+    startScanForTest();
+  } else {
+    start()
+  }
+};
+
+const startScanForTest = () => {
+  toast.add({
+    severity: 'info',
+    detail: 'Connecting QR...',
+    group: 'qrConnecting',
+    life: 3000,
+  });
+
+  setTimeout(() => {
+    emit('connect');
+    toast.add({
+      severity: 'info',
+      group: 'qrScanning',
+      closable: false,
+    });
+
+    emit('connected', faker.string.uuid());
+
+    if (props.bulk) {
+      emit('scan', faker.string.uuid());
+    } else {
+      emit('update:modelValue', faker.string.uuid());
+      stopScan();
+    }
+  }, 3000);
+};
+
 const stop = async () => {
   closeSocketConnection();
   await stopScan();
@@ -195,7 +231,7 @@ defineExpose({
     :style="btnStyle"
     :disabled="props.disabled || isButtonDisabled"
     :id="props.id || 'qrScanBtn'"
-    @click="start"
+    @click="onBeforeStartScan"
     class="ts-button ts-button-primary ts-qr-button"
     type="button"
   >
