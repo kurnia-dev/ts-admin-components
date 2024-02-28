@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SelectGroup from './SelectGroup.vue';
+import SelectGroupNew from '../ts-components/selectgroup/SelectGroup.vue';
 import { ref, watch } from 'vue';
 import Button from '../TSButtons/Button.vue';
 
@@ -8,11 +9,12 @@ const group2 = ref<number[]>([2]);
 const groupKey = ref<number>(0);
 
 watch(groupKey, () => {
-  console.log(groupKey.value)
-})
+  console.log(groupKey.value);
+});
 </script>
 <template>
   <div class="d-flex gap-4">
+    <SelectGroupNew selectionMode="single" dialogHeader="Assign Group" />
     <SelectGroup
       :key="groupKey"
       v-model="group"
@@ -25,6 +27,6 @@ watch(groupKey, () => {
       selectionMode="single"
       :params="{ full: true }"
     />
-    </div>
-    <Button label="reset" @click="groupKey++" />
+  </div>
+  <Button label="reset" @click="groupKey++" />
 </template>
