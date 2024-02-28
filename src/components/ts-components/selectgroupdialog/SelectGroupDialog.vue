@@ -37,7 +37,8 @@ const show = computed({
 
 const disableApply = computed(() => {
   return (
-    props.selectionMode === 'single' && !Object.keys(selectedGroupsTemp).length
+    props.selectionMode === 'single' &&
+    !Object.keys(selectedGroupsTemp.value ?? {}).length
   );
 });
 
@@ -56,15 +57,18 @@ const parseSelectionKeys = (keys: number[]) => {
   });
 
   return keysModel;
-}
+};
 
 watch(
-  [(): boolean => props.show, (): object | number[] | undefined => props.selectedGroups],
+  [
+    (): boolean => props.show,
+    (): object | number[] | undefined => props.selectedGroups,
+  ],
   ([isShow, groupKeys]) => {
     if (isShow && Array.isArray(groupKeys) && props.readonly) {
       selectedGroupsTemp.value = parseSelectionKeys(groupKeys);
     }
-  },
+  }
 );
 </script>
 
@@ -73,7 +77,7 @@ watch(
     v-model:visible="show"
     :base-z-index="99999999"
     :draggable="false"
-    :header="header ?? props.readonly ? 'Selected Group' : 'Select Group'"
+    :header="header ? header : readonly ? 'Selected Group' : 'Select Group'"
     @update:visible="!$event && emit('cancel')"
     closable
     modal
@@ -98,7 +102,11 @@ watch(
         />
       </template>
       <template v-else>
-        <TSButton @click="emit('cancel'), emit('update:show', false)" label="Cancel" text-only />
+        <TSButton
+          @click="emit('cancel'), emit('update:show', false)"
+          label="Cancel"
+          text-only
+        />
         <TSButton
           :disabled="disableApply"
           :label="buttonLabel ?? 'Apply'"
