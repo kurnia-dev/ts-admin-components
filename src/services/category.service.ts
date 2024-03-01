@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { addTokenExpirationHandling } from '@/utils';
 
 const user = JSON.parse(localStorage.getItem('user')!);
-const api = ({ headers = {}, params = {} } = {}) => {
+const API = ({ headers = {}, params = {} } = {}) => {
   const instance = axios.create({
-    baseURL: `${process.env.VUE_APP_SETTINGS_API}/v2/categories`,
+    baseURL: `${import.meta.env.VITE_APP_CATEGORY_API}/v2/categories`,
     headers: {
       'Content-type': 'application/json',
       'Authorization': `Bearer ${user.token}`,
@@ -13,17 +13,15 @@ const api = ({ headers = {}, params = {} } = {}) => {
     params,
   });
 
-  addTokenExpirationHandling(instance);
+  // addTokenExpirationHandling(instance);
 
   return instance;
 };
 
-const getCategoryTreeList = () => {
-  return api().get('/tree');
+const CategoriesServices = {
+  getCategories: (): Promise<AxiosResponse> => {
+    return API().get('/tree');
+  },
 };
 
-const CategoryAPIs = {
-  getCategoryTreeList,
-};
-
-export default CategoryAPIs;
+export default CategoriesServices;

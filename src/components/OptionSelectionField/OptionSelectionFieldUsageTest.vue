@@ -10,6 +10,7 @@ import InputPhone from '../Input/InputPhone.vue';
 import TSForm from '@/components/Input/TSForm.vue';
 import Dialog from 'primevue/dialog';
 import SelectGroup from '../SelectGroup/SelectGroup.vue';
+import SelectTree from '../ts-components/selecttree/SelectTree.vue';
 
 const value3 = ref<any>();
 
@@ -30,6 +31,9 @@ const cities = ref([
 ]);
 
 const initial = ref<number>(0);
+
+const showCategoryAddMulti = ref<boolean>(false);
+const showCategoryAddSingle = ref<boolean>(false);
 
 setTimeout(() => {
   initial.value = 0;
@@ -76,62 +80,32 @@ onMounted(() => {
         /> -->
         <DropdownOption
           :options="cities"
-          label="option"
-          fieldName="option"
-          mode="single"
-          use-validator
-          mandatory
-          filter
-          validator-message="You must select an option"
-        />
-        <DropdownOption
-          :options="cities"
           mode="multi"
           label="other option"
           fieldName="otherOption"
           mandatory
           use-validator
         />
-        <InputEmail label="Email" mandatory tooltip="Hi" />
-        <TextField label="Name" mandatory tooltip="Hi" />
-        <!-- <TextField
-          label="Not mandatory"
-          field-name="notMandatory"
+        <!-- Example usage of new SelectTree component -->
+        <SelectTree
+          v-model:show="showCategoryAddMulti"
+          @multi-change="console.log($event)"
+          action-mode="Add"
+          field-name="categories"
+          selection-mode="checkbox"
+          type="Category"
           use-validator
         />
-        <InputEmail label="Email" field-name="email" use-validator mandatory />
-        <InputTextarea
-          label="Text area"
-          field-name="textarea"
-          use-validator
+        <SelectTree
+          v-model:show="showCategoryAddSingle"
+          @multi-change="console.log($event)"
+          action-mode="Add"
+          field-name="category"
           mandatory
-        />
-        <InputNumber
-          :max="10"
-          :initial-value="1"
-          label="Number input"
-          use-validator
-          mandatory
-          field-name="number"
-          size="full"
-          placeholder="input"
-        />
-        <TSCalendar
-          label="Range Select"
-          field-name="rangeDate"
-          mode="range"
-          mandatory
+          selection-mode="single"
+          type="Category"
           use-validator
         />
-        <SelectGroup
-          selectionMode="single"
-          v-model="selectedGroupKeys"
-          :single-selected-group-name="selectedGroup.name"
-          @apply-single-mode="(event) => {
-            selectedGroup = event;
-            console.log(selectedGroup);
-          }"
-        /> -->
       </template>
     </TSForm>
   </Dialog>
