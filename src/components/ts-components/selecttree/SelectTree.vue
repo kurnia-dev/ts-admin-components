@@ -337,6 +337,7 @@ const handleShow = (): void => {
  */
 const handleCancel = (): void => {
   if (props.selectedNodes) {
+    selectName.value = props.selectedNodes?.at(0)?.name ?? '';
     selectKeys.value = props.selectedNodes.map((node) => node.key as number);
     selectedKeys.value = {};
     setInitialChecked();
